@@ -101,6 +101,9 @@
 
     function deleteUser(ID) {
         event.preventDefault();
+        //Aske Confirmation before deleting
+        return confirm('Are you sure you want to delete this user?');
+
 
         fetch('http://localhost/Inventory/common/function.php?action=delete_user', {
                 method: 'POST',
@@ -111,7 +114,6 @@
             }).then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log('User Deleted:', data.data);
                     myAlert.classList.remove('d-none');
                     myAlert.classList.add('alert-success');
                     myAlert.classList.remove('alert-danger');
@@ -153,7 +155,6 @@
             }).then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log('User added:', data.data);
                     myAlert.classList.remove('d-none');
                     myAlert.classList.remove('alert-danger');
                     myAlert.classList.add('alert-success');
@@ -166,7 +167,6 @@
 
                     // alert('User added successfully');
                 } else {
-                    console.log('Error:', data.message);
                     myAlert.classList.remove('d-none');
                     myAlert.classList.remove('alert-success');
                     myAlert.classList.add('alert-danger');
@@ -179,14 +179,10 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Users retrieved:', data.data);
-                // Process the retrieved users here
-
                 // Add the retrieved users to the table
                 const tableBody = document.querySelector('#data-tables-users tbody');
                 for (let index = 0; index < data.data.length; index++) {
                     const users = data.data[index];
-                    console.log(users);
                     const row = document.createElement('tr');
                     const newModal = document.createElement('div');
                     row.innerHTML = `
@@ -195,7 +191,8 @@
                         <td>${users.email}</td>
                         <td>${users.mobile}</td>
                         <td>${users.role == '1' ? 'customer' : 'vendor'}</td>
-                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${users.id}"> <i class="fas fa-edit"></i> </button></td>
+                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${users.id}"> <i class="fas fa-edit"></i> </button>
+                        <button type="button" class=" btn bg-danger-icon" onclick="deleteUser(${users.id})"> <i class="fas fa-trash"></i> </button></td>
                     `
                     tableBody.appendChild(row);
 

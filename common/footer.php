@@ -1,4 +1,5 @@
 <?php
+var_dump($_SESSION);
 ?>
 
 <footer class="sticky-footer bg-white">
@@ -58,6 +59,3 @@
     });
 </script>
 
-<?php
-var_dump($_SESSION)
-?>

@@ -177,6 +177,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		} catch (Error $th) {
 			sendResponse([], false, $th->getMessage());
 		}
+	} else if ($action === 'delete_user') {
+		$id = $_POST['id'];
+		$sqli = "DELETE FROM `user` WHERE `user`.`id` = $id";
+		try {
+			if ($con->query($sqli)) {
+				sendResponse($_POST, true, 'User deleted successfully');
+			} else {
+				sendResponse([], false, 'Something went wrong while deleting user');
+			}
+		} catch (Error $th) {
+			sendResponse([], false, $th->getMessage());
+		}
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}

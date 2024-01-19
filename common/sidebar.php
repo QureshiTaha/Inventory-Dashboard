@@ -130,11 +130,10 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     </div>
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userManagements" aria-expanded="true" aria-controls="userManagements">
-            <!-- <i class="fas fa-fw fa-cog"></i> -->
             <i class="fas fa-fw fa-user"></i>
             <span>User</span>
         </a>
-        <div id="userManagements" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="userManagements" class="collapse" aria-labelledby="headingUserManagements" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Vendor Managements:</h6>
                 <a class="collapse-item" href="users">All User</a>
@@ -145,12 +144,11 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#productManagements" aria-expanded="true" aria-controls="productManagements">
-            <!-- <i class="fas fa-fw fa-cog"></i> -->
             <i class="fas fa-fw fa-table"></i>
 
             <span>Product</span>
         </a>
-        <div id="productManagements" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="productManagements" class="collapse" aria-labelledby="headingproductManagements" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Stock Managements:</h6>
                 <a class="collapse-item" href="cards.html">All products</a>
@@ -167,3 +165,35 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>
 </ul>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+                // Get the current pathname
+                var currentPath = window.location.pathname;
+
+                // Iterate through all collapse items in the navigation
+                var collapseItems = document.querySelectorAll(".collapse-item");
+                collapseItems.forEach(function(collapseItem) {
+                        // Check if the current pathname matches the link's href or starts with it
+                        if (currentPath === collapseItem.getAttribute("href") || currentPath.endsWith(collapseItem.getAttribute("href")) || currentPath.endsWith(collapseItem.getAttribute("href") + "/")) {
+                                // Add "active" class to the collapse item
+                                collapseItem.classList.add("active");
+
+                                // Find the parent collapse and show it
+                                var parentCollapse = collapseItem.closest(".collapse");
+                                if (parentCollapse) {
+                                    parentCollapse.classList.add("show");
+                                }
+
+                                // Find the grandparent nav-link and add "active" class to it
+                                var grandparentNavLink = collapseItem.closest(".nav-item").querySelector(".nav-link");
+                                if (grandparentNavLink) {
+                                    grandparentNavLink.classList.remove("collapsed");
+                                }
+                                var greatGrandparentNavLink = collapseItem.closest(".nav-item");
+                                if (greatGrandparentNavLink) {
+                                    greatGrandparentNavLink.classList.add("active");
+                                }
+                            }
+                        });
+                });
+</script>
