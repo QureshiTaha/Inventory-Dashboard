@@ -156,6 +156,20 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
             </div>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#accountsManagements" aria-expanded="true" aria-controls="accountsManagements">
+            <i class="fas fa-fw fa-file"></i>
+
+            <span>Accounts</span>
+        </a>
+        <div id="accountsManagements" class="collapse" aria-labelledby="headingAccountsManagements" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Invoices:</h6>
+                <a class="collapse-item" href="invoices">All Invoices</a>
+                <a class="collapse-item" href="create-invoice">Create Invoice</a>
+            </div>
+        </div>
+    </li>
 
 
 

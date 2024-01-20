@@ -261,6 +261,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}
+} else if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search'])) {
+	$search = $_GET['search'];
+	header('Content-Type: application/json');
+	if ($search === 'users') {
+		$query = $_GET['query'];
+
+		// Perform a search in the 'user' table based on the user input
+		$search_query = "SELECT id, name, email FROM user WHERE name LIKE '%$query%' OR email LIKE '%$query%'";
+		$result = $con->query($search_query);
+
+		// Fetch the results into an array
+		$users = array();
+		while ($row = $result->fetch_assoc()) {
+			$users[] = $row;
+		}
+
+		// Return the results as JSON
+		header('Content-Type: application/json');
+		echo json_encode($users);
+	} else {
+		sendResponse([], false, 'Invalid action');
+	}
 }
 
 

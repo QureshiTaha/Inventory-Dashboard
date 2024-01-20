@@ -35,6 +35,7 @@
 <!-- <script src="vendor/jquery/jquery.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 
 <!-- Core plugin JavaScript-->
 <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
