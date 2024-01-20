@@ -151,8 +151,8 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
         <div id="productManagements" class="collapse" aria-labelledby="headingproductManagements" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Stock Managements:</h6>
-                <a class="collapse-item" href="cards.html">All products</a>
-                <a class="collapse-item" href="buttons.html">Add products</a>
+                <a class="collapse-item" href="products">All products</a>
+                <a class="collapse-item" href="add-product">Add products</a>
             </div>
         </div>
     </li>

@@ -61,39 +61,32 @@
                                     <form id="addProduct" onsubmit="addProduct(event)">
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
-                                            <!-- Form Group (first name)-->
-                                            <div class="col-md-6">
-                                                <label class="small mb-1" for="name">Full Name</label>
-                                                <input class="form-control" id="name" type="text" name="name" placeholder="Enter full name" value="">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="small mb-1">Stock Quantity</label>
+                                                <input class="form-control" id="stockQuantity" oninput="this.value = this.value.replace(/\D+/g, '');" type="number" name="stockQuantity" placeholder="Enter Stock Quantity" value="">
                                             </div>
-                                            <!-- Form Group (last name)-->
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="email">Email</label>
-                                                <input class="form-control" id="email" type="email" name="email" placeholder="Enter Email" value="">
+                                                <label class="small mb-1" for="productName">Product Name</label>
+                                                <input class="form-control" id="productName" type="text" name="productName" placeholder="Enter Product Name" value="">
                                             </div>
                                         </div>
                                         <div class="row gx-3 mb-3">
-                                            <!-- Form Group (first name)-->
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="mobile">Mobile</label>
-                                                <input class="form-control" oninput="this.value = this.value.replace(/\D+/g, '');" id="mobile" type="numeric" name="mobile" placeholder="Enter Mobile number" value="">
+                                                <label class="small mb-1" for="productDescription">Product Description</label>
+                                                <input class="form-control" id="productDescription" type="text" name="productDescription" placeholder="Enter Product Description" value="">
                                             </div>
-                                            <!-- Form Group (last name)-->
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="password">Password</label>
-                                                <input class="form-control" id="password" type="text" name="password" placeholder="Enter password" value="">
+                                                <label class="small mb-1" for="productPrice">Product Price</label>
+                                                <input class="form-control" id="productPrice" type="amount" oninput="this.value = this.value.replace(/\D+/g, '');" name="productPrice" placeholder="Enter Product Price" value="">
                                             </div>
                                         </div>
-                                        <!-- Form Group (Roles)-->
-                                        <div class="mb-3">
-                                            <label class="small mb-1">Role</label>
-                                            <select class="form-select" id="role" aria-label="Default select example">
-                                                <option value="1">Customer</option>
-                                                <option value="2">Vendor</option>
-                                            </select>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="modalNumber">Modal Number</label>
+                                                <input class="form-control" id="modalNumber" type="text" name="modalNumber" placeholder="Enter Modal Number" value="">
+                                            </div>
                                         </div>
-                                        <!-- Submit button-->
-                                        <button class="btn btn-primary" type="submit">Add user</button>
+                                        <button class="btn btn-primary" type="submit">Add Product</button>
 
                                     </form>
                                     <div class="py-3">
@@ -129,38 +122,40 @@
 
     function addProduct(event) {
         event.preventDefault(); // Prevent default form submission
-        var name = document.getElementById('name').value;
-        var email = document.getElementById('email').value;
-        var mobile = document.getElementById('mobile').value;
-        var password = document.getElementById('password').value;
-        var role = document.getElementById('role').value;
+        // modalNumber 	name 	description 	price 	quantity
+        var name = document.getElementById('productName').value;
+        var description = document.getElementById('productDescription').value;
+        var price = document.getElementById('productPrice').value;
+        var quantity = document.getElementById('stockQuantity').value;
+        var modalNumber = document.getElementById('modalNumber').value;
 
-        var userData = {
-            name: name,
-            email: email,
-            mobile: mobile,
-            password: password,
-            role: role
+        var productData = {
+            name,
+            modalNumber,
+            name,
+            description,
+            price,
+            quantity
         }
         fetch('http://localhost/Inventory/common/function.php?action=add_product', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
                 },
-                body: Object.entries(userData).map(([k, v]) => {
+                body: Object.entries(productData).map(([k, v]) => {
                     return k + '=' + v
                 }).join('&'),
             }).then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    console.log('User added:', data.data);
+                    console.log('Product added:', data.data);
                     myAlert.classList.remove('d-none');
                     myAlert.classList.remove('alert-danger');
                     myAlert.classList.add('alert-success');
                     document.getElementById('alertName').innerText = name;
                     document.getElementById('AlertMessage').innerText = " added successfully!";
                     document.getElementById('addProduct').reset();
-                    // alert('User added successfully');
+                    // alert('product added successfully');
                 } else {
                     console.log('Error:', data.message);
                     myAlert.classList.remove('d-none');
@@ -171,37 +166,6 @@
                 }
             })
     }
-    // fetch('http://localhost/Inventory/common/function.php?action=get_all_users')
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if (data.success) {
-    //             console.log('Users retrieved:', data.data);
-    //             // Process the retrieved users here
-
-    //             // Add the retrieved users to the table
-    //             const tableBody = document.querySelector('#data-tables-users tbody');
-    //             for (let index = 0; index < data.data.length; index++) {
-    //                 const users = data.data[index];
-    //                 console.log(users);
-    //                 const row = document.createElement('tr');
-    //                 row.innerHTML = `
-    //                     <td>${index}</td>
-    //                     <td>${users.name}</td>
-    //                     <td>${users.email}</td>
-    //                     <td>${users.mobile}</td>
-    //                     <td>${users.role == '1' ? 'customer' : 'vendor'}</td>
-    //                 `
-    //                 tableBody.appendChild(row);
-
-    //             }
-
-    //             $('#data-tables-users').DataTable();
-
-    //         } else {
-    //             console.error('Failed to fetch products:', data.message);
-    //         }
-    //     })
-    //     .catch(error => console.error('Error:', error));
 </script>
 
 </html>

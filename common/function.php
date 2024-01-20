@@ -189,6 +189,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		} catch (Error $th) {
 			sendResponse([], false, $th->getMessage());
 		}
+	} else if ($action === 'add_product') {
+
+		$name = $_POST['name'];
+		$description = $_POST['description'];
+		$price = $_POST['price'];
+		$quantity = $_POST['quantity'];
+		$modalNumber = $_POST['modalNumber'];
+
+		$sqli = "SELECT * FROM product WHERE modalNumber = '$modalNumber'";
+		$result = mysqli_query($con, $sqli);
+
+		// validation for name price and quantity 
+
+		$isValid = false;
+
+		if (empty($quantity)) {
+			sendResponse([], false, 'Product Quantity is required');
+			$isValid = false;
+		} else if (empty($name)) {
+			sendResponse([], false, 'Product Name is required');
+			$isValid = false;
+		} else if (empty($price)) {
+			sendResponse([], false, 'Product Price is required');
+			$isValid = false;
+		} else if (mysqli_num_rows($result) > 0) {
+			sendResponse([], false, 'Modal number already exists in Invantory');
+			$isValid = false;
+		} else {
+			$isValid = true;
+		}
+
+		//Validate Modal number exists in db
+
+
+
+
+
+
+		$sqli = "INSERT INTO `product`(`name`, `description`, `price`, `quantity`, `modalNumber`) VALUES ('$name','$description','$price','$quantity','$modalNumber')";
+
+		try {
+			if ($con->query($sqli)) {
+				sendResponse($_POST, true, 'Product added successfully');
+			} else {
+				sendResponse([], false, 'Something went wrong while adding product');
+			}
+		} catch (Error $th) {
+			sendResponse([], false, $th->getMessage());
+		}
+	} else if ($action === 'edit_product') {
+
+		$id = $_POST['id'];
+		$name = $_POST['name'];
+		$description = $_POST['description'];
+		$price = $_POST['price'];
+		$quantity = $_POST['quantity'];
+		$modalNumber = $_POST['modalNumber'];
+
+		$sqli = "UPDATE `product` SET `name` = '$name', `description` = '$description', `price` = '$price', `quantity` = '$quantity', `modalNumber` = '$modalNumber' WHERE `product`.`id` = $id";
+
+		try {
+			if ($con->query($sqli)) {
+				sendResponse($_POST, true, 'Product updated successfully');
+			} else {
+				sendResponse([], false, 'Something went wrong while updating product');
+			}
+		} catch (Error $th) {
+			sendResponse([], false, $th->getMessage());
+		}
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}

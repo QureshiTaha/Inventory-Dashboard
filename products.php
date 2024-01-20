@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>User Management</title>
+    <title>Product Management</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -51,7 +51,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">User Management</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Product Management</h1>
                     </div>
                     <div class="py-3">
                         <div class="alert d-none alert-success alert-dismissible fade show" id="myAlert" role="alert">
@@ -60,15 +60,16 @@
                         </div>
                     </div>
 
-                    <table id="data-tables-users" class="table table-striped" style="width:100%">
+                    <table id="data-tables-product" class="table table-striped" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Sr.No</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Mobile</th>
-                                <th>Role</th>
-                                <th>Action</th>
+                                <th>Product Name</th>
+                                <th>Product Description</th>
+                                <th>Product Modal Number</th>
+                                <th>Product price</th>
+                                <th>Stock Quantity</th>
+                                <th>Product Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,13 +100,13 @@
 <script>
     var myAlert = document.getElementById('myAlert');
 
-    function deleteUser(ID) {
+    function deleteProduct(ID) {
         event.preventDefault();
         //Aske Confirmation before deleting
-        return confirm('Are you sure you want to delete this user?');
+        return confirm('Are you sure you want to delete this product?');
 
 
-        fetch('http://localhost/Inventory/common/function.php?action=delete_user', {
+        fetch('http://localhost/Inventory/common/function.php?action=delete_product', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -117,7 +118,7 @@
                     myAlert.classList.remove('d-none');
                     myAlert.classList.add('alert-success');
                     myAlert.classList.remove('alert-danger');
-                    myAlert.querySelector('#alertName').textContent = 'User Deleted';
+                    myAlert.querySelector('#alertName').textContent = 'Product Deleted';
                     myAlert.querySelector('#AlertMessage').textContent = data.data;
                     setTimeout(() => {
                         window.location.reload();
@@ -126,30 +127,33 @@
             })
     }
 
-    function editUser(ID) {
+    function editProduct(ID) {
         event.preventDefault();
 
-        var name = $(`#edit-modal-${ID} #name`).val();
-        var email = $(`#edit-modal-${ID} #email`).val();
-        var mobile = $(`#edit-modal-${ID} #mobile`).val();
-        var password = $(`#edit-modal-${ID} #password`).val();
-        var role = $(`#edit-modal-${ID} #role`).val();
+        var name = $(`#edit-modal-${ID} #productName`).val();
+        var modalNumber = $(`#edit-modal-${ID} #productModalNumber`).val();
+        var description = $(`#edit-modal-${ID} #productDescription`).val();
+        var price = $(`#edit-modal-${ID} #productPrice`).val();
+        var quantity = $(`#edit-modal-${ID} #productQuantity`).val();
 
 
-        var userData = {
+        var productData = {
             id: ID,
-            name: name,
-            email: email,
-            mobile: mobile,
-            password: password,
-            role: role
+            name,
+            modalNumber,
+            name,
+            description,
+            price,
+            modalNumber,
+            quantity
         }
-        fetch('http://localhost/Inventory/common/function.php?action=edit_user', {
+
+        fetch('http://localhost/Inventory/common/function.php?action=edit_product', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
                 },
-                body: Object.entries(userData).map(([k, v]) => {
+                body: Object.entries(productData).map(([k, v]) => {
                     return k + '=' + v
                 }).join('&'),
             }).then(response => response.json())
@@ -165,7 +169,7 @@
                         window.location.reload();
                     }, 2000);
 
-                    // alert('User added successfully');
+                    // alert('product added successfully');
                 } else {
                     myAlert.classList.remove('d-none');
                     myAlert.classList.remove('alert-success');
@@ -175,63 +179,66 @@
                 }
             })
     }
-    fetch('http://localhost/Inventory/common/function.php?action=get_all_users')
+    fetch('http://localhost/Inventory/common/function.php?action=get_all_products')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Add the retrieved users to the table
-                const tableBody = document.querySelector('#data-tables-users tbody');
+                // Add the retrieved Products to the table
+                const tableBody = document.querySelector('#data-tables-product tbody');
                 for (let index = 0; index < data.data.length; index++) {
-                    const users = data.data[index];
+                    const product = data.data[index];
                     const row = document.createElement('tr');
                     const newModal = document.createElement('div');
                     row.innerHTML = `
-                        <td>${index +1}</td>
-                        <td>${users.name}</td>
-                        <td>${users.email}</td>
-                        <td>${users.mobile}</td>
-                        <td>${users.role == '1' ? 'customer' : 'vendor'}</td>
-                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${users.id}"> <i class="fas fa-edit"></i> </button>
-                        <button type="button" class=" btn bg-danger-icon" onclick="deleteUser(${users.id})"> <i class="fas fa-trash"></i> </button></td>
+                        <td>${index+1}</td>
+                        <td>${product.name}</td>
+                        <td>${product.description}</td>
+                        <td>${product.modalNumber}</td>
+                        <td>${product.price}</td>
+                        <td>${product.quantity}</td>
+                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${product.id}"> <i class="fas fa-edit"></i> </button>
+                        <button type="button" class=" btn bg-danger-icon" onclick="deleteProduct(${product.id})"> <i class="fas fa-trash"></i> </button></td>
                     `
                     tableBody.appendChild(row);
 
-                    newModal.innerHTML = `<div class="modal fade" id="edit-modal-${users.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    newModal.innerHTML = `<div class="modal fade" id="edit-modal-${product.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                                                            <h5 class="modal-title" id="exampleModalLabel">EditPproduct</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form id="edit-form-${users.id}">
+                                                            <form id="edit-form-${product.id}">
                                                                 <div class="form-group">
-                                                                    <label for="name">Name</label>
-                                                                    <input type="text" class="form-control" id="name" name="name" value="${users.name}">
+                                                                    <label for="productName">Product Name</label>
+                                                                    <input type="text" class="form-control" id="productName" value="${product.name}">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="email">Email</label>
-                                                                    <input type="email" class="form-control" id="email" name="email" value="${users.email}">
+                                                                    <label for="productDescription">Product Description</label>
+                                                                    <input type="text" class="form-control" id="productDescription" value="${product.description}">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="mobile">Mobile</label>
-                                                                    <input type="number" oninput="this.value = this.value.replace(/\D+/g, \'\');" class="form-control" id="mobile" name="mobile" value="${users.mobile}">
+                                                                    <label for="productModalNumber">Product Modal Number</label>
+                                                                    <input type="text" class="form-control" id="productModalNumber" value="${product.modalNumber}">
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="role">Role</label>
-                                                                    <select class="form-control" id="role" name="role">
-                                                                        <option value="1" ${users.role == '1' ? 'selected' : ''}>Customer</option>
-                                                                        <option value="2" ${users.role == '2' ? 'selected' : ''}>Vendor</option>
-                                                                    </select>
+                                                                    <label for="productPrice">Product Price</label>
+                                                                    <input type="number" class="form-control" id="productPrice" value="${product.price}">
                                                                 </div>
+                                                                <div class="form-group">
+                                                                    <label for="productQuantity">Product Quantity</label>
+                                                                    <input type="number" class="form-control" id="productQuantity" value="${product.quantity}">
+                                                                </div>
+
                                                             </form>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary" onclick="editUser(${users.id})">Save changes</button>
+                                                            <button type="button" class="btn btn-primary" onclick="editProduct(${product.id})">Save changes</button>
                                                         </div>
                                                     </div>
                                                 </div>`
@@ -241,7 +248,7 @@
 
                 }
 
-                $('#data-tables-users').DataTable();
+                $('#data-tables-product').DataTable();
 
             } else {
                 console.error('Failed to fetch products:', data.message);
