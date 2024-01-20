@@ -49,13 +49,13 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div class="container-fluid mb-3">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">User Management</h1>
                     </div>
                     <div class="py-3">
                         <div class="alert d-none alert-success alert-dismissible fade show" id="myAlert" role="alert">
-                            <strong id="alertName">xxx</strong> <span id="AlertMessage">xxxxxss</span>
+                            <strong id="alertName">xxx</strong> <span id="AlertMessage">xxxxxxxx</span>
                             <button type="button" class="btn-close" onclick="myAlert.classList.add('d-none')" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
@@ -67,6 +67,8 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Mobile</th>
+                                <th>address</th>
+                                <th>GST No</th>
                                 <th>Role</th>
                                 <th>Action</th>
                             </tr>
@@ -134,6 +136,9 @@
         var mobile = $(`#edit-modal-${ID} #mobile`).val();
         var password = $(`#edit-modal-${ID} #password`).val();
         var role = $(`#edit-modal-${ID} #role`).val();
+        var address = $(`#edit-modal-${ID} #address`).val().toString().trim();
+        var tax = $(`#edit-modal-${ID} #tax`).val();
+
 
 
         var userData = {
@@ -141,8 +146,11 @@
             name: name,
             email: email,
             mobile: mobile,
+            address:address,
+            tax:tax,
             password: password,
-            role: role
+            role: role,
+            
         }
         fetch('http://localhost/Inventory/common/function.php?action=edit_user', {
                 method: 'POST',
@@ -190,6 +198,8 @@
                         <td>${users.name}</td>
                         <td>${users.email}</td>
                         <td>${users.mobile}</td>
+                        <td title="${users.address}" class="text-truncate" style="max-width: 200px;">${users.address}</td>
+                        <td>${users.tax}</td>
                         <td>${users.role == '1' ? 'customer' : 'vendor'}</td>
                         <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${users.id}"> <i class="fas fa-edit"></i> </button>
                         <button type="button" class=" btn bg-danger-icon" onclick="deleteUser(${users.id})"> <i class="fas fa-trash"></i> </button></td>
@@ -220,6 +230,22 @@
                                                                     <label for="mobile">Mobile</label>
                                                                     <input type="number" oninput="this.value = this.value.replace(/\D+/g, \'\');" class="form-control" id="mobile" name="mobile" value="${users.mobile}">
                                                                 </div>
+                                                                <div class="form-group">
+                                                                    <label class="small mb-1" for="tax">GST Number</label>
+                                                                    <input class="form-control" id="tax" type="text" name="tax" value="${users.tax}">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="small mb-1" for="address">Address</label>
+                                                                    <textarea name="address" id="address" 
+                                                                        rows="3"
+                                                                        placeholder="Enter address"
+                                                                        style="width: 100%;resize: none;"
+                                                                        maxlength="200"
+                                                                        oninput="this.value = this.value.slice(0, 200)"
+                                                                        class="form-control">${users.address}</textarea>
+                                                                </div>
+
+
                                                                 <div class="form-group">
                                                                     <label for="role">Role</label>
                                                                     <select class="form-control" id="role" name="role">

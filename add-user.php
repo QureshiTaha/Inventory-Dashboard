@@ -84,15 +84,29 @@
                                                 <input class="form-control" id="password" type="text" name="password" placeholder="Enter password" value="">
                                             </div>
                                         </div>
-                                        <!-- Form Group (Roles)-->
-                                        <div class="mb-3">
-                                            <label class="small mb-1">Role</label>
-                                            <select class="form-select" id="role" aria-label="Default select example">
-                                                <option value="1">Customer</option>
-                                                <option value="2">Vendor</option>
-                                            </select>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="role">Role</label>
+                                                <select class="form-select" id="role" aria-label="Default select example">
+                                                    <option value="1">Customer</option>
+                                                    <option value="2">Vendor</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="tax">GST Number</label>
+                                                <input class="form-control" id="tax" type="text" name="tax" placeholder="Enter GST number or leave blank" value="">
+                                            </div>
                                         </div>
-                                        <!-- Submit button-->
+                                        <div class="mb-3">
+                                            <label class="small mb-1" for="address">Address</label>
+                                            <textarea name="address" id="address" 
+                                            rows="3"
+                                            placeholder="Enter address"
+                                            style="width: 100%;resize: none;"
+                                            maxlength="200"
+                                            oninput="this.value = this.value.slice(0, 200)"
+                                            class="form-control"></textarea>
+                                        </div>
                                         <button class="btn btn-primary" type="submit">Add user</button>
 
                                     </form>
@@ -133,6 +147,8 @@
         var email = document.getElementById('email').value;
         var mobile = document.getElementById('mobile').value;
         var password = document.getElementById('password').value;
+        var tax = document.getElementById('tax').value;
+        var address = document.getElementById('address').value;
         var role = document.getElementById('role').value;
 
         var userData = {
@@ -140,6 +156,8 @@
             email: email,
             mobile: mobile,
             password: password,
+            tax: tax,
+            address: address,
             role: role
         }
         fetch('http://localhost/Inventory/common/function.php?action=add_user', {
@@ -171,37 +189,6 @@
                 }
             })
     }
-    // fetch('http://localhost/Inventory/common/function.php?action=get_all_users')
-    //     .then(response => response.json())
-    //     .then(data => {
-    //         if (data.success) {
-    //             console.log('Users retrieved:', data.data);
-    //             // Process the retrieved users here
-
-    //             // Add the retrieved users to the table
-    //             const tableBody = document.querySelector('#data-tables-users tbody');
-    //             for (let index = 0; index < data.data.length; index++) {
-    //                 const users = data.data[index];
-    //                 console.log(users);
-    //                 const row = document.createElement('tr');
-    //                 row.innerHTML = `
-    //                     <td>${index}</td>
-    //                     <td>${users.name}</td>
-    //                     <td>${users.email}</td>
-    //                     <td>${users.mobile}</td>
-    //                     <td>${users.role == '1' ? 'customer' : 'vendor'}</td>
-    //                 `
-    //                 tableBody.appendChild(row);
-
-    //             }
-
-    //             $('#data-tables-users').DataTable();
-
-    //         } else {
-    //             console.error('Failed to fetch products:', data.message);
-    //         }
-    //     })
-    //     .catch(error => console.error('Error:', error));
 </script>
 
 </html>

@@ -130,15 +130,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		} else if (empty($_POST['mobile'])) {
 			sendResponse([], false, 'Mobile is required');
 			$isValid = false;
-		} else if (empty($_POST['password'])) {
-			sendResponse([], false, 'Password is required');
-			$isValid = false;
 		} else {
 			$name = $_POST['name'];
 			$email = $_POST['email'];
 			$mobile = $_POST['mobile'];
 			$password = $_POST['password'];
 			$role = $_POST['role'] ? $_POST['role'] : 1;
+			$tax = !empty($_POST['tax']) ? $_POST['tax'] : "";
+			$address = !empty($_POST['address']) ? $_POST['address'] : "";
 			$isValid = true;
 		}
 
@@ -146,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 
 
 		if ($isValid) {
-			$sqli = "INSERT INTO `user`(`name`, `email`, `mobile`, `password`, `role`) VALUES ('$name','$email','$mobile','$password','$role')";
+			$sqli = "INSERT INTO `user`(`name`, `email`, `mobile`, `password`, `role`,`tax`,`address`) VALUES ('$name','$email','$mobile','$password','$role','$tax','$address')";
 
 			try {
 				if ($con->query($sqli)) {
@@ -165,8 +164,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$mobile = $_POST['mobile'];
 		$password = $_POST['password'];
 		$role = $_POST['role'] ? $_POST['role'] : 1;
-
-		$sqli = "UPDATE `user` SET `name` = '$name', `email` = '$email', `mobile` = '$mobile', `password` = '$password', `role` = '$role' WHERE `user`.`id` = $id";
+		$tax = !empty($_POST['tax']) ? $_POST['tax'] : "";
+		$address = !empty($_POST['address']) ? $_POST['address'] : "";
+		$sqli = "UPDATE `user` SET `name` = '$name', `email` = '$email', `mobile` = '$mobile', `password` = '$password', `role` = '$role', `tax` = '$tax', `address` = '$address' WHERE `user`.`id` = $id";
 
 		try {
 			if ($con->query($sqli)) {
