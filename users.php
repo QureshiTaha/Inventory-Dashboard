@@ -104,7 +104,7 @@
     function deleteUser(ID) {
         event.preventDefault();
         //Aske Confirmation before deleting
-        return confirm('Are you sure you want to delete this user?');
+        if(!confirm('Are you sure you want to delete this user?')) return
 
 
         fetch('http://localhost/Inventory/common/function.php?action=delete_user', {
@@ -146,11 +146,11 @@
             name: name,
             email: email,
             mobile: mobile,
-            address:address,
-            tax:tax,
+            address: address,
+            tax: tax,
             password: password,
             role: role,
-            
+
         }
         fetch('http://localhost/Inventory/common/function.php?action=edit_user', {
                 method: 'POST',

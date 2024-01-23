@@ -100,14 +100,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	$action = $_GET['action'];
 	header('Content-Type: application/json');
 
-
-
 	if ($action === 'get_all_products') {
 		$products = getAllProducts($con);
 		sendResponse($products, true, 'Products retrieved successfully');
+	} else if ($action === 'get_product_by_id') {
+		$product = getProductByID($con);
+		sendResponse($product, true, 'Product retrieved successfully');
 	} else if ($action === 'get_all_users') {
 		$users = getAllUsers($con);
 		sendResponse($users, true, 'Users retrieved successfully');
+	} else if ($action === 'get_user_by_id') {
+		$user = getUserByID($con);
+		sendResponse($user, true, 'User retrieved successfully');
+	} else if ($action === 'get_all_invoice') {
+		$invoice = getAllInvoice($con);
+		sendResponse($invoice, true, 'Invoice retrieved successfully');
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}
@@ -239,7 +246,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 			sendResponse([], false, $th->getMessage());
 		}
 	} else if ($action === 'edit_product') {
-
 		$id = $_POST['id'];
 		$name = $_POST['name'];
 		$description = $_POST['description'];
@@ -258,31 +264,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		} catch (Error $th) {
 			sendResponse([], false, $th->getMessage());
 		}
+	} else if ($action === 'save_invoice') {
+		$isValid = false;
+		$invoiceID = time();
+		$InvoiceData = $_POST['invoiceData'];
+		$customerID = $InvoiceData["customerID"];
+		$customerData = getUserByID($con, $customerID);
+		
+		$InvoiceDataJson = [
+			'invoiceID' => $invoiceID,
+			'InvoiceData' => $InvoiceData,
+			'customerData' => $customerData
+		];
+		$serializedData = json_encode($InvoiceDataJson);
+		// Insert into the invoices table
+		$sql = "INSERT INTO `invoices` (`invoice_id`, `invoice_data`) VALUES (?, ?)";
+		$stmt = $con->prepare($sql);
+		$stmt->bind_param("is", $invoiceID, $serializedData);
+		if ($stmt->execute()) {
+			sendResponse([], true, 'Invoice saved successfully');
+		} else {
+			sendResponse([], false, 'Something went wrong while saving invoice');
+		}
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search'])) {
 	$search = $_GET['search'];
-	header('Content-Type: application/json');
+
 	if ($search === 'users') {
-		$query = $_GET['query'];
-
-		// Perform a search in the 'user' table based on the user input
-		$search_query = "SELECT id, name, email FROM user WHERE name LIKE '%$query%' OR email LIKE '%$query%'";
-		$result = $con->query($search_query);
-
-		// Fetch the results into an array
-		$users = array();
+		$query = !empty($_GET['query']) ? $_GET['query'] : ' ';
+		// Use prepared statements to prevent SQL injection
+		$search_query = "SELECT id, name, email,mobile FROM user WHERE name LIKE ? OR email LIKE ? OR mobile LIKE ? ORDER BY id DESC LIMIT 10 ";
+		$stmt = $con->prepare($search_query);
+		$likeParam = "%$query%";
+		$stmt->bind_param("sss", $likeParam, $likeParam, $likeParam);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$users = [];
 		while ($row = $result->fetch_assoc()) {
 			$users[] = $row;
 		}
+		$stmt->close();
 
 		// Return the results as JSON
-		header('Content-Type: application/json');
-		echo json_encode($users);
+		sendResponse($users, true, 'User search successful');
+	} else if ($search === 'products') {
+		$query = !empty($_GET['query']) ? $_GET['query'] : ' ';
+		$search_query = "SELECT id, name, modalNumber FROM product WHERE name LIKE ? OR modalNumber LIKE ? ORDER BY id DESC LIMIT 10 ";
+		$stmt = $con->prepare($search_query);
+		$likeParam = "%$query%";
+		$stmt->bind_param("ss", $likeParam, $likeParam);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$users = [];
+		while ($row = $result->fetch_assoc()) {
+			$users[] = $row;
+		}
+		$stmt->close();
+		// Return the results as JSON
+		sendResponse($users, true, 'Product search successful');
 	} else {
-		sendResponse([], false, 'Invalid action');
+		sendResponse([], false, 'Invalid action or missing query parameter');
 	}
+} else {
+	sendResponse([], false, 'Invalid action');
 }
 
 
@@ -290,7 +336,6 @@ function getAllProducts($con)
 {
 	$sql = "SELECT * FROM product";
 	$result = mysqli_query($con, $sql);
-
 	$products = array();
 
 	while ($row = mysqli_fetch_assoc($result)) {
@@ -298,6 +343,18 @@ function getAllProducts($con)
 	}
 
 	return $products;
+}
+
+function getProductByID($con)
+{
+	$id = $_GET['id'];
+	$sql = "SELECT * FROM product WHERE id = $id";
+	$result = mysqli_query($con, $sql);
+	$product = array();
+	while ($row = mysqli_fetch_assoc($result)) {
+		$product[] = $row;
+	}
+	return $product;
 }
 function getAllUsers($con)
 {
@@ -310,4 +367,25 @@ function getAllUsers($con)
 	}
 
 	return $user;
+}
+function getUserByID($con, $userID = null)
+{
+	$id = $userID ? $userID : $_GET['id'];
+	$sql = "SELECT * FROM user WHERE id = $id";
+	$result = mysqli_query($con, $sql);
+	$user = array();
+	while ($row = mysqli_fetch_assoc($result)) {
+		$user[] = $row;
+	}
+	return $user;
+}
+function getAllInvoice($con)
+{
+	$sql = "SELECT * FROM invoices";
+	$result = mysqli_query($con, $sql);
+	$invoice = array();
+	while ($row = mysqli_fetch_assoc($result)) {
+		$invoice[] = $row;
+	}
+	return $invoice;
 }
