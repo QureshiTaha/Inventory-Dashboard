@@ -62,12 +62,13 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Products</div>
+                                            <div class="h5 font-weight-bold text-gray-800"><span id="total_products">0</span></div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Stock</div>
+                                            <div class="h5 font-weight-bold text-gray-800"><span id="total_stock">0</span></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -81,11 +82,11 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                Total stock value</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹ <span id="total_stock_value">0</span></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                            <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -98,26 +99,31 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
+                                            <div class="text-xs font-weight-bold text-info text-uppercase my-1">Total Sales <span class="badge badge-info m-2" style="font-size: 10px;" id="total_sales">0</span></div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">₹ <span id="sales_value">0</span></div>
                                                 </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
+                                            </div>
+                                            <div class="text-xs font-weight-bold text-info text-uppercase my-1">Sales this month <span class="badge badge-info m-2" style="font-size: 10px;" id="sales_this_month">0</span></div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">₹ <span id="sales_value_this_month">0</span></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="col">
+                        <div class="progress progress-sm mr-2">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div> -->
 
                         <!-- Pending Requests Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -126,11 +132,11 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                Total Users</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="total_users">0</span></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-users fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -158,8 +164,40 @@
 
 
 
+    <script>
+        $(document).ready(function() {
+            //Fetch data
+            $.ajax({
+                url: "./common/function.php?action=dashboard_stats",
+                method: "GET",
+                dataType: "json",
+                success: function(res) {
+                    if (res.success) {
+                        const stats = res.data;
+                        console.log(stats); //Object { totalProducts: "3", totalStock: "515", stockValue: "39500.00", totalUsers: "4", totalSales: "3", totalSalesMonthly: "3", totalSalesValueMonthly: "5451" }
+
+                        $("#total_products").text(stats.totalProducts);
+                        $("#total_stock").text(stats.totalStock);
+                        $("#total_stock_value").text(stats.stockValue);
+                        $("#total_users").text(stats.totalUsers);
+                        $("#total_sales").text(stats.totalSales);
+                        $("#sales_this_month").text(stats.totalSalesMonthly);
+                        $("#sales_value").text(stats.totalSalesValue);
+                        $("#sales_value_this_month").text(stats.totalSalesValueMonthly);
 
 
+
+                    } else {
+                        alert(res.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert("Error: " + error);
+                }
+
+            });
+        })
+    </script>
 
 
 </body>

@@ -115,6 +115,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	} else if ($action === 'get_all_invoice') {
 		$invoice = getAllInvoice($con);
 		sendResponse($invoice, true, 'Invoice retrieved successfully');
+	} else if ($action === "dashboard_stats") {
+		$stats = getDashboardStats($con);
+		sendResponse($stats, true, 'Dashboard stats retrieved successfully');
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}
@@ -360,7 +363,6 @@ function getAllProducts($con)
 
 	return $products;
 }
-
 function getProductByID($con, $productID = null)
 {
 	$id = $productID ? $productID : $_GET['id'];
@@ -415,4 +417,23 @@ function getAllInvoice($con)
 		$invoice[] = $row;
 	}
 	return $invoice;
+}
+function getDashboardStats($con)
+{
+	//Fetch Total Products count ,Total stock value,Sales this month and Total Users
+	$sqli = "SELECT
+    (SELECT COUNT(id) FROM product) as totalProducts,
+    (SELECT SUM(quantity) FROM product) as totalStock,
+    (SELECT SUM(quantity * price) FROM product) as stockValue,
+    (SELECT COUNT(id) FROM user) as totalUsers,
+    (SELECT COUNT(id) FROM invoices) as totalSales,
+	(SELECT COUNT(id) FROM invoices WHERE MONTH(date_updated) = MONTH(NOW())) as totalSalesMonthly,
+    (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices) as totalSalesValue,
+    (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices WHERE MONTH(date_updated) = MONTH(NOW())) as totalSalesValueMonthly";
+
+	$result = mysqli_query($con, $sqli);
+	$row = mysqli_fetch_assoc($result);
+
+	// Return the result directly
+	return $row;
 }
