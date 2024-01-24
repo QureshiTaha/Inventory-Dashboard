@@ -1,0 +1,12 @@
+
+RewriteEngine On
+RewriteBase /Inventory/
+
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_URI} !^/src/pages/
+# RewriteRule ^([^/]+)/?$ src/pages/$1.php [L]
