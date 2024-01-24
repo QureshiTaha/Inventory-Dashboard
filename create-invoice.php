@@ -18,6 +18,7 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
 
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/select-2.css">
 
 </head>
 
@@ -58,7 +59,7 @@
                     <div class="container my-4">
                         <form id="invoiceForm">
                             <div class="form-group">
-                                <div class="p-0 m-0 col-md-3">
+                                <div class="p-0 m-0 col-md-3 col-sm-12">
                                     <label for="invoiceType">Tax Invoice:</label>
                                     <select id="invoiceType" name="userSelect" class="form-control">
                                         <option value="2" selected>No</option>
@@ -66,33 +67,36 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="userSelect">Select User:</label>
-                                <select id="userSelect" name="userSelect" class="form-control select2" required>
-                                </select>
+                            <div class="col-md-8 col-sm-12 m-0 p-0">
+                                <div class="form-group">
+                                    <label for="userSelect">Select User:</label>
+                                    <select id="userSelect" name="userSelect" class="form-control select2" required>
+                                    </select>
+                                </div>
                             </div>
 
                             <!-- Add product with quantity -->
                             <div class="form-row">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-4 col-sm-12">
                                     <label for="productSelect">Select Product:</label>
                                     <select id="productSelect" name="productSelect" class="form-control select2" required>
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-2 col-sm-12">
                                     <label for="quantity">Quantity:</label>
-                                    <input type="number" oninput="this.value = this.value.replace(/\D+/g, '');" id="quantity" name="quantity" class="form-control" min="1" value="1" required>
+                                    <input type="number" oninput="this.value = this.value.replace(/\D+/g, '');" id="quantity" max="0" name="quantity" class="form-control" value="0" required>
                                 </div>
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-2 col-sm-12">
                                     <label>&nbsp;</label>
                                     <button type="button" class="btn btn-primary btn-block" onclick="addProduct()">Add Product</button>
                                 </div>
                             </div>
 
                             <!-- Table to display added products -->
-                            <table id="invoiceTable" class="table table-bordered">
+                            <div class="table-responsive">
+                            <table id="invoiceTable" class="table" >
                                 <!-- Table headers -->
                                 <thead class="thead-light">
                                     <tr>
@@ -108,6 +112,7 @@
                                 <!-- Table body will be populated dynamically -->
                                 <tbody id="invoiceTableBody"></tbody>
                             </table>
+                            </div>
 
                             <hr>
                             <div class="d-flex align-items-end justify-content-end text-right">
@@ -167,8 +172,10 @@
                             </div>
 
                             <!-- Submit button -->
-                            <button onclick="generateInvoice()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Invoice</button>
                         </form>
+                        <div class="col-md-3 col-sm-12">
+                            <button onclick="generateInvoice()" class=" btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Invoice</button>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -192,6 +199,99 @@
             var productSelect = document.getElementById('productSelect');
             var productID = productSelect.options[productSelect.selectedIndex].value;
             var productData = await addProductByID(productID);
+            //reset all inputs
+            // jQuery('#productSelect').val(null).trigger('change');
+            // jQuery('#quantity').val("");
+        }
+
+        async function getProductByID(productID) {
+            return await fetch("http://localhost/Inventory/common/function.php?action=get_product_by_id&id=" + productID)
+                .then(response => response.json())
+                .then(data => data.data[0]);
+        }
+
+        //productSelect onchange set the min and max quantity
+        jQuery('#productSelect').on('change', async function() {
+            var productSelect = document.getElementById('productSelect');
+            var productID = productSelect.options[productSelect.selectedIndex].value;
+            var productData = await getProductByID(productID);
+            var quantity = productData.quantity;
+
+            if (quantity > 0) {
+                jQuery('#quantity').attr('min', 1);
+                jQuery('#quantity').attr('max', quantity);
+            } else {
+                jQuery('#quantity').attr('min', 0);
+                jQuery('#quantity').attr('max', 0);
+            }
+        })
+
+        //on change quantity set it to its max if greater then max
+        jQuery('#quantity').on('input', function() {
+            var quantity = parseInt(jQuery('#quantity').val());
+            if (quantity > parseInt(jQuery('#quantity').attr('max'))) {
+                jQuery('#quantity').val(jQuery('#quantity').attr('max'));
+            }
+            //Check if any item already in table loop through table 
+            var invoiceTable = document.getElementById('invoiceTable');
+            var quantityInTable = 0;
+            if (invoiceTable.rows.length > 1) {
+                for (var i = 1; i < invoiceTable.rows.length; i++) {
+                    //check with Product Name [modalNumber]
+                    var row = invoiceTable.rows[i];
+                    var productString = jQuery('#productSelect').text().trim();
+                    var productName = productString.substring(0, productString.indexOf("[")).trim().toLocaleLowerCase();
+                    if (row.cells[1].firstChild.textContent.trim().toLocaleLowerCase() == productName.trim().toLocaleLowerCase()) {
+                        //increment quantity
+                        quantityInTable += parseInt(row.cells[3].firstChild.textContent);
+                    }
+                }
+
+                if (quantityInTable + quantity > parseInt(jQuery('#quantity').attr('max'))) {
+                    jQuery('#quantity').val(jQuery('#quantity').attr('max') - quantityInTable);
+                }
+            }
+
+
+        })
+
+        function updateAllData() {
+            //wait 200 ms
+            setTimeout(function() {
+                var subTotal = 0;
+                var tax = 0;
+                var grandTotal = 0;
+                var invoiceTable = document.getElementById('invoiceTable');
+                if (invoiceTable.rows.length > 1) {
+                    for (var i = 1; i < invoiceTable.rows.length; i++) {
+                        var row = invoiceTable.rows[i];
+                        var price = parseFloat(row.cells[4].firstChild.textContent);
+                        var total = parseFloat(row.cells[5].firstChild.textContent);
+                        subTotal = subTotal + total;
+                        tax = isTaxInvoice() ? parseFloat(subTotal) * 0.18 : 0;
+                        grandTotal = parseFloat(subTotal) + parseFloat(tax);
+
+                        jQuery('#subTotal').html(parseFloat(subTotal).toFixed(2).toString());
+                        jQuery('#tax').html(parseFloat(tax).toFixed(2).toString());
+                        jQuery('#grandTotal').html(parseFloat(grandTotal).toFixed(2).toString());
+
+                        var received = jQuery('#received').val();
+                        balance = grandTotal - received;
+                        jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
+                    }
+                } else {
+                    console.log('empty table');
+                    jQuery('#subTotal').html("0.00");
+                    jQuery('#tax').html("0.00");
+                    jQuery('#grandTotal').html("0.00");
+                    jQuery('#balance').html("0.00");
+                }
+                //reset all inputs
+                jQuery('#quantity').val("");
+                jQuery('#additionalCharge').val("");
+                jQuery('#additionalItem').val("");
+            }, 100);
+
         }
 
         function generateInvoice() {
@@ -251,7 +351,6 @@
                 }
 
             }).done(function(data) {
-                console.log(data);
                 alert('Invoice Created Successfully');
                 window.location.reload();
                 // reload
@@ -302,7 +401,7 @@
 
             removeButton.onclick = function() {
                 invoiceTable.deleteRow(row.rowIndex);
-                calculateTotal();
+                updateAllData();
             }
 
             cell1.innerText = index;
@@ -332,7 +431,7 @@
             var grandTotal = document.getElementById('grandTotal');
             grandTotal.value = parseFloat(subTotal.value) + parseFloat(additionalCharge.value)
 
-            calculateTotal();
+            updateAllData();
 
         }
 
@@ -346,9 +445,6 @@
         }
 
 
-        async function calculateTotal() {
-            jQuery("#invoiceTableBody").trigger("change");
-        }
         async function addProductByID(id) {
             fetch("http://localhost/Inventory/common/function.php?action=get_product_by_id&id=" + id)
                 .then(response => response.json())
@@ -375,6 +471,7 @@
                         for (var i = 0; i < index; i++) {
                             document.getElementById('invoiceTable').rows[i].cells[0].innerText = i + 1
                         }
+                        updateAllData();
                     })
 
                     var index = document.getElementById('invoiceTable').rows.length;
@@ -397,7 +494,7 @@
 
                     document.getElementById('invoiceTableBody').appendChild(row);
                     removeButtonTD.appendChild(removeButton);
-                    jQuery("#invoiceTableBody").trigger("change");
+                    updateAllData();
 
                     return;
                 })
@@ -407,7 +504,7 @@
 
             jQuery('#invoiceType').change(function() {
                 isTaxInvoice() ? jQuery('.tax-group').show() : jQuery('.tax-group').hide();
-                jQuery("#invoiceTableBody").trigger("change");
+                updateAllData();
             })
             jQuery('#userSelect').select2({
                 ajax: {
@@ -423,7 +520,6 @@
                         return query;
                     },
                     processResults: function(data) {
-                        console.log(data.data);
                         return {
                             results: (data.data || []).map(function(user) {
                                 return {
@@ -451,7 +547,6 @@
                         return query;
                     },
                     processResults: function(data) {
-                        console.log(data.data);
                         return {
                             results: (data.data || []).map(function(product) {
                                 return {
@@ -467,33 +562,9 @@
             })
 
 
+
             jQuery("#invoiceTableBody").change(function() {
-                // update Sub Total, update Tax, update Grand Total and update Total
-                var subTotal = 0;
-                var tax = 0;
-                var grandTotal = 0;
-                var invoiceTable = document.getElementById('invoiceTable');
-
-
-
-
-                for (var i = 1; i < invoiceTable.rows.length; i++) {
-                    var row = invoiceTable.rows[i];
-                    var price = parseFloat(row.cells[4].firstChild.textContent);
-                    var total = parseFloat(row.cells[5].firstChild.textContent);
-
-                    subTotal = subTotal + total;
-                    tax = isTaxInvoice() ? parseFloat(subTotal) * 0.18 : 0;
-                    grandTotal = parseFloat(subTotal) + parseFloat(tax);
-
-                    jQuery('#subTotal').html(parseFloat(subTotal).toFixed(2).toString());
-                    jQuery('#tax').html(parseFloat(tax).toFixed(2).toString());
-                    jQuery('#grandTotal').html(parseFloat(grandTotal).toFixed(2).toString());
-
-                    var received = jQuery('#received').val();
-                    balance = grandTotal - received;
-                    jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
-                }
+                updateAllData()
             })
 
 

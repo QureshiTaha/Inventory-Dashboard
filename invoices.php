@@ -18,6 +18,7 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+
 </head>
 
 <body id="page-top">
@@ -62,23 +63,25 @@
                             <button type="button" class="btn-close" onclick="myAlert.classList.add('d-none')" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
+                    <div class="table-responsive">
 
-                    <table id="data-tables-invoices" class="table table-striped" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Sr.No</th>
-                                <th>Invoice ID</th>
-                                <th>Customer Name</th>
-                                <th>Invoice Type</th>
-                                <th>Date Created</th>
-                                <th>Date Updated</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                        <table id="data-tables-invoices" class="table  table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>Invoice ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Invoice Type</th>
+                                    <th>Date Created</th>
+                                    <th>Date Updated</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
 
+                    </div>
                     <!-- Content Row -->
 
 
@@ -124,7 +127,10 @@
                     </div>
                 `;
 
-            var newWin = window.open("");
+            // var newWin = window.open("");
+            var newWin = window.open('');
+            newWin.document.write('<title>Invoice</title>');
+            newWin.document.title = '#' + (id).slice(id.length - 18, id.length);
             newWin.document.write(divToPrint.outerHTML + footerContent);
             var styles = `<style>
                         @media print {
@@ -338,7 +344,7 @@
                                                 </div>
                                                 <hr />
                                                 <div style="margin: 0; padding: 0; display: flex; justify-content: space-between;" class="row">
-                                                    <div style="width: 66%;">
+                                                    <div style="width: 65%;">
                                                         <span style="font-size: 18px;" class="fs-1">INVOICE AMOUNT IN WORDS</span>
                                                         <p style="font-size: 15px; background-color: #f2f2f2; margin: 0; padding: 0;" class="text-muted text-uppercase">
                                                             ${totalInWords}
@@ -357,7 +363,7 @@
                                                             <strong>Account Holder's Name:</strong> COCOBERRY
                                                         </p>
                                                     </div>
-                                                    <div style="width: 33%;">
+                                                    <div style="width: 34%; text-align: right;">
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
                                                             <li style="color: #000000; margin-left: 3em;">SubTotal : ₹ ${InvoiceData.InvoiceData.subTotal}</li>
                                                             <li style="color: #000000; margin-left: 3em;">Received : ₹ ${InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0}</li>
@@ -367,6 +373,7 @@
                                                             <hr />
                                                             <p style="color: #000000; float: right;">
                                                             <span style="margin-right: 1em;">Total Amount</span><span style="font-size: 20px;"><strong>₹ ${InvoiceData.InvoiceData.total}</strong></span>
+                                                            <span style="margin-right: 1em;">Payable Amount</span><span style="font-size: 20px;"><strong>₹ ${parseFloat(InvoiceData.InvoiceData.total- (InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0)).toFixed(2)}</strong></span>
                                                             </p>
                                                         </ul>
                                                     </div>

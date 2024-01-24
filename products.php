@@ -60,21 +60,23 @@
                         </div>
                     </div>
 
-                    <table id="data-tables-product" class="table table-striped" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Sr.No</th>
-                                <th>Product Name</th>
-                                <th>Product Description</th>
-                                <th>Product Modal Number</th>
-                                <th>Product price</th>
-                                <th>Stock Quantity</th>
-                                <th>Product Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="data-tables-product" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>Product Name</th>
+                                    <th>Product Description</th>
+                                    <th>Product Modal Number</th>
+                                    <th>Product price</th>
+                                    <th>Stock Quantity</th>
+                                    <th>Product Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- /.container-fluid -->

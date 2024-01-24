@@ -270,18 +270,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$InvoiceData = $_POST['invoiceData'];
 		$customerID = $InvoiceData["customerID"];
 		$customerData = getUserByID($con, $customerID);
-		
+		$products = $InvoiceData['product'];
 		$InvoiceDataJson = [
 			'invoiceID' => $invoiceID,
 			'InvoiceData' => $InvoiceData,
 			'customerData' => $customerData
 		];
 		$serializedData = json_encode($InvoiceDataJson);
-		// Insert into the invoices table
+
 		$sql = "INSERT INTO `invoices` (`invoice_id`, `invoice_data`) VALUES (?, ?)";
 		$stmt = $con->prepare($sql);
 		$stmt->bind_param("is", $invoiceID, $serializedData);
 		if ($stmt->execute()) {
+			for ($i = 1; $i < count($products); $i++) {
+				$product = $products[$i];
+				$productName = $product['name'];
+				$quantity = $product['quantity'] != '' ? $product['quantity'] + 0 : 0;
+
+				$productFetch = getProductByName($con, $productName);
+
+				if ($productFetch && $productFetch[0]) {
+					$productID = $productFetch[0]['id'];
+					$stockQuantity = $productFetch[0]['quantity'];
+					$updatedQuantity = $stockQuantity - $quantity;
+					$updateSql = "UPDATE product SET quantity = '$updatedQuantity' WHERE id = $productID";
+					$con->query($updateSql);
+					// echo $updateSql;
+				}
+			}
 			sendResponse([], true, 'Invoice saved successfully');
 		} else {
 			sendResponse([], false, 'Something went wrong while saving invoice');
@@ -345,10 +361,21 @@ function getAllProducts($con)
 	return $products;
 }
 
-function getProductByID($con)
+function getProductByID($con, $productID = null)
 {
-	$id = $_GET['id'];
+	$id = $productID ? $productID : $_GET['id'];
 	$sql = "SELECT * FROM product WHERE id = $id";
+	$result = mysqli_query($con, $sql);
+	$product = array();
+	while ($row = mysqli_fetch_assoc($result)) {
+		$product[] = $row;
+	}
+	return $product;
+}
+function getProductByName($con, $productName = null)
+{
+	$name = $productName ? $productName : $_GET['name'];
+	$sql = "SELECT * FROM product WHERE name = '$name'";
 	$result = mysqli_query($con, $sql);
 	$product = array();
 	while ($row = mysqli_fetch_assoc($result)) {

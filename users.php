@@ -59,23 +59,24 @@
                             <button type="button" class="btn-close" onclick="myAlert.classList.add('d-none')" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
-
-                    <table id="data-tables-users" class="table table-striped" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Sr.No</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Mobile</th>
-                                <th>address</th>
-                                <th>GST No</th>
-                                <th>Role</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="data-tables-users" class="table  table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Sr.No</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>address</th>
+                                    <th>GST No</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- /.container-fluid -->
@@ -104,7 +105,7 @@
     function deleteUser(ID) {
         event.preventDefault();
         //Aske Confirmation before deleting
-        if(!confirm('Are you sure you want to delete this user?')) return
+        if (!confirm('Are you sure you want to delete this user?')) return
 
 
         fetch('http://localhost/Inventory/common/function.php?action=delete_user', {
