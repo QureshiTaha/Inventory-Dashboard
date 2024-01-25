@@ -12,7 +12,7 @@
     <title>Makends - Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- fontawesomefreeHere -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -86,7 +86,7 @@
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">₹ <span id="total_stock_value">0</span></div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
+                                            <i class="fas fa-inr fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
