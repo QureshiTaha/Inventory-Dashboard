@@ -5,7 +5,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Makends <?php echo date('Y'); ?></span>
+        <a href="https://makends.com" class="text-dark" style="text-decoration: none;" target="_blank"> <span>Copyright &copy;  Makends <?php echo date('Y'); ?></span></a>
         </div>
     </div>
     <!-- Scroll to Top Button-->

@@ -1,6 +1,6 @@
 {
     "title": "Makends",
-    "name": "startbootstrap-sb-admin-2",
+    "name": "inventory",
     "version": "4.1.3",
     "scripts": {
         "start": "node_modules/.bin/gulp watch"
@@ -16,19 +16,19 @@
         "admin",
         "app"
     ],
-    "homepage": "https://startbootstrap.com/theme/sb-admin-2",
+    "homepage": "https://makends.com",
     "bugs": {
         "url": "https://github.com/StartBootstrap/startbootstrap-sb-admin-2/issues",
         "email": "feedback@startbootstrap.com"
     },
     "license": "MIT",
-    "author": "Start Bootstrap",
+    "author": "Makends",
     "contributors": [
-        "David Miller (https://davidmiller.io/)"
+        "Taha Qureshi (https://github.com/QureshiTaha/)"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/StartBootstrap/startbootstrap-sb-admin-2.git"
+        "url": "https://github.com/QureshiTaha/Inventory-Dashboard.git"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "5.15.3",
