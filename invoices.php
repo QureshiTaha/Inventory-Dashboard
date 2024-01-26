@@ -228,7 +228,7 @@
             return convertAmountToWords(amount);
         }
 
-        fetch('http://localhost/Inventory/common/function.php?action=get_all_invoice')
+        fetch('<?= $apiURL; ?>/common/function.php?action=get_all_invoice')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {

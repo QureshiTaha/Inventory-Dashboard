@@ -205,7 +205,7 @@
         }
 
         async function getProductByID(productID) {
-            return await fetch("http://localhost/Inventory/common/function.php?action=get_product_by_id&id=" + productID)
+            return await fetch("<?= $apiURL; ?>/common/function.php?action=get_product_by_id&id=" + productID)
                 .then(response => response.json())
                 .then(data => data.data[0]);
         }
@@ -344,7 +344,7 @@
 
             // save_invoice
             jQuery.ajax({
-                url: "http://localhost/Inventory/common/function.php?action=save_invoice",
+                url: "<?= $apiURL; ?>/common/function.php?action=save_invoice",
                 method: "POST",
                 data: {
                     invoiceData: invoiceData
@@ -446,7 +446,7 @@
 
 
         async function addProductByID(id) {
-            fetch("http://localhost/Inventory/common/function.php?action=get_product_by_id&id=" + id)
+            fetch("<?= $apiURL; ?>/common/function.php?action=get_product_by_id&id=" + id)
                 .then(response => response.json())
                 .then(data => {
                     var product = data.data[0];
@@ -508,7 +508,7 @@
             })
             jQuery('#userSelect').select2({
                 ajax: {
-                    url: "http://localhost/Inventory/common/function.php",
+                    url: "<?= $apiURL; ?>/common/function.php",
                     cache: true,
                     dataType: 'json',
                     method: 'GET',
@@ -535,7 +535,7 @@
 
             jQuery('#productSelect').select2({
                 ajax: {
-                    url: "http://localhost/Inventory/common/function.php",
+                    url: "<?= $apiURL; ?>/common/function.php",
                     cache: true,
                     dataType: 'json',
                     method: 'GET',

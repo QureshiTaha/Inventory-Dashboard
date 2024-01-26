@@ -137,7 +137,7 @@
             price,
             quantity
         }
-        fetch('http://localhost/Inventory/common/function.php?action=add_product', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=add_product', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"

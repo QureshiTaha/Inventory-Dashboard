@@ -8,6 +8,7 @@
   }
   $dbConfig = json_decode(file_get_contents($configPath), true);
 
+
   $HOST = $dbConfig['host'];
   $USER = $dbConfig['user'];
   $PASSWORD = $dbConfig['password'];
@@ -23,7 +24,26 @@
       echo "Failed to connect to Database: " . mysqli_connect_error();
       exit();
     }
-    $_SESSION['base-slug'] = '/inventory';
+
+
+    //GET DOMAIN
+
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+      $protocol = "https://";
+    } else {
+      $protocol = "http://";
+    }
+
+    $domain_ = $protocol . $_SERVER['HTTP_HOST'];
+
+    $baseSlug = !empty($dbConfig['baseSlug']) ? $dbConfig['baseSlug'] : '/';
+    $domain = !empty($dbConfig['domainName']) ? $dbConfig['domainName'] : $domain_;
+    $apiURL = $domain . $baseSlug;
+
+
+    $_SESSION['base-slug'] = $baseSlug;
+    $_SESSION['domain'] = $domain;
+    $_SESSION['api-url'] = $apiURL;
   } catch (\Throwable $th) {
     throw $th;
   }

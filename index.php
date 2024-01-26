@@ -13,10 +13,19 @@
 
     <?php
     $configPath = __DIR__ . '\common\config.json';
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        $protocol = "https://";
+    } else {
+        $protocol = "http://";
+    }
+
+    $domain = $protocol . $_SERVER['HTTP_HOST'];
+    $baseSlug = "/";
     // Check if the config file exists
     if (!file_exists($configPath)) {
+        echo "<div class='container mt-5'>";
         if (isset($_GET['err']) &&  $_GET['err']) {
-            echo '<div class="container mt-5" style="height: 5vh;"><div class="alert alert-danger" role="alert">' . $_GET['err'] . '</div>';
+            echo '<div class="container" style="height: 5vh;"><div class="my-5 alert alert-danger" role="alert">' . $_GET['err'] . '</div>';
         }
         // Display modal to set database credentials
         echo '<div class="d-flex justify-content-center align-items-center " style="height: 80vh;><div class="card shadow mb-4">
@@ -26,6 +35,8 @@
         </div>
         <div class="card-body bg-light">
           <form id="configForm" onsubmit="saveDatabaseCredentials()">
+            
+          <div id="configForm1">
             <label class="small mb-1" for="host">Host:</label>
             <input class="form-control" type="text" id="host" name="host" value="localhost" required /><br />
       
@@ -37,14 +48,96 @@
       
             <label class="small mb-1" for="dbname">Database Name:</label>
             <input class="form-control" type="text" id="dbname" name="dbname" value="inventory" required /><br />
-      
-            <input class="form-control btn btn-success col-md-3 offset-md-9" type="submit" value="Save" />
+          </div>
+
+          <div id="configForm2" style="display: none;">
+            <label class="small mb-1" for="domainName">Domain Name</label>
+            <input class="form-control" type="text" id="domainName" name="domainName" value="' . $domain . '" required /><br />
+
+            <label class="small mb-1" for="baseSlug">Base Slug</label>
+            <input class="form-control" type="text" id="baseSlug" name="baseSlug" value="/" required /><br />
+          </div> 
+        
+            
+      <div class="d-flex ">
+      <input id="toggle-button" class="form-control btn btn-success col-md-3 " onClick="toggleConfigForm()" type="button" value="Next" />
+      <input id="submit-button" style="display: none;" class="form-control btn btn-success col-md-3 offset-md-6" type="button" onclick="saveDatabaseCredentials()" value="Save" />
+      </div>
           </form>
         </div>
       </div>
       </div>
       </div>
       ';
+        echo "
+        <script>
+        function toggleConfigForm() {
+            var configForm1 = document.getElementById('configForm1');
+            var configForm2 = document.getElementById('configForm2');
+            var toggleButton = document.getElementById('toggle-button');
+            var submitButton = document.getElementById('submit-button');
+
+            toggleButton.value = toggleButton.value === 'Next' ? 'Back' : 'Next';
+
+            if (configForm1.style.display === 'none') {
+                configForm1.style.display = 'block';
+                configForm2.style.display = 'none';
+                submitButton.style.display = 'none';
+
+            }
+            else {
+                configForm1.style.display = 'none';
+                configForm2.style.display = 'block';
+                submitButton.style.display = 'block';
+            }
+        }
+        var currentLocation = window.location;
+        var apiUrl = currentLocation.origin + currentLocation.pathname.replace(/\/[^\/]+$/, '') + '/save-credentials.php';
+        console.log(apiUrl);
+            var modal = document.getElementById('myModal');
+            var span = document.getElementsByClassName('close')[0];
+            modal.style.display = 'block';
+            span.onclick = function() {
+                modal.style.display = 'none';
+            };
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+
+            function saveDatabaseCredentials() {
+                event.preventDefault();
+                console.log('Form submitted');
+                const formData = new FormData(document.getElementById('configForm'));
+
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                    console.log();
+                });
+
+                fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    })
+                    .then(response => {
+                        console.log('response',response);
+                        return response.json(); })
+                    .then(result => {
+                        console.log(result);
+                        console.log('Credentials saved:', result);
+                       window.location.href = '/';
+                    })
+                    .catch(error => {
+                        console.error('Error saving credentials:', error);
+                    });
+            }
+        </script>
+        </div>";
     } else {
         // Config file exists, check and create tables
         checkAndCreateTables();
@@ -56,52 +149,9 @@
     ?>
 
     <script>
-        // JavaScript to handle modal display
-        var modal = document.getElementById('myModal');
-        var span = document.getElementsByClassName('close')[0];
-
-        modal.style.display = 'block';
-
-        span.onclick = function() {
-            modal.style.display = 'none';
-        };
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        };
-
-        // JavaScript to handle form submission
-        // document.getElementById('configForm').addEventListener('submit', function(event) {
-        //     event.preventDefault();
-        //     saveDatabaseCredentials();
-        // });
-
-        function saveDatabaseCredentials() {
-            event.preventDefault();
-            const formData = new FormData(document.getElementById('configForm'));
-
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-
-            fetch('http://localhost/Inventory/save-credentials.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('Credentials saved:', result);
-                    window.location.href = '/';
-                })
-                .catch(error => {
-                    console.error('Error saving credentials:', error);
-                });
+        //document ready
+        window.onload = function() {
+            
         }
     </script>
 

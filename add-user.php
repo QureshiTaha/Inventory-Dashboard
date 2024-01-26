@@ -160,7 +160,7 @@
             address: address,
             role: role
         }
-        fetch('http://localhost/Inventory/common/function.php?action=add_user', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=add_user', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"

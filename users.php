@@ -108,7 +108,7 @@
         if (!confirm('Are you sure you want to delete this user?')) return
 
 
-        fetch('http://localhost/Inventory/common/function.php?action=delete_user', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=delete_user', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -153,7 +153,7 @@
             role: role,
 
         }
-        fetch('http://localhost/Inventory/common/function.php?action=edit_user', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=edit_user', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -184,7 +184,7 @@
                 }
             })
     }
-    fetch('http://localhost/Inventory/common/function.php?action=get_all_users')
+    fetch('<?= $apiURL; ?>/common/function.php?action=get_all_users')
         .then(response => response.json())
         .then(data => {
             if (data.success) {

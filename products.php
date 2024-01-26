@@ -105,10 +105,10 @@
     function deleteProduct(ID) {
         event.preventDefault();
         //Aske Confirmation before deleting
-        return confirm('Are you sure you want to delete this product?');
+        if (confirm('Are you sure you want to delete this product?') == false) return
 
 
-        fetch('http://localhost/Inventory/common/function.php?action=delete_product', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=delete_product', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -121,7 +121,7 @@
                     myAlert.classList.add('alert-success');
                     myAlert.classList.remove('alert-danger');
                     myAlert.querySelector('#alertName').textContent = 'Product Deleted';
-                    myAlert.querySelector('#AlertMessage').textContent = data.data;
+                    myAlert.querySelector('#AlertMessage').textContent = data.message;
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);
@@ -150,7 +150,7 @@
             quantity
         }
 
-        fetch('http://localhost/Inventory/common/function.php?action=edit_product', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=edit_product', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -181,7 +181,7 @@
                 }
             })
     }
-    fetch('http://localhost/Inventory/common/function.php?action=get_all_products')
+    fetch('<?= $apiURL; ?>/common/function.php?action=get_all_products')
         .then(response => response.json())
         .then(data => {
             if (data.success) {

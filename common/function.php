@@ -248,6 +248,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		} catch (Error $th) {
 			sendResponse([], false, $th->getMessage());
 		}
+	} else if ($action === 'delete_product'){
+		$id = $_POST['id'];
+		$sqli = "DELETE FROM `product` WHERE `product`.`id` = $id";
+		try {
+			if ($con->query($sqli)) {
+				sendResponse($_POST, true, 'Product deleted successfully');
+			} else {
+				sendResponse([], false, 'Something went wrong while deleting product');
+			}
+		} catch (Error $th) {
+			sendResponse([], false, $th->getMessage());
+		}
 	} else if ($action === 'edit_product') {
 		$id = $_POST['id'];
 		$name = $_POST['name'];
