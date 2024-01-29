@@ -12,7 +12,7 @@
 <body>
 
     <?php
-    $configPath = __DIR__ . '\common\config.json';
+    $configPath = __DIR__ . '/common/config.json';
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
         $protocol = "https://";
     } else {
@@ -93,7 +93,7 @@
         }
         var currentLocation = window.location;
         var apiUrl = currentLocation.origin + currentLocation.pathname.replace(/\/[^\/]+$/, '') + '/save-credentials.php';
-        console.log(apiUrl);
+
             var modal = document.getElementById('myModal');
             var span = document.getElementsByClassName('close')[0];
             modal.style.display = 'block';
@@ -143,7 +143,7 @@
         checkAndCreateTables();
 
         // Redirect to the dashboard
-        header('Location: dashboard.php');
+        header('Location: dashboard');
         exit;
     }
     ?>
@@ -162,7 +162,7 @@
 <?php
 function  checkAndCreateTables()
 {
-    $dbConfig = json_decode(file_get_contents(__DIR__ . '\common\config.json'), true);
+    $dbConfig = json_decode(file_get_contents(__DIR__ . '/common/config.json'), true);
     $conn = new mysqli($dbConfig['host'], $dbConfig['user'], $dbConfig['password'], $dbConfig['dbname']);
 
     // Check connection
@@ -187,7 +187,9 @@ function  checkAndCreateTables()
             `email` varchar(70) NOT NULL,
             `password` varchar(255) NOT NULL,
             `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-            PRIMARY KEY (`id`)
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `name` (`name`),
+            UNIQUE KEY `email` (`email`)
         ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
         "invoices" => "CREATE TABLE IF NOT EXISTS `invoices` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -219,7 +221,7 @@ function  checkAndCreateTables()
             `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
-        "insertAdmin" => "INSERT INTO `admin` (`name`, `email`, `password`) VALUES ('admin', 'admin@admin.com', 'admin@123') "
+        "insertAdmin" => "INSERT INTO `admin` (`name`, `email`, `password`) VALUES ('admin', 'admin@admin.com', 'admin@123') ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password` = VALUES(`password`);"
     ];
 
     // Execute SQL statements

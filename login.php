@@ -111,10 +111,12 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
                 return;
             }
 
+            var currentLocation = window.location;
+            var apiUrl = currentLocation.origin + currentLocation.pathname.replace(/\/[^\/]+$/, '') + '/common/function.php';
 
             // Make an AJAX call to your PHP file
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'common/function.php', true);
+            xhr.open('POST', apiUrl, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
             // Set up the data to be sent

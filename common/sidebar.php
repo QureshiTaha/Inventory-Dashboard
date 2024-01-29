@@ -5,7 +5,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-$configPath = __DIR__ . '\config.json';
+$configPath = __DIR__ . '/config.json';
 
 if (!file_exists($configPath)) {
     //redirect to Home
@@ -48,7 +48,7 @@ try {
 
 
 
-    <div class='<?php echo $_GET['debug'] ? '' : 'd-none'; ?>'>
+    <div class='<?php echo isset($_GET['debug']) ? '' : 'd-none'; ?>'>
         <!-- Heading -->
         <div class="sidebar-heading">
             Interface

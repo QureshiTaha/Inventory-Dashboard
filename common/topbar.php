@@ -1,5 +1,7 @@
 <?
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">

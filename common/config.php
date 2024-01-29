@@ -1,6 +1,6 @@
  <?php
 
-  $configPath = __DIR__ . '\config.json';
+  $configPath = __DIR__ . '/config.json';
 
   if (!file_exists($configPath)) {
     //redirect to Home
@@ -13,10 +13,7 @@
   $USER = $dbConfig['user'];
   $PASSWORD = $dbConfig['password'];
   $DBNAME = $dbConfig['dbname'];
-  // $HOST = "localhost";
-  // $USER = "makendsc_taha";
-  // $PASSWORD = 'G@$F.vqbs*Xz';
-  // $DBNAME = "makendsc_az_db";
+
   try {
     $con = mysqli_connect($HOST, $USER, $PASSWORD, $DBNAME);
     $conn = $con;
