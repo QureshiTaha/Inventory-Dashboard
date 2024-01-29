@@ -1,5 +1,5 @@
 <?php
-$configPath = __DIR__ . '\common\config.json';
+$configPath = __DIR__ . '/common/config.json';
 // echo $_SERVER['REQUEST_METHOD']; 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve form data

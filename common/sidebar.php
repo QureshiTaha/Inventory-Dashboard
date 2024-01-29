@@ -5,7 +5,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     exit;
 }
 
-$configPath = __DIR__ . '\config.json';
+$configPath = __DIR__ . '/config.json';
 
 if (!file_exists($configPath)) {
     //redirect to Home
@@ -21,6 +21,7 @@ try {
 ?>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -47,7 +48,7 @@ try {
 
 
 
-    <div class='<?php echo $_GET['debug'] ? '' : 'd-none'; ?>'>
+    <div class='<?php echo isset($_GET['debug']) ? '' : 'd-none'; ?>'>
         <!-- Heading -->
         <div class="sidebar-heading">
             Interface
