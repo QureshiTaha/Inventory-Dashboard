@@ -20,11 +20,14 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
     <title>Makends - Login</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- fontawesomefreeHere -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -49,7 +52,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
                                     </div>
                                     <form class="user" id="loginForm" onsubmit="submitLoginForm(event)">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="userEmail"  placeholder="Admin Email / Username">
+                                            <input type="text" class="form-control form-control-user" id="userEmail" placeholder="Admin Email / Username">
                                         </div>
                                         <div class="input-group">
                                             <input type="password" class="form-control form-control-user" id="userPassword" placeholder="Password">
@@ -83,11 +86,11 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js" integrity="sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha512-ahmSZKApTDNd3gVuqL5TQ3MBTj8tL5p2tYV05Xxzcfu6/ecvt1A0j6tfudSGBVuteSoTRMqMljbfdU0g2eDNUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
@@ -99,19 +102,21 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
             var password = document.getElementById('userPassword').value;
             var rememberMe = document.getElementById('customCheck').checked;
 
-            if (email.length =="") {
-                alert('Please enter your email or Username');       
-                email.focus();         
+            if (email.length == "") {
+                alert('Please enter your email or Username');
+                email.focus();
                 return;
-            }else if(password.length ==""){
+            } else if (password.length == "") {
                 alert('Please enter your password');
                 return;
             }
 
+            var currentLocation = window.location;
+            var apiUrl = currentLocation.origin + currentLocation.pathname.replace(/\/[^\/]+$/, '') + '/common/function.php';
 
             // Make an AJAX call to your PHP file
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'common/function.php', true);
+            xhr.open('POST', apiUrl, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
             // Set up the data to be sent
@@ -122,9 +127,9 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     try {
-                        
+
                         var response = JSON.parse(xhr.responseText);
-    
+
                         // Handle the response
                         if (response.success) {
                             console.log(response.message);

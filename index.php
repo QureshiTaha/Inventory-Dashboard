@@ -2,204 +2,238 @@
 <html lang="en">
 
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Makends - Dashboard</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- bootstrao -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>Your Application</title>
 </head>
 
-<body id="page-top">
+<body>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+    <?php
+    $configPath = __DIR__ . '/common/config.json';
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+        $protocol = "https://";
+    } else {
+        $protocol = "http://";
+    }
 
-        <!-- Sidebar -->
-        <?php
-        //INCLUDE SIDEBAR
-        include('./common/sidebar.php');
-        ?>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
-            <div id="content">
-
-                <!-- Topbar -->
-                <?php
-                include('./common/topbar.php');
-                ?>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Products</div>
-                                            <div class="h5 font-weight-bold text-gray-800"><span id="total_products">0</span></div>
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Stock</div>
-                                            <div class="h5 font-weight-bold text-gray-800"><span id="total_stock">0</span></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Total stock value</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">₹ <span id="total_stock_value">0</span></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-rupee-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase my-1">Total Sales <span class="badge badge-info m-2" style="font-size: 10px;" id="total_sales">0</span></div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">₹ <span id="sales_value">0</span></div>
-                                                </div>
-                                            </div>
-                                            <div class="text-xs font-weight-bold text-info text-uppercase my-1">Sales this month <span class="badge badge-info m-2" style="font-size: 10px;" id="sales_this_month">0</span></div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">₹ <span id="sales_value_this_month">0</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="col">
-                        <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div> -->
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Total Users</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="total_users">0</span></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <?php include('./common/footer.php'); ?>
-            <!-- End of Footer -->
-
+    $domain = $protocol . $_SERVER['HTTP_HOST'];
+    $baseSlug = "/";
+    // Check if the config file exists
+    if (!file_exists($configPath)) {
+        echo "<div class='container mt-5'>";
+        if (isset($_GET['err']) &&  $_GET['err']) {
+            echo '<div class="container" style="height: 5vh;"><div class="my-5 alert alert-danger" role="alert">' . $_GET['err'] . '</div>';
+        }
+        // Display modal to set database credentials
+        echo '<div class="d-flex justify-content-center align-items-center " style="height: 80vh;><div class="card shadow mb-4">
+        <div class="col-md-6">
+        <div class="card-header py-3 text-center bg-dark">
+          <h6 class="m-0 font-weight-bold text-primary">Makends Admin</h6>
         </div>
-        <!-- End of Content Wrapper -->
+        <div class="card-body bg-light">
+          <form id="configForm" onsubmit="saveDatabaseCredentials()">
+            
+          <div id="configForm1">
+            <label class="small mb-1" for="host">Host:</label>
+            <input class="form-control" type="text" id="host" name="host" value="localhost" required /><br />
+      
+            <label class="small mb-1" for="user">User:</label>
+            <input class="form-control" type="text" id="user" name="user" value="root" required /><br />
+      
+            <label class="small mb-1" for="password">Password:</label>
+            <input class="form-control" type="password" id="password" name="password"/><br />
+      
+            <label class="small mb-1" for="dbname">Database Name:</label>
+            <input class="form-control" type="text" id="dbname" name="dbname" value="inventory" required /><br />
+          </div>
 
-    </div>
-    <!-- End of Page Wrapper -->
+          <div id="configForm2" style="display: none;">
+            <label class="small mb-1" for="domainName">Domain Name</label>
+            <input class="form-control" type="text" id="domainName" name="domainName" value="' . $domain . '" required /><br />
 
+            <label class="small mb-1" for="baseSlug">Base Slug</label>
+            <input class="form-control" type="text" id="baseSlug" name="baseSlug" value="/" required /><br />
+          </div> 
+        
+            
+      <div class="d-flex ">
+      <input id="toggle-button" class="form-control btn btn-success col-md-3 " onClick="toggleConfigForm()" type="button" value="Next" />
+      <input id="submit-button" style="display: none;" class="form-control btn btn-success col-md-3 offset-md-6" type="button" onclick="saveDatabaseCredentials()" value="Save" />
+      </div>
+          </form>
+        </div>
+      </div>
+      </div>
+      </div>
+      ';
+        echo "
+        <script>
+        function toggleConfigForm() {
+            var configForm1 = document.getElementById('configForm1');
+            var configForm2 = document.getElementById('configForm2');
+            var toggleButton = document.getElementById('toggle-button');
+            var submitButton = document.getElementById('submit-button');
 
+            toggleButton.value = toggleButton.value === 'Next' ? 'Back' : 'Next';
+
+            if (configForm1.style.display === 'none') {
+                configForm1.style.display = 'block';
+                configForm2.style.display = 'none';
+                submitButton.style.display = 'none';
+
+            }
+            else {
+                configForm1.style.display = 'none';
+                configForm2.style.display = 'block';
+                submitButton.style.display = 'block';
+            }
+        }
+        var currentLocation = window.location;
+        var apiUrl = currentLocation.origin + currentLocation.pathname.replace(/\/[^\/]+$/, '') + '/save-credentials.php';
+
+            var modal = document.getElementById('myModal');
+            var span = document.getElementsByClassName('close')[0];
+            modal.style.display = 'block';
+            span.onclick = function() {
+                modal.style.display = 'none';
+            };
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            };
+
+            function saveDatabaseCredentials() {
+                event.preventDefault();
+                console.log('Form submitted');
+                const formData = new FormData(document.getElementById('configForm'));
+
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                    console.log();
+                });
+
+                fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    })
+                    .then(response => {
+                        console.log('response',response);
+                        return response.json(); })
+                    .then(result => {
+                        console.log(result);
+                        console.log('Credentials saved:', result);
+                       window.location.href = '/';
+                    })
+                    .catch(error => {
+                        console.error('Error saving credentials:', error);
+                    });
+            }
+        </script>
+        </div>";
+    } else {
+        // Config file exists, check and create tables
+        checkAndCreateTables();
+
+        // Redirect to the dashboard
+        header('Location: dashboard');
+        exit;
+    }
+    ?>
 
     <script>
-        $(document).ready(function() {
-            //Fetch data
-            $.ajax({
-                url: "./common/function.php?action=dashboard_stats",
-                method: "GET",
-                dataType: "json",
-                success: function(res) {
-                    if (res.success) {
-                        const stats = res.data;
-                        console.log(stats); //Object { totalProducts: "3", totalStock: "515", stockValue: "39500.00", totalUsers: "4", totalSales: "3", totalSalesMonthly: "3", totalSalesValueMonthly: "5451" }
-
-                        $("#total_products").text(stats.totalProducts);
-                        $("#total_stock").text(stats.totalStock);
-                        $("#total_stock_value").text(stats.stockValue);
-                        $("#total_users").text(stats.totalUsers);
-                        $("#total_sales").text(stats.totalSales);
-                        $("#sales_this_month").text(stats.totalSalesMonthly);
-                        $("#sales_value").text(stats.totalSalesValue);
-                        $("#sales_value_this_month").text(stats.totalSalesValueMonthly);
-
-
-
-                    } else {
-                        alert(res.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert("Error: " + error);
-                }
-
-            });
-        })
+        //document ready
+        window.onload = function() {
+            
+        }
     </script>
-
 
 </body>
 
 </html>
+
+<?php
+function  checkAndCreateTables()
+{
+    $dbConfig = json_decode(file_get_contents(__DIR__ . '/common/config.json'), true);
+    $conn = new mysqli($dbConfig['host'], $dbConfig['user'], $dbConfig['password'], $dbConfig['dbname']);
+
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // SQL statements for creating tables
+    $tableStatements = [
+        "activity" => "CREATE TABLE IF NOT EXISTS `activity` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `username` varchar(255) NOT NULL,
+            `session_details` varchar(255) NOT NULL,
+            `ip` varchar(255) NOT NULL,
+            `activity` varchar(55) NOT NULL,
+            `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        "admin" => "CREATE TABLE IF NOT EXISTS `admin` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `name` varchar(255) NOT NULL,
+            `email` varchar(70) NOT NULL,
+            `password` varchar(255) NOT NULL,
+            `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `name` (`name`),
+            UNIQUE KEY `email` (`email`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        "invoices" => "CREATE TABLE IF NOT EXISTS `invoices` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `invoice_id` int(11) NOT NULL,
+            `invoice_data` text NOT NULL,
+            `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+            `date_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;",
+        "product" => "CREATE TABLE IF NOT EXISTS `product` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `modalNumber` varchar(55) NOT NULL,
+            `name` varchar(255) NOT NULL,
+            `description` text DEFAULT NULL,
+            `price` decimal(10,2) NOT NULL,
+            `quantity` int(11) NOT NULL,
+            `date_added` timestamp NOT NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        "user" => "CREATE TABLE IF NOT EXISTS `user` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `name` varchar(255) NOT NULL,
+            `email` varchar(255) NOT NULL,
+            `address` varchar(350) NOT NULL,
+            `mobile` varchar(255) NOT NULL,
+            `role` tinyint(4) NOT NULL DEFAULT 1,
+            `password` varchar(255) NOT NULL,
+            `tax` varchar(100) NOT NULL,
+            `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        "insertAdmin" => "INSERT INTO `admin` (`name`, `email`, `password`) VALUES ('admin', 'admin@admin.com', 'admin@123') ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password` = VALUES(`password`);"
+    ];
+
+    // Execute SQL statements
+    foreach ($tableStatements as $tableName => $sqlStatement) {
+        if ($conn->query($sqlStatement) === TRUE) {
+            echo "Table '$tableName' created successfully.<br>";
+        } else {
+            echo "Error creating table '$tableName': " . $conn->error . "<br>";
+        }
+    }
+
+    $conn->close();
+}
+
+?>

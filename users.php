@@ -14,7 +14,7 @@
     <title>User Management</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- fontawesomefreeHere -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -108,7 +108,7 @@
         if (!confirm('Are you sure you want to delete this user?')) return
 
 
-        fetch('http://localhost/Inventory/common/function.php?action=delete_user', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=delete_user', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -153,7 +153,7 @@
             role: role,
 
         }
-        fetch('http://localhost/Inventory/common/function.php?action=edit_user', {
+        fetch('<?= $apiURL; ?>/common/function.php?action=edit_user', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
@@ -184,7 +184,7 @@
                 }
             })
     }
-    fetch('http://localhost/Inventory/common/function.php?action=get_all_users')
+    fetch('<?= $apiURL; ?>/common/function.php?action=get_all_users')
         .then(response => response.json())
         .then(data => {
             if (data.success) {

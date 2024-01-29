@@ -4,9 +4,24 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login");
     exit;
 }
+
+$configPath = __DIR__ . '/config.json';
+
+if (!file_exists($configPath)) {
+    //redirect to Home
+    header('Location: index.php');
+}
+
+try {
+    include("config.php");
+} catch (\Throwable $th) {
+    unlink($configPath);
+    header('Location: index.php?err=Invalid Configuration');
+}
 ?>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -33,7 +48,7 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 
 
-    <div class='<?php echo $_GET['debug'] ? '' : 'd-none'; ?>'>
+    <div class='<?php echo isset($_GET['debug']) ? '' : 'd-none'; ?>'>
         <!-- Heading -->
         <div class="sidebar-heading">
             Interface
@@ -181,33 +196,33 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 </ul>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-                // Get the current pathname
-                var currentPath = window.location.pathname;
+        // Get the current pathname
+        var currentPath = window.location.pathname;
 
-                // Iterate through all collapse items in the navigation
-                var collapseItems = document.querySelectorAll(".collapse-item");
-                collapseItems.forEach(function(collapseItem) {
-                        // Check if the current pathname matches the link's href or starts with it
-                        if (currentPath === collapseItem.getAttribute("href") || currentPath.endsWith(collapseItem.getAttribute("href")) || currentPath.endsWith(collapseItem.getAttribute("href") + "/")) {
-                                // Add "active" class to the collapse item
-                                collapseItem.classList.add("active");
+        // Iterate through all collapse items in the navigation
+        var collapseItems = document.querySelectorAll(".collapse-item");
+        collapseItems.forEach(function(collapseItem) {
+            // Check if the current pathname matches the link's href or starts with it
+            if (currentPath === collapseItem.getAttribute("href") || currentPath.endsWith(collapseItem.getAttribute("href")) || currentPath.endsWith(collapseItem.getAttribute("href") + "/")) {
+                // Add "active" class to the collapse item
+                collapseItem.classList.add("active");
 
-                                // Find the parent collapse and show it
-                                var parentCollapse = collapseItem.closest(".collapse");
-                                if (parentCollapse) {
-                                    parentCollapse.classList.add("show");
-                                }
+                // Find the parent collapse and show it
+                var parentCollapse = collapseItem.closest(".collapse");
+                if (parentCollapse) {
+                    parentCollapse.classList.add("show");
+                }
 
-                                // Find the grandparent nav-link and add "active" class to it
-                                var grandparentNavLink = collapseItem.closest(".nav-item").querySelector(".nav-link");
-                                if (grandparentNavLink) {
-                                    grandparentNavLink.classList.remove("collapsed");
-                                }
-                                var greatGrandparentNavLink = collapseItem.closest(".nav-item");
-                                if (greatGrandparentNavLink) {
-                                    greatGrandparentNavLink.classList.add("active");
-                                }
-                            }
-                        });
-                });
+                // Find the grandparent nav-link and add "active" class to it
+                var grandparentNavLink = collapseItem.closest(".nav-item").querySelector(".nav-link");
+                if (grandparentNavLink) {
+                    grandparentNavLink.classList.remove("collapsed");
+                }
+                var greatGrandparentNavLink = collapseItem.closest(".nav-item");
+                if (greatGrandparentNavLink) {
+                    greatGrandparentNavLink.classList.add("active");
+                }
+            }
+        });
+    });
 </script>
