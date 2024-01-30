@@ -5,6 +5,7 @@
 // 	header("location: qt-admin");
 // 	exit;
 // }
+ini_set('display_errors', 'off');
 include("config.php");
 
 function gcip()
@@ -37,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 
 
 	$IP = gcip();
+	error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 
 	$browserName =  $_SERVER['HTTP_USER_AGENT'];
 	$browser = get_browser();
@@ -88,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 
 	$_SESSION = array();
 	session_destroy();
-	header("location: /login");
+	header("location: " . $apiURL . "login");
 	exit;
 
 	$id = $_GET['delc'];
@@ -248,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		} catch (Error $th) {
 			sendResponse([], false, $th->getMessage());
 		}
-	} else if ($action === 'delete_product'){
+	} else if ($action === 'delete_product') {
 		$id = $_POST['id'];
 		$sqli = "DELETE FROM `product` WHERE `product`.`id` = $id";
 		try {
