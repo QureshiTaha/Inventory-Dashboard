@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
-    header("location: /");
+    header("location: /index");
     exit;
 }
 ?>
@@ -134,7 +134,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true) {
                         if (response.success) {
                             console.log(response.message);
                             // Redirect or perform other actions for a successful login
-                            window.location.href = "/";
+                            window.location.href = window.location.href.replace('login', 'index');
                         } else {
                             console.error(response.message);
                             alert(response.message)

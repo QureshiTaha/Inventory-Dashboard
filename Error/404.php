@@ -40,7 +40,7 @@
                 <!-- Footer -->
 
             </div>
-            <?php include('./common/footer.php'); ?>
+            <?php include('../common/footer.php'); ?>
             <!-- End of Footer -->
         </div>
         <!-- End of Content Wrapper -->
