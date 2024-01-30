@@ -25,7 +25,7 @@ try {
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo $_SESSION['api-url']; ?>">
         <div class="sidebar-brand-icon rotate-n-15">
             <!-- <i class="fas fa-laugh-wink"></i> -->
             <i class="fas fa-laugh-wink"></i>
@@ -38,7 +38,7 @@ try {
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="/">
+        <a class="nav-link" href="<?php echo $_SESSION['api-url']; ?>">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -150,10 +150,9 @@ try {
         </a>
         <div id="userManagements" class="collapse" aria-labelledby="headingUserManagements" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Vendor Managements:</h6>
+                <h6 class="collapse-header">User Managements:</h6>
                 <a class="collapse-item" href="users">All User</a>
                 <a class="collapse-item" href="add-user">Add User</a>
-                <a class="collapse-item" href="buttons.html">Dummy</a>
             </div>
         </div>
     </li>

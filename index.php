@@ -20,7 +20,9 @@
     }
 
     $domain = $protocol . $_SERVER['HTTP_HOST'];
-    $baseSlug = "/";
+    $url =  $domain . $_SERVER['REQUEST_URI'];
+    $baseSlug = "/" . basename(parse_url($url, PHP_URL_PATH)) . "/";
+
     // Check if the config file exists
     if (!file_exists($configPath)) {
         echo "<div class='container mt-5'>";
@@ -55,7 +57,7 @@
             <input class="form-control" type="text" id="domainName" name="domainName" value="' . $domain . '" required /><br />
 
             <label class="small mb-1" for="baseSlug">Base Slug</label>
-            <input class="form-control" type="text" id="baseSlug" name="baseSlug" value="/" required /><br />
+            <input class="form-control" type="text" id="baseSlug" name="baseSlug" value="' . $baseSlug . '" required /><br />
           </div> 
         
             
@@ -130,7 +132,7 @@
                     .then(result => {
                         console.log(result);
                         console.log('Credentials saved:', result);
-                       window.location.href = '/';
+                       window.location.href = window.location.href;
                     })
                     .catch(error => {
                         console.error('Error saving credentials:', error);
@@ -151,7 +153,7 @@
     <script>
         //document ready
         window.onload = function() {
-            
+
         }
     </script>
 
@@ -163,6 +165,8 @@
 function  checkAndCreateTables()
 {
     $dbConfig = json_decode(file_get_contents(__DIR__ . '/common/config.json'), true);
+    var_dump($dbConfig);
+
     $conn = new mysqli($dbConfig['host'], $dbConfig['user'], $dbConfig['password'], $dbConfig['dbname']);
 
     // Check connection
