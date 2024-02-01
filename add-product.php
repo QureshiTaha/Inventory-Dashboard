@@ -85,6 +85,10 @@
                                                 <label class="small mb-1" for="modalNumber">Modal Number</label>
                                                 <input class="form-control" id="modalNumber" type="text" name="modalNumber" placeholder="Enter Modal Number" value="">
                                             </div>
+                                            <div class="col-md-6">
+                                                <label class="small mb-1" for="hsnCode">HSN Code</label>
+                                                <input class="form-control" id="hsnCode" type="num" oninput="this.value = this.value.replace(/\D+/g, '');" name="hsnCode" placeholder="Enter HSN Code" value="">
+                                            </div>
                                         </div>
                                         <button class="btn btn-primary" type="submit">Add Product</button>
 
@@ -128,10 +132,12 @@
         var price = document.getElementById('productPrice').value;
         var quantity = document.getElementById('stockQuantity').value;
         var modalNumber = document.getElementById('modalNumber').value;
+        var hsnCode = document.getElementById('hsnCode').value;
 
         var productData = {
             name,
             modalNumber,
+            hsnCode,
             name,
             description,
             price,
