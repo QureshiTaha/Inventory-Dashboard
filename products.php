@@ -137,6 +137,7 @@
         var description = $(`#edit-modal-${ID} #productDescription`).val();
         var price = $(`#edit-modal-${ID} #productPrice`).val();
         var quantity = $(`#edit-modal-${ID} #productQuantity`).val();
+        var hsnCode = $(`#edit-modal-${ID} #hsnCode`).val();
 
 
         var productData = {
@@ -147,6 +148,7 @@
             description,
             price,
             modalNumber,
+            hsnCode,
             quantity
         }
 
@@ -234,6 +236,10 @@
                                                                 <div class="form-group">
                                                                     <label for="productQuantity">Product Quantity</label>
                                                                     <input type="number" class="form-control" id="productQuantity" value="${product.quantity}">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="hsnCode">HSN Code </label>
+                                                                    <input type="text" class="form-control" id="hsnCode" value="${product.hsnCode ? product.hsnCode : ''}">
                                                                 </div>
 
                                                             </form>
