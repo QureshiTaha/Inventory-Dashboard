@@ -63,7 +63,7 @@
                             <button type="button" class="btn-close" onclick="myAlert.classList.add('d-none')" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    <div class="">
 
                         <table id="data-tables-invoices" class="table  table-striped" style="width:100%">
                             <thead>
@@ -281,7 +281,15 @@
                                                         </strong>
                                                     </div>
                                                 </div>
-                                                            ` : `` }
+                                                            ` : `
+                                                            <div class="col-md-12 mb-3">
+                                                    <div style="text-align: center;">
+                                                        <strong>
+                                                            <span style="color: #5d9fc5; font-size: 2em; margin-left: 0;">Delevery Chalan</span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                            ` }
                                                 <div style="width: 100%;" class="row">
                                                     <div style="width: 50%; text-align: left;">
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
@@ -294,14 +302,14 @@
                                                         </ul>
                                                     </div>
                                                     <div style="width: 50%; text-align: right;">
-                                                        <p style="color: #000000; margin: 0; padding: 0;">Invoice</p>
+                                                    <!-- <p style="color: #000000; margin: 0; padding: 0;">Invoice</p> -->
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
                                                             <li style="color: #000000;">
-                                                                <span >ID: #${Invoices.invoice_id}</span>
+                                                                <span >Invoice No: ${Invoices.invoice_id}</span>
                                                             </li>
-                                                            <li style="color: #000000;">
+                                                            <!-- <li style="color: #000000;">
                                                                 <span >Creation Date: ${new Date(Invoices.date_updated).toISOString().slice(0, 10)}</span>
-                                                            </li>
+                                                            </li> -->
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -310,9 +318,10 @@
                                                         <thead style="background-color: #84b0ca; color: white;">
                                                             ${productData.length > 0 ? `
                                                             <tr>
-                                                                <th style="padding: 0.75em;">#</th>
+                                                                <th style="padding: 0.55em;">SR.<br>NO</th>
                                                                 <th style="padding: 0.75em;">Product Name</th>
                                                                 <th style="padding: 0.75em;">Modal Number</th>
+                                                                ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `<th style="padding: 0.75em;">HSN Code</th>`:``}
                                                                 <th style="padding: 0.75em;">Quantity</th>
                                                                 <th style="padding: 0.75em;">Price Per Unit</th>
                                                                 <th style="padding: 0.75em;">Amount</th>
@@ -325,6 +334,7 @@
                                                                 <td style="padding: 0.75em;">${item.id}</td>
                                                                 <td style="padding: 0.75em;">${item.name}</td>
                                                                 <td style="padding: 0.75em;">${item.ModalNumber}</td>
+                                                                ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `<td style="padding: 0.75em;">${item.hsnCode || "-"}</td>`:``}
                                                                 <td style="padding: 0.75em;">${item.quantity}</td>
                                                                 <td style="padding: 0.75em;">₹ ${item.PricePerUnit}</td>
                                                                 <td style="padding: 0.75em;">₹ ${item.amount}</td>
@@ -334,6 +344,7 @@
                                                             <tr style="background-color: #f2f2f2; border-top: 1px solid black;">
                                                                 <td style="padding: 0.75em;"></td>
                                                                 <td style="padding: 0.75em;"></td>
+                                                                ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `<td style="padding: 0.75em;"></td>`:``}
                                                                 <td style="padding: 0.75em;">Total Items</td>
                                                                 <td style="padding: 0.75em;">${productData.map((item) => item.quantity).reduce((a, b) => (parseFloat(a) ? parseFloat(a) : 0) + (parseFloat(b) ? parseFloat(b) : 0))}</td>
                                                                 <td style="padding: 0.75em;">Total Amount</td>
@@ -347,7 +358,7 @@
                                                     <div style="width: 65%;">
                                                         <span style="font-size: 18px;" class="fs-1">INVOICE AMOUNT IN WORDS</span>
                                                         <p style="font-size: 15px; background-color: #f2f2f2; margin: 0; padding: 0;" class="text-muted text-uppercase">
-                                                            ${totalInWords}
+                                                            ${totalInWords.toLocaleUpperCase()}
                                                         </p>
                                                         <span style="font-size: 18px;" class="fs-1">TERMS AND CONDITIONS</span>
                                                         <p style="font-size: 15px; background-color: #f2f2f2; margin: 0; padding: 0;" class="text-muted">
@@ -365,15 +376,16 @@
                                                     </div>
                                                     <div style="width: 34%; text-align: right;">
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
-                                                            <li style="color: #000000; margin-left: 3em;">SubTotal : ₹ ${InvoiceData.InvoiceData.subTotal}</li>
-                                                            <li style="color: #000000; margin-left: 3em;">Received : ₹ ${InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0}</li>
+                                                            <li style="color: #000000; ">SubTotal : ₹ ${InvoiceData.InvoiceData.subTotal}</li>
+                                                            <li style="color: #000000; ">Additional Charge : ₹ ${InvoiceData.InvoiceData.additionalCharge ? InvoiceData?.InvoiceData?.additionalCharge:0}</li>
                                                             ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `
-                                                            <li style="color: #000000; margin-left: 3em; margin-top: 1em;">GSTIN (18%) ₹ ${(InvoiceData.InvoiceData.subTotal * 0.18).toFixed(2)}</li>
+                                                            <li style="color: #000000; margin-left: 3em;">GSTIN (18%) ₹ ${(InvoiceData.InvoiceData.subTotal * 0.18).toFixed(2)}</li>
                                                             ` : `` }
+                                                            <li style="color: #000000; ">Received : ₹ ${InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0}</li>
                                                             <hr />
                                                             <p style="color: #000000; float: right;">
                                                             <span style="margin-right: 1em;">Total Amount</span><span style="font-size: 20px;"><strong>₹ ${InvoiceData.InvoiceData.total}</strong></span>
-                                                            <span style="margin-right: 1em;">Payable Amount</span><span style="font-size: 20px;"><strong>₹ ${parseFloat(InvoiceData.InvoiceData.total- (InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0)).toFixed(2)}</strong></span>
+                                                            <span style="margin-right: 1em;">Balance</span><span style="font-size: 20px;"><strong>₹ ${parseFloat(InvoiceData.InvoiceData.total- (InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0)).toFixed(2)}</strong></span>
                                                             </p>
                                                         </ul>
                                                     </div>
@@ -433,8 +445,8 @@
                         tableBody.appendChild(row);
 
                         jQuery("#my-modals").append(newModal);
-                        // $('#data-tables-invoices').DataTable();
                     }
+                    $('#data-tables-invoices').DataTable();
                 }
             });
     </script>

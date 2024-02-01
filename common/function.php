@@ -208,6 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$price = $_POST['price'];
 		$quantity = $_POST['quantity'];
 		$modalNumber = $_POST['modalNumber'];
+		$hsnCode = $_POST['hsnCode'] ? $_POST['hsnCode'] : "";
 
 		$sqli = "SELECT * FROM product WHERE modalNumber = '$modalNumber'";
 		$result = mysqli_query($con, $sqli);
@@ -239,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 
 
 
-		$sqli = "INSERT INTO `product`(`name`, `description`, `price`, `quantity`, `modalNumber`) VALUES ('$name','$description','$price','$quantity','$modalNumber')";
+		$sqli = "INSERT INTO `product`(`name`, `description`, `price`, `quantity`, `modalNumber`,`hsnCode`) VALUES ('$name','$description','$price','$quantity','$modalNumber','$hsnCode')";
 
 		try {
 			if ($con->query($sqli)) {
@@ -269,8 +270,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$price = $_POST['price'];
 		$quantity = $_POST['quantity'];
 		$modalNumber = $_POST['modalNumber'];
+		$hsnCode = $_POST['hsnCode'];
 
-		$sqli = "UPDATE `product` SET `name` = '$name', `description` = '$description', `price` = '$price', `quantity` = '$quantity', `modalNumber` = '$modalNumber' WHERE `product`.`id` = $id";
+		$sqli = "UPDATE `product` SET `name` = '$name', `description` = '$description', `price` = '$price', `quantity` = '$quantity', `modalNumber` = '$modalNumber', `hsnCode` = '$hsnCode' WHERE `product`.`id` = $id";
 
 		try {
 			if ($con->query($sqli)) {
@@ -312,7 +314,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 					$updatedQuantity = $stockQuantity - $quantity;
 					$updateSql = "UPDATE product SET quantity = '$updatedQuantity' WHERE id = $productID";
 					$con->query($updateSql);
-					// echo $updateSql;
 				}
 			}
 			sendResponse([], true, 'Invoice saved successfully');

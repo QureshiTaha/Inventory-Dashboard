@@ -206,6 +206,7 @@ function  checkAndCreateTables()
         "product" => "CREATE TABLE IF NOT EXISTS `product` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `modalNumber` varchar(55) NOT NULL,
+            `hsnCode` int(50) DEFAULT NULL,
             `name` varchar(255) NOT NULL,
             `description` text DEFAULT NULL,
             `price` decimal(10,2) NOT NULL,

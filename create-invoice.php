@@ -93,15 +93,17 @@
                                     <button type="button" class="btn btn-primary btn-block" onclick="addProduct()">Add Product</button>
                                 </div>
                             </div>
+                        </form>
 
-                            <!-- Table to display added products -->
-                            <div class="table-responsive">
-                            <table id="invoiceTable" class="table" >
+                        <!-- Table to display added products -->
+                        <div class="table-responsive">
+                            <table id="invoiceTable" class="table">
                                 <!-- Table headers -->
                                 <thead class="thead-light">
                                     <tr>
                                         <th>SR. NO</th>
                                         <th>Product Name</th>
+                                        <th>HSN Code</th>
                                         <th>Modal Number</th>
                                         <th>Quantity</th>
                                         <th>Price per Unit</th>
@@ -112,67 +114,71 @@
                                 <!-- Table body will be populated dynamically -->
                                 <tbody id="invoiceTableBody"></tbody>
                             </table>
-                            </div>
+                        </div>
 
-                            <hr>
-                            <div class="d-flex align-items-end justify-content-end text-right">
-                                <div class="col-md-12 form-group ">
-                                    <div class="form-group text-right">
-                                        <div class="form-group">
-                                            <label for="subtotal">Sub Total:</label>
-                                            <span id="subTotal" class="form-control-plaintext">0.00</span>
-                                        </div>
-
-                                        <div class="tax-group form-group">
-                                            <label for="tax">GST @ 18.0%:</label>
-                                            <span id="tax" class="form-control-plaintext">0.00</span>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="total">Total ₹:</label>
-                                            <span id="grandTotal" class="form-control-plaintext">0.00</span>
-                                        </div>
+                        <hr>
+                        <div class="d-flex align-items-end justify-content-end text-right">
+                            <div class="col-md-12 form-group ">
+                                <div class="form-group text-right">
+                                    <div class="form-group">
+                                        <label for="additionalCharges">Additional Charges</label>
+                                        <span id="additionalCharges" class="form-control-plaintext">0.00</span>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex align-items-end justify-content-end text-right">
-                                        <div class="col-md-12 form-group ">
-                                            <div class="form-group text-left">
-                                                <label>Additional Charges</label>
-                                                <div class="form-group row">
-                                                    <div class="form-group p-2 col-md-3">
-                                                        <label for="additionalItem">Additional Item</label>
-                                                        <input type="text" id="additionalItem" name="additionalItem" placeholder="Enter Item" class="form-control">
-                                                    </div>
-                                                    <div class="form-group p-2 col-md-3">
-                                                        <label for="additionalCharge">Amount ₹:</label>
-                                                        <input type="number" id="additionalCharge" name="additionalCharge" class="form-control" min="0" value="0" step="0.10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                                    </div>
-                                                    <div class="form-group p-2 col-md-3">
-                                                        <label>&nbsp;</label>
-                                                        <button type="button" class="btn btn-primary btn-block" onclick="addAdditionalCharge()">Add</button>
-                                                    </div>
+                                    <div class="form-group">
+                                        <label for="subtotal">Sub Total:</label>
+                                        <span id="subTotal" class="form-control-plaintext">0.00</span>
+                                    </div>
+
+                                    <div class="tax-group form-group">
+                                        <label for="tax">GST @ 18.0%:</label>
+                                        <span id="tax" class="form-control-plaintext">0.00</span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="total">Total ₹:</label>
+                                        <span id="grandTotal" class="form-control-plaintext">0.00</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="d-flex align-items-end justify-content-end text-right">
+                                    <div class="col-md-12 form-group ">
+                                        <div class="form-group text-left">
+                                            <label>Additional Charges</label>
+                                            <div class="form-group row">
+                                                <div class="form-group p-2 col-md-3">
+                                                    <label for="additionalItem">Additional Item</label>
+                                                    <input type="text" id="additionalItem" name="additionalItem" placeholder="Enter Item" class="form-control">
+                                                </div>
+                                                <div class="form-group p-2 col-md-3">
+                                                    <label for="additionalCharge">Amount ₹:</label>
+                                                    <input type="number" id="additionalCharge" name="additionalCharge" class="form-control" min="0" value="0" step="0.10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                                </div>
+                                                <div class="form-group p-2 col-md-3">
+                                                    <label>&nbsp;</label>
+                                                    <button type="button" class="btn btn-primary btn-block" onclick="addAdditionalCharge()">Add</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <hr>
-                                    <div class="form-group text-left">
-                                        <div class="form-group col-md-6">
-                                            <label for="received">Received ₹:</label>
-                                            <!-- allow float -->
-                                            <input type="number" id="received" name="received" class="form-control" min="0" value="0" step="0.10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
-                                        </div>
+                                </div>
+                                <hr>
+                                <div class="form-group text-left">
+                                    <div class="form-group col-md-6">
+                                        <label for="received">Received ₹:</label>
+                                        <!-- allow float -->
+                                        <input type="number" id="received" name="received" class="form-control" min="0" value="0" step="0.10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
+                                    </div>
 
-                                        <div class="form-group col-md-6">
-                                            <label for="balance">Balance ₹:</label>
-                                            <span id="balance" class="form-control-plaintext">0.00</span>
-                                        </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="balance">Balance ₹:</label>
+                                        <span id="balance" class="form-control-plaintext">0.00</span>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Submit button -->
-                        </form>
+                        <!-- Submit button -->
+
                         <div class="col-md-3 col-sm-12">
                             <button onclick="generateInvoice()" class=" btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Invoice</button>
                         </div>
@@ -239,13 +245,20 @@
                 for (var i = 1; i < invoiceTable.rows.length; i++) {
                     //check with Product Name [modalNumber]
                     var row = invoiceTable.rows[i];
-                    var productString = jQuery('#productSelect').text().trim();
-                    var productName = productString.substring(0, productString.indexOf("[")).trim().toLocaleLowerCase();
-                    if (row.cells[1].firstChild.textContent.trim().toLocaleLowerCase() == productName.trim().toLocaleLowerCase()) {
+                    console.log(row.cells);
+                    var productString = jQuery('#productSelect').text().trim().toLowerCase();
+                    var productID = jQuery('#productSelect').val().toString().trim().toLowerCase();
+                    var productName = productString.substring(0, productString.indexOf("[")).trim();
+
+                    console.log(`${productID} == ${invoiceTable.rows[i].cells[7].firstChild.textContent.toString().trim().toLowerCase()}`);
+                    // console.log(`${row.cells[7].firstChild.textContent.trim().toLocaleLowerCase()} [${row.cells[3].firstChild.textContent.trim().toLocaleLowerCase()}] == ${productString}`);
+                    // if (row.cells[1].firstChild.textContent.trim().toLocaleLowerCase() == productName.trim().toLocaleLowerCase()) {
+                    if (productID == invoiceTable.rows[i].cells[7].firstChild.textContent.toString().trim().toLowerCase()) {
                         //increment quantity
-                        quantityInTable += parseInt(row.cells[3].firstChild.textContent);
+                        quantityInTable += parseInt(row.cells[4].firstChild.textContent);
                     }
                 }
+
 
                 if (quantityInTable + quantity > parseInt(jQuery('#quantity').attr('max'))) {
                     jQuery('#quantity').val(jQuery('#quantity').attr('max') - quantityInTable);
@@ -261,17 +274,28 @@
                 var subTotal = 0;
                 var tax = 0;
                 var grandTotal = 0;
+                var addAdditionalCharge = 0;
                 var invoiceTable = document.getElementById('invoiceTable');
                 if (invoiceTable.rows.length > 1) {
                     for (var i = 1; i < invoiceTable.rows.length; i++) {
                         var row = invoiceTable.rows[i];
-                        var price = parseFloat(row.cells[4].firstChild.textContent);
-                        var total = parseFloat(row.cells[5].firstChild.textContent);
-                        subTotal = subTotal + total;
+                        var price = parseFloat(row.cells[5].firstChild.textContent);
+                        var total = parseFloat(row.cells[6].firstChild.textContent);
+
+                        // console.log("row.cells[8].firstChild.textContent", row.cells[8].firstChild.textContent);
+                        if (row.cells[8].firstChild.textContent == "additionalCharges") {
+                            addAdditionalCharge = parseFloat(addAdditionalCharge) + parseFloat(row.cells[6].firstChild.textContent);
+                            // console.log("addAdditionalCharge", addAdditionalCharge,  row.cells[6].firstChild.textContent);
+                        } else {
+                            subTotal = subTotal + total;
+                            // console.log("!addAdditionalCharge");
+                        }
+
                         tax = isTaxInvoice() ? parseFloat(subTotal) * 0.18 : 0;
-                        grandTotal = parseFloat(subTotal) + parseFloat(tax);
+                        grandTotal = parseFloat(addAdditionalCharge) + parseFloat(subTotal) + parseFloat(tax);
 
                         jQuery('#subTotal').html(parseFloat(subTotal).toFixed(2).toString());
+                        jQuery('#additionalCharges').html(parseFloat(addAdditionalCharge).toFixed(2).toString());
                         jQuery('#tax').html(parseFloat(tax).toFixed(2).toString());
                         jQuery('#grandTotal').html(parseFloat(grandTotal).toFixed(2).toString());
 
@@ -282,6 +306,7 @@
                 } else {
                     console.log('empty table');
                     jQuery('#subTotal').html("0.00");
+                    jQuery('#additionalCharges').html("0.00");
                     jQuery('#tax').html("0.00");
                     jQuery('#grandTotal').html("0.00");
                     jQuery('#balance').html("0.00");
@@ -318,11 +343,13 @@
                 product[i] = {
                     id: productTable.rows[i].cells[0].firstChild.textContent,
                     name: productTable.rows[i].cells[1].firstChild.textContent,
-                    ModalNumber: productTable.rows[i].cells[2]?.firstChild?.textContent ? productTable.rows[i].cells[2].firstChild.textContent : "",
-                    quantity: productTable.rows[i].cells[3]?.firstChild?.textContent ? productTable.rows[i].cells[3].firstChild.textContent : "",
-                    PricePerUnit: productTable.rows[i].cells[4].firstChild.textContent,
-                    amount: productTable.rows[i].cells[5].firstChild.textContent
+                    hsnCode: productTable?.rows[i]?.cells[2]?.firstChild?.textContent ? productTable.rows[i].cells[2].firstChild.textContent : "" || null,
+                    ModalNumber: productTable.rows[i].cells[3]?.firstChild?.textContent ? productTable.rows[i].cells[3].firstChild.textContent : "",
+                    quantity: productTable.rows[i].cells[4]?.firstChild?.textContent ? productTable.rows[i].cells[4].firstChild.textContent : "",
+                    PricePerUnit: productTable.rows[i].cells[5].firstChild.textContent,
+                    amount: productTable.rows[i].cells[6].firstChild.textContent
                 }
+                // console.log(product[i]);
             }
 
             // subTotal
@@ -330,11 +357,13 @@
             var total = jQuery('#grandTotal').text();
             var received = jQuery('#received').val();
             var balance = jQuery('#balance').text();
+            var additionalCharges = jQuery('#additionalCharges').text();
             var isTaxable = isTaxInvoice();
 
             var invoiceData = {
                 customerID: $customerID,
                 subTotal: subTotal,
+                additionalCharge: additionalCharges,
                 total: total,
                 received: received,
                 balance: balance,
@@ -344,7 +373,7 @@
 
             // save_invoice
             jQuery.ajax({
-                url: "<?= $apiURL; ?>/common/function.php?action=save_invoice",
+                url: "<?= $apiURL; ?>common/function.php?action=save_invoice",
                 method: "POST",
                 data: {
                     invoiceData: invoiceData
@@ -379,6 +408,8 @@
             var cell4 = document.createElement('td');
             var cell5 = document.createElement('td');
             var cell6 = document.createElement('td');
+            var cell7 = document.createElement('td');
+            var cell8 = document.createElement('td');
             var removeButtonTD = document.createElement('td');
             var removeButton = document.createElement('button');
             removeButton.type = 'button';
@@ -408,8 +439,14 @@
             cell2.innerText = additionalItem.val();
             cell3.innerText = "";
             cell4.innerText = "";
-            cell5.innerText = parseFloat(additionalCharge.val()).toFixed(2);
+            cell5.innerText = "";
             cell6.innerText = parseFloat(additionalCharge.val()).toFixed(2);
+            cell7.innerText = parseFloat(additionalCharge.val()).toFixed(2);
+            cell8.innerText = parseFloat(additionalCharge.val()).toFixed(2);
+            cell8.className = "d-none";
+            cell8.innerText = "additionalCharges";
+            cell8.value = "additionalCharges";
+
 
 
             row.appendChild(cell1);
@@ -418,18 +455,23 @@
             row.appendChild(cell4);
             row.appendChild(cell5);
             row.appendChild(cell6);
+            row.appendChild(cell7);
             row.appendChild(removeButtonTD);
+            row.appendChild(cell8);
 
             document.getElementById('invoiceTableBody').appendChild(row);
             removeButtonTD.appendChild(removeButton);
 
 
             //Update Sub Total
-            var subTotal = document.getElementById('subTotal');
-            subTotal.value = parseFloat(subTotal.value) + parseFloat(additionalCharge.value)
+            // var subTotal = document.getElementById('subTotal');
+            // subTotal.value = parseFloat(subTotal.value) + parseFloat(additionalCharge.value)
+            // var additionalCharges = document.getElementById('additionalCharges');
+            // additionalCharges.value = parseFloat(additionalCharges.value) + parseFloat(additionalCharge.value)
+            // console.log("additionalCharges.value");
 
-            var grandTotal = document.getElementById('grandTotal');
-            grandTotal.value = parseFloat(subTotal.value) + parseFloat(additionalCharge.value)
+            // var grandTotal = document.getElementById('grandTotal');
+            // grandTotal.value = parseFloat(additionalCharges.value) + parseFloat(subTotal.value) + parseFloat(additionalCharge.value)
 
             updateAllData();
 
@@ -460,10 +502,13 @@
                     var cell4 = document.createElement('td');
                     var cell5 = document.createElement('td');
                     var cell6 = document.createElement('td');
+                    var cell7 = document.createElement('td');
+                    var cell8 = document.createElement('td');
                     var removeButtonTD = document.createElement('td');
                     var removeButton = document.createElement('button');
                     removeButton.type = 'button';
                     removeButton.classList.add('btn', 'btn-danger');
+                    cell8.classList.add('d-none');
                     removeButton.innerText = 'X';
                     removeButton.addEventListener('click', function() {
                         row.remove();
@@ -478,10 +523,12 @@
 
                     cell1.innerText = index;
                     cell2.innerText = product.name;
-                    cell3.innerText = product.modalNumber;
-                    cell4.innerText = quantity;
-                    cell5.innerText = product.price;
-                    cell6.innerText = (product.price * quantity);
+                    cell3.innerText = product.hsnCode;
+                    cell4.innerText = product.modalNumber;
+                    cell5.innerText = quantity;
+                    cell6.innerText = product.price;
+                    cell7.innerText = (product.price * quantity);
+                    cell8.innerText = product.id;
 
 
                     row.appendChild(cell1);
@@ -490,6 +537,8 @@
                     row.appendChild(cell4);
                     row.appendChild(cell5);
                     row.appendChild(cell6);
+                    row.appendChild(cell7);
+                    row.appendChild(cell8);
                     row.appendChild(removeButtonTD);
 
                     document.getElementById('invoiceTableBody').appendChild(row);
