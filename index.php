@@ -13,6 +13,7 @@
 
     <?php
     $configPath = __DIR__ . '/common/config.json';
+    $htaccessPath = __DIR__ . '/.htaccess';
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
         $protocol = "https://";
     } else {
@@ -24,7 +25,7 @@
     $baseSlug = "/" . basename(parse_url($url, PHP_URL_PATH)) . "/";
 
     // Check if the config file exists
-    if (!file_exists($configPath)) {
+    if (!file_exists($configPath) || !file_exists($htaccessPath)) {
         echo "<div class='container mt-5'>";
         if (isset($_GET['err']) &&  $_GET['err']) {
             echo '<div class="container" style="height: 5vh;"><div class="my-5 alert alert-danger" role="alert">' . $_GET['err'] . '</div>';
