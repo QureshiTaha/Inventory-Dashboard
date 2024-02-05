@@ -111,17 +111,17 @@
 
                                 <div id="exTab2" class=" ">
                                     <ul class="nav nav-tabs">
-                                        <li class="active">
+                                        <li>
                                             <a href="#1" data-toggle="tab">Profile</a>
                                         </li>
-                                        <li><a href="#2" data-toggle="tab">Advance</a>
+                                        <li class="active"><a href="#2" data-toggle="tab">Advance</a>
                                         </li>
                                         <li><a href="#3" data-toggle="tab">credits</a>
                                         </li>
                                     </ul>
 
                                     <div class="tab-content  p-2 bg-f2">
-                                        <div class="tab-pane active " id="1">
+                                        <div class="tab-pane" id="1">
                                             <div class="container">
                                                 <h3>Profile Settings</h3>
                                                 <?php
@@ -209,19 +209,55 @@
                                             </div>
                                         </div>
 
+                                        <?php
+                                        // var_dump($con);
+                                        $user = getAdminByID($con, 1);
+                                        // var_dump($user[0]);
+                                        $adminMeta = json_decode($user[0]['admin_meta'], true) ? json_decode($user[0]['admin_meta'], true) : array();
 
-                                        <div class="tab-pane" id="2">
+                                        /* $adminMeta = {
+                                            "companyName": "makends",
+                                            "companyAddress": "348 lokhandwala building ground floor Flat no 8G bapty road, mumbai, Maharashtra 400008",
+                                            "taxName": "GSTIN",
+                                            "taxID": "07AMEPA7702M1Z4",
+                                            "email": "07AMEPA7702M1Z4",
+                                            "contact": "9326239256",
+                                            "termsAndConditions": "1. Terms 1 |2. Terms 2 |3. Terms 3 |4.Terms 4",
+                                            "bankName": "State Bank Of India, Mumbai Central, Mumbai",
+                                            "bankAccountNumber": "41427644038",
+                                            "accountHolderName": "COCOBERRY",
+                                            "logoPath": "/img/cocoberry-dark-square.png",
+                                            "signPath": "/img/cocoberry-invoice-sign.png"
+                                          } */
+
+
+                                        var_dump($adminMeta);
+
+
+                                        ?>
+
+
+                                        <div class="tab-pane active" id="2">
                                             <!-- Advance Settings -->
                                             <div class="container">
                                                 <h3>Advance Settings</h3>
-                                                <p>
-                                                    <i class="fas fa-exclamation-triangle "></i>
-                                                    This feature is not available
-                                                </p>
-                                                <form class="">
-                                                    <div class="form-group">
-                                                    </div>
-                                                </form>
+                                                <?php
+                                                if ($_SESSION['id'] != 1) {
+                                                ?>
+                                                    <p>
+                                                        <i class="fas fa-exclamation-triangle "></i>
+                                                        This feature is not available
+                                                    </p>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <form class="">
+                                                        <div class="form-group">
+                                                            <!-- TODO : Add Advance Settings -->
+                                                        </div>
+                                                    </form>
+
+                                                <?php } ?>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="3">
