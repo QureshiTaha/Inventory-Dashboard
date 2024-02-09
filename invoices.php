@@ -9,17 +9,41 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Makends - Dashboard</title>
+    <title>Invoices | Makends - Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <!-- fontawesomefreeHere -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" media="all" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+    <link media="all" href="css/sb-admin-2.min.css" rel="stylesheet">
+
 
 
 </head>
+<style>
+    .modal-dialog.modal-lg {
+        max-width: 70%;
+    }
+
+    tr,
+    td,
+    th {
+        text-align: center;
+        vertical-align: middle;
+
+    }
+
+    /* Responsive for tablet and phone */
+    @media only screen and (max-width: 600px) {
+        .modal-dialog.modal-lg {
+            max-width: 100%;
+        }
+    }
+</style>
 
 <body id="page-top">
 
@@ -72,8 +96,7 @@
                                     <th>Invoice ID</th>
                                     <th>Customer Name</th>
                                     <th>Invoice Type</th>
-                                    <th>Date Created</th>
-                                    <th>Date Updated</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -115,9 +138,46 @@
         //     newWin.close();
         // }
 
+        function toInvoiceNumber(nr, n = 3, str) {
+            return Array(n - String(nr).length + 1).join(str || '0') + nr;
+        }
+
+        function _printData(id) {
+            var HTML_Width = jQuery("#" + id).width();
+            var HTML_Height = jQuery("#" + id).height();
+            var top_left_margin = 10;
+            var PDF_Width = HTML_Width + (top_left_margin * 2);
+            var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+            var canvas_image_width = HTML_Width;
+            var canvas_image_height = HTML_Height;
+
+            var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+            html2canvas(jQuery("#" + id)[0]).then(function(canvas) {
+                var imgData = canvas.toDataURL("image/jpeg", 1.0);
+                var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+                pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+                for (var i = 1; i <= totalPDFPages; i++) {
+                    pdf.addPage(PDF_Width, PDF_Height);
+                    pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+                }
+                var name = '#' + (id).slice(id.length - 18, id.length) + '.pdf';
+                pdf.save(name);
+                // jQuery("#"+id).hide();
+            });
+        }
+
         function printData(id) {
             console.log(id);
             var divToPrint = document.getElementById(id);
+            var headerContent = `
+            <head>
+            <meta name="viewport" content="width =device-width, initial-scale=1.0">
+            <link rel="stylesheet" media="print" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+            <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" type="text/css" media="print"/>
+            
+            </head>
+            `;
             var footerContent = `
                     <div style="position: fixed; bottom: 0; width: 100%; text-align: center; padding-top: 1rem;">
                     <a href="https://makends.com" target="_blank" style="text-decoration: none;"><span style="color: #5d9fc5; font-weight: bold;float: left; margin-right: 10px; display: inline-block; vertical-align: middle;">makends.com</span></a>
@@ -130,12 +190,23 @@
             // var newWin = window.open("");
             var newWin = window.open('');
             newWin.document.write('<title>Invoice</title>');
-            newWin.document.title = '#' + (id).slice(id.length - 18, id.length);
-            newWin.document.write(divToPrint.outerHTML + footerContent);
+            newWin.document.title = '#invoice' + (id).replace('printable-invoice', '');
+            newWin.document.write(headerContent + divToPrint.outerHTML + footerContent);
             var styles = `<style>
                         @media print {
                     .printable-invoice {
                         width: 100%;
+                    }
+                    bode {
+                        font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+                        line-height: 1.5;
+                    }
+                    tr, td, th {
+                        text-align: center;
+                        vertical-align: middle;
+                    }
+                    hr {
+                        border-top: 1px solid rgba(0,0,0,.1) !important;
                     }
                     .container {
                         max-width: 100%;
@@ -244,30 +315,38 @@
                         const newModal = document.createElement('div');
                         console.log(productData.map((item) => item.quantity).reduce((a, b) => parseFloat(a) ? a : 0 + parseFloat(b) ? b : 0));
                         newModal.innerHTML = `
-                        <div class="modal fade bd-example-modal-lg" id="modal-${Invoices.invoice_id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade bd-example-modal-lg" id="modal-${toInvoiceNumber(Invoices.id)}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Invoice #${Invoices.invoice_id}</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Invoice #${toInvoiceNumber(Invoices.id)}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
-                                    <div id="printable-invoice-${Invoices.invoice_id}" class="printable-invoice card-body">
-                                    <div style="margin-bottom: 2rem; margin-top: 3rem;" class="container">
-                                            <div class="row">
+                                <div class="modal-body" style="padding: 0;">
+                                    <div id="printable-invoice-${toInvoiceNumber(Invoices.id)}" class="printable-invoice card-body">
+                                    <div class="container">
+                                    <header >
+                                    <div style="margin: 0; padding: 0.75em;background-color:#f2f2f2; align-items: center; display: flex; justify-content: space-between;">
+                                    <div class="row" style="justify-content: left;">
+                                    <div style="margin-left: 20px"><span style="color: #000000; font-size: 20px; margin: 0; padding: 0;"><strong>COCOBERRY</strong></span></div>
+                                    </div>
+                                    <div class="row" style="background-color:#f2f2f2; justify-content: right;">
+                                    <div style="margin-right: 20px"><span style="color: #7e8d9f; font-size: 15px; margin: 0; padding: 0;"><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp; GROUND FLOOR 5981/2 FACTORY ROAD New Delhi</span></div>
+                                    <div style="margin-right: 20px"><span style="color: #7e8d9f; font-size: 15px; margin: 0; padding: 0;"> <i class="fas fa-phone"></i>&nbsp;&nbsp;9599618843 </span></div>
+                                    <div style="margin-right: 20px"><span style="color: #7e8d9f; font-size: 15px; margin: 0; padding: 0;"> <i class="fas fa-envelope "></i>&nbsp;&nbsp;cocoberry.db@gmail.com </span></div>
+                                    </div>
+                                    </header>
+                                            <div class="row" style="margin: 0; padding: 0; align-items: center;">
                                                 <div style="text-align: left;" class="col-md-6">
-                                                    <p style="color: #000000; font-size: 20px; margin: 0; padding: 0;">
-                                                        <strong>COCOBERRY</strong>
-                                                    </p>
                                                     <p style="color: #7e8d9f; font-size: 15px; margin: 0; padding: 0;">
-                                                        GROUND FLOOR 5981/2 FACTORY ROAD New Delhi <br />Phone no.: 9599618843 <br />Email: cocoberry.db@gmail.com <br />GSTIN: 07AMEPA7702M1Z4 <br />State: 07-Delhi
+                                                       GSTIN: 07AMEPA7702M1Z4 <br />State: 07-Delhi
                                                     </p>
                                                 </div>
                                                 <div style="text-align: right;" class="col-md-6">
                                                     <div>
-                                                        <img src="./img/cocoberry-dark-square.png" class="img-fluid" alt="logo" width="100" />
+                                                        <img src="./img/cocoberry-dark-square-white.png" class="img-fluid" alt="logo" width="100" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -290,22 +369,23 @@
                                                     </div>
                                                 </div>
                                                             ` }
-                                                <div style="width: 100%;" class="row">
+                                                <div style="width: 100%; display: flex; justify-content: space-between;">
                                                     <div style="width: 50%; text-align: left;">
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
                                                             <li style="color: #000000;">
                                                                 To: <span style="color: #5d9fc5;"><strong>${customerData.name}</strong></span>
                                                             </li>
-                                                            <li style="color: #000000;">${customerData.address}</li>
-                                                            <li style="color: #000000;"><i class="fas fa-phone"></i> ${customerData.mobile}</li>
-                                                            <li style="color: #000000;">GSTIN Number: ${customerData.tax}</li>
+                                                            <li style="color: #000000;"><b>${customerData.address}</b></li>
+                                                            <li style="color: #000000;">Contact:<b> ${customerData.mobile}</b></li>
+                                                            <li style="color: #000000;">STATE: <b>${customerData.state}</b></li>
+                                                            <li style="color: #000000;">GSTIN : <b> ${customerData.tax}</b></li>
                                                         </ul>
                                                     </div>
                                                     <div style="width: 50%; text-align: right;">
                                                     <!-- <p style="color: #000000; margin: 0; padding: 0;">Invoice</p> -->
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
                                                             <li style="color: #000000;">
-                                                                <span >Invoice No: ${Invoices.invoice_id}</span>
+                                                                <span >Invoice No: ${toInvoiceNumber(Invoices.id)}</span>
                                                             </li>
                                                             <!-- <li style="color: #000000;">
                                                                 <span >Creation Date: ${new Date(Invoices.date_updated).toISOString().slice(0, 10)}</span>
@@ -313,14 +393,15 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div style="justify-content: center; margin: 4em 1em 2em 1em ; " class="row">
-                                                    <table style="margin: 50px 0px; width: 100%; border-collapse: collapse; margin-top: 1em;" class="table table-striped table-borderless">
+                                                <div style="justify-content: center; margin: 20px 5px 20px 5px ; " class="row">
+                                                    <table style="margin: 50px 0px; width: 100%; border-collapse: collapse; margin-top: 1em;" class="table table-striped table-bordered">
                                                         <thead style="background-color: #84b0ca; color: white;">
                                                             ${productData.length > 0 ? `
                                                             <tr>
                                                                 <th style="padding: 0.55em;">SR.<br>NO</th>
-                                                                <th style="padding: 0.75em;">Product Name</th>
+                                                                <th style="padding: 0.55em;">Brand Name</th>
                                                                 <th style="padding: 0.75em;">Modal Number</th>
+                                                                <th style="padding: 0.75em;">Product Name</th>
                                                                 ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `<th style="padding: 0.75em;">HSN Code</th>`:``}
                                                                 <th style="padding: 0.75em;">Quantity</th>
                                                                 <th style="padding: 0.75em;">Price Per Unit</th>
@@ -332,8 +413,9 @@
                                                             ${productData.map((item, index) => index != 0 ? `
                                                             <tr>
                                                                 <td style="padding: 0.75em;">${item.id}</td>
-                                                                <td style="padding: 0.75em;">${item.name}</td>
+                                                                <td style="padding: 0.75em;">${item.brandName}</td>
                                                                 <td style="padding: 0.75em;">${item.ModalNumber}</td>
+                                                                <td style="padding: 0.75em;">${item.name}</td>
                                                                 ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `<td style="padding: 0.75em;">${item.hsnCode || "-"}</td>`:``}
                                                                 <td style="padding: 0.75em;">${item.quantity}</td>
                                                                 <td style="padding: 0.75em;">₹ ${item.PricePerUnit}</td>
@@ -345,6 +427,7 @@
                                                                 <td style="padding: 0.75em;"></td>
                                                                 <td style="padding: 0.75em;"></td>
                                                                 ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `<td style="padding: 0.75em;"></td>`:``}
+                                                                <td style="padding: 0.75em;"></td>
                                                                 <td style="padding: 0.75em;">Total Items</td>
                                                                 <td style="padding: 0.75em;">${productData.map((item) => item.quantity).reduce((a, b) => (parseFloat(a) ? parseFloat(a) : 0) + (parseFloat(b) ? parseFloat(b) : 0))}</td>
                                                                 <td style="padding: 0.75em;">Total Amount</td>
@@ -356,50 +439,63 @@
                                                 <hr />
                                                 <div style="margin: 0; padding: 0; display: flex; justify-content: space-between;" class="row">
                                                     <div style="width: 65%;">
-                                                        <span style="font-size: 18px;" class="fs-1">INVOICE AMOUNT IN WORDS</span>
-                                                        <p style="font-size: 15px; background-color: #f2f2f2; margin: 0; padding: 0;" class="text-muted text-uppercase">
-                                                            ${totalInWords.toLocaleUpperCase()}
-                                                        </p>
-                                                        <span style="font-size: 18px;" class="fs-1">TERMS AND CONDITIONS</span>
-                                                        <p style="font-size: 15px; background-color: #f2f2f2; margin: 0; padding: 0;" class="text-muted">
-                                                            1. No Guarantee No Exchange No Claim<br />2. Goods once Sold will not be taken back<br />3. All Disputes are Subject to Delhi Jurisdiction<br />4. Interest @ 24 will be charged if the bill is not paid within 7 days
-                                                        </p>
-                                                        <p style="font-size: 18px; margin-top: 1em; padding: 0;" class="text-muted">
+                                                    <p style="font-size: 18px; margin-top: 1em; padding: 0;" >
                                                             <strong>Pay To-</strong>
                                                         </p>
-                                                        <p style="font-size: 15px; margin: 0; padding: 0;" class="fs-1">
+                                                        <p style="font-size: 15px; margin: 0; padding: 0;">
+                                                        ${ InvoiceData?.InvoiceData?.isTaxable == "true" ? `
                                                             <strong>Bank Name:</strong> State Bank Of India, Mumbai Central, Mumbai<br />
                                                             <strong>Bank Account No.:</strong> 41427644038<br />
                                                             <strong>Bank IFSC code:</strong> SBIN0000547<br />
                                                             <strong>Account Holder's Name:</strong> COCOBERRY
+                                                            ` : `
+                                                            <strong>Bank Name:</strong> HDFC Bank <br />
+                                                            <strong>Bank Account No.:</strong> 00601000268749<br />
+                                                            <strong>Bank IFSC code:</strong> HDFC0000060<br />
+                                                            <strong>Account Holder's Name:</strong> Akram S Selia
+                                                            <strong>Branch Code:</strong> 0060
+                                                            ` }
+                                                            
                                                         </p>
+                                                        <br>
+                                                        <span style="font-size: 18px;" >INVOICE AMOUNT IN WORDS</span>
+                                                        <p style="font-size: 15px;padding:5px; background-color: #f2f2f2; margin: 0;">
+                                                        <strong>
+                                                        ${totalInWords.toLocaleUpperCase()}
+                                                        </strong>
+                                                        </p>
+                                                        <br>
+                                                        <span style="font-size: 18px;" >TERMS AND CONDITIONS</span>
+                                                        <p style="font-size: 15px; background-color: #f2f2f2; margin: 0; padding: 5px;">
+                                                            1. No Guarantee No Exchange No Claim<br />2. Goods once Sold will not be taken back<br />3. All Disputes are Subject to Delhi Jurisdiction<br />4. Interest @ 24 will be charged if the bill is not paid within 7 days
+                                                        </p>
+                                                        
                                                     </div>
-                                                    <div style="width: 34%; text-align: right;">
+                                                    <div style="width: 34%;">
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
-                                                            <li style="color: #000000; ">SubTotal : ₹ ${InvoiceData.InvoiceData.subTotal}</li>
-                                                            <li style="color: #000000; ">Additional Charge : ₹ ${InvoiceData.InvoiceData.additionalCharge ? InvoiceData?.InvoiceData?.additionalCharge:0}</li>
+                                                            <li style="color: #000000; "><span style="text-align:left">  SubTotal :         </span><span style="float: right;">₹ ${InvoiceData.InvoiceData.subTotal}</span></li>
+                                                            <li style="color: #000000; "><span style="text-align:left">  Delevery Charge :  </span><span style="float: right;">₹ ${InvoiceData.InvoiceData?.deleveryCharge > 0 ? InvoiceData.InvoiceData?.deleveryCharge : "FREE"}</span></li>
+                                                            <li style="color: #000000; "><span style="text-align:left">  Packaging Charge : </span><span style="float: right;">₹ ${InvoiceData.InvoiceData?.packagingCharge > 0 ? InvoiceData.InvoiceData?.packagingCharge : "FREE"}</span></li>
+                                                            <li style="color: #000000; "><span style="text-align:left">  Cartoon Charge :   </span><span style="float: right;">₹ ${InvoiceData.InvoiceData?.cartoonCharge > 0 ? InvoiceData.InvoiceData?.cartoonCharge : "FREE"}</span></li>
+                                                            <li style="color: #000000; display: none; ">Additional Charge : ₹ ${InvoiceData.InvoiceData.additionalCharge ? InvoiceData?.InvoiceData?.additionalCharge:0}</li>
+                                                            
                                                             ${ InvoiceData?.InvoiceData?.isTaxable == "true"? `
-                                                            <li style="color: #000000; margin-left: 3em;">GSTIN (18%) ₹ ${(InvoiceData.InvoiceData.subTotal * 0.18).toFixed(2)}</li>
+                                                            <li style="color: #000000;"><span style="text-align:left"> GSTIN (18%) </span><span style="float: right;">₹ ${(InvoiceData.InvoiceData.subTotal * 0.18).toFixed(2)}</span></li>
                                                             ` : `` }
-                                                            <li style="color: #000000; ">Received : ₹ ${InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0}</li>
-                                                            <hr />
-                                                            <p style="color: #000000; float: right;">
-                                                            <span style="margin-right: 1em;">Total Amount</span><span style="font-size: 20px;"><strong>₹ ${InvoiceData.InvoiceData.total}</strong></span>
-                                                            <span style="margin-right: 1em;">Balance</span><span style="font-size: 20px;"><strong>₹ ${parseFloat(InvoiceData.InvoiceData.total- (InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0)).toFixed(2)}</strong></span>
-                                                            </p>
+                                                            
+                                                            <li style="color: #000000; "><span style="text-align:left">Received : </span><span style="float: right;">₹ ${InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0}</span></li>
+                                                            <br>
+                                                            <li style="color: #000000; display:flex;justify-content:space-between;width:100%"><span>Total Amount</span><span style="font-size: 20px;"><strong>₹ ${InvoiceData.InvoiceData.total}</strong></span></li>
+                                                            <li style="color: #000000; display:flex;justify-content:space-between;width:100%"><span>Balance</span><span style="font-size: 20px;"><strong>₹ ${parseFloat(InvoiceData.InvoiceData.total- (InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0)).toFixed(2)}</strong></span></li>
+
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <hr />
-                                                <div style="display: flex; justify-content: space-between;" class="row">
-                                                    <div style="width: 75%;">
                                                         <p><strong>For, COCOBERRY </strong></p>
-                                                    </div>
-                                                    <div style="width: 25%;">
-                                                        <img src="./img/cocoberry-invoice-sign.png" alt="Authorized Signatory" style="max-width: 100%;" />
+                                                        <img src="./img/coco-sign.jpg" alt="Authorized Signatory" width="25%" />
                                                         <p><strong>Authorized Signatory</strong></p>
-                                                    </div>
-                                                </div>
+                                                    
                                             </div>
                                         </div>
 
@@ -407,7 +503,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a onclick="printData('printable-invoice-${Invoices.invoice_id}')" class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
+                                    <a onclick="printData('printable-invoice-${toInvoiceNumber(Invoices.id)}')" class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
                                     class="fas fa-print text-primary"></i> Print</a>
                                 </div>
                             </div>
@@ -417,16 +513,16 @@
                         row.appendChild(cell);
 
                         const cell1 = document.createElement('td');
-                        cell1.innerHTML = Invoices.invoice_id;
+                        cell1.innerHTML = toInvoiceNumber(Invoices.id);
                         row.appendChild(cell1);
 
                         const cell2 = document.createElement('td');
                         cell2.innerHTML = customerData.name;
                         row.appendChild(cell2);
 
-                        const cell3 = document.createElement('td');
-                        cell3.innerHTML = customerData.name;
-                        row.appendChild(cell3);
+                        // const cell3 = document.createElement('td');
+                        // cell3.innerHTML = customerData.name;
+                        // row.appendChild(cell3);
 
                         const cell4 = document.createElement('td');
                         cell4.innerHTML = InvoiceData.InvoiceData.isTaxable == "true" ? "Taxable" : "Non Taxable";
@@ -438,7 +534,7 @@
 
                         const cell6 = document.createElement('td');
                         cell6.innerHTML = `
-                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#modal-${Invoices.invoice_id}"> <i class="fas fa-eye"></i> </button>
+                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#modal-${toInvoiceNumber(Invoices.id)}"> <i class="fas fa-eye"></i> </button>
                     `;
                         row.appendChild(cell6);
 

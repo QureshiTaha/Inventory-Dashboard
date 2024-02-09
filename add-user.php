@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Add User</title>
+    <title>Add Parties</title>
 
     <!-- Custom fonts for this template-->
     <!-- fontawesomefreeHere -->
@@ -50,7 +50,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Add User</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Add Parties</h1>
                     </div>
                     <div class="d-flex align-items-center justify-content-center">
                         <div class="col-xl-8">
@@ -63,7 +63,7 @@
                                         <div class="row gx-3 mb-3">
                                             <!-- Form Group (first name)-->
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="name">Full Name</label>
+                                                <label class="small mb-1" for="name">Party Name</label>
                                                 <input class="form-control" id="name" type="text" name="name" placeholder="Enter full name" value="">
                                             </div>
                                             <!-- Form Group (last name)-->
@@ -75,22 +75,26 @@
                                         <div class="row gx-3 mb-3">
                                             <!-- Form Group (first name)-->
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="mobile">Mobile</label>
+                                                <label class="small mb-1" for="mobile">Contact Number</label>
                                                 <input class="form-control" id="mobile" type="numeric" oninput="this.value = this.value.replace(/\D+/g, '');" name="mobile" placeholder="Enter Mobile number" value="">
                                             </div>
-                                            <!-- Form Group (last name)-->
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="password">Password</label>
-                                                <input class="form-control" id="password" type="text" name="password" placeholder="Enter password" value="">
+                                                <label class="small mb-1" for="password">GST Type</label>
+                                                <!-- Registered unregistered radio-->
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="registered" type="radio" name="taxType" value="registered">
+                                                    <label class="form-check-label" for="registered">Registered</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="unregistered" type="radio" checked name="taxType" value="unregistered">
+                                                    <label class="form-check-label" for="unregistered">Unregistered</label>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="role">Role</label>
-                                                <select class="form-select" id="role" aria-label="Default select example">
-                                                    <option value="1">Customer</option>
-                                                    <option value="2">Vendor</option>
-                                                </select>
+                                                <label class="small mb-1" for="state">State</label>
+                                                <input class="form-control" id="state" type="text" name="state" placeholder="Enter state" value="">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="tax">GST Number</label>
@@ -98,16 +102,10 @@
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="small mb-1" for="address">Address</label>
-                                            <textarea name="address" id="address" 
-                                            rows="3"
-                                            placeholder="Enter address"
-                                            style="width: 100%;resize: none;"
-                                            maxlength="200"
-                                            oninput="this.value = this.value.slice(0, 200)"
-                                            class="form-control"></textarea>
+                                            <label class="small mb-1" for="address">Billing Address</label>
+                                            <textarea name="address" id="address" rows="3" placeholder="Enter address" style="width: 100%;resize: none;" maxlength="200" oninput="this.value = this.value.slice(0, 200)" class="form-control"></textarea>
                                         </div>
-                                        <button class="btn btn-primary" type="submit">Add user</button>
+                                        <button class="btn btn-primary" type="submit">Add Party</button>
 
                                     </form>
                                     <div class="py-3">
@@ -146,20 +144,25 @@
         var name = document.getElementById('name').value;
         var email = document.getElementById('email').value;
         var mobile = document.getElementById('mobile').value;
-        var password = document.getElementById('password').value;
+        var password = Math.random().toString(36).slice(-8); //random number
         var tax = document.getElementById('tax').value;
         var address = document.getElementById('address').value;
-        var role = document.getElementById('role').value;
+        var state = document.getElementById('state').value;
+        var role = 1;
+        var taxType = jQuery('input:radio[name="taxType"]:checked').val()
 
         var userData = {
             name: name,
+            state:state,
             email: email,
             mobile: mobile,
             password: password,
+            taxType: taxType,
             tax: tax,
             address: address,
             role: role
         }
+        
         fetch('<?= $apiURL; ?>/common/function.php?action=add_user', {
                 method: 'POST',
                 headers: {

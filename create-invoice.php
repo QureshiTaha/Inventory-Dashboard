@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Makends - Dashboard</title>
+    <title>Invoice | Makends Inventory System</title>
 
     <!-- Custom fonts for this template-->
     <!-- fontawesomefreeHere -->
@@ -102,6 +102,7 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>SR. NO</th>
+                                        <th>Brand Name</th>
                                         <th>Product Name</th>
                                         <th>HSN Code</th>
                                         <th>Modal Number</th>
@@ -121,22 +122,29 @@
                             <div class="col-md-12 form-group ">
                                 <div class="form-group text-right">
                                     <div class="form-group">
-                                        <label for="additionalCharges">Additional Charges</label>
-                                        <span id="additionalCharges" class="form-control-plaintext">0.00</span>
-                                    </div>
-                                    <div class="form-group">
                                         <label for="subtotal">Sub Total:</label>
-                                        <span id="subTotal" class="form-control-plaintext">0.00</span>
+                                        <span class="form-control-plaintext">₹ <span id="subTotal">0.00</span> </span>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="additionalCharges">Additional Charges </label>
+                                        <span id="additionalChargesItems" class="form-control-plaintext">
+                                            <p id="delevryCharge_text">Delevery Charge : <span>Free</span> </p>
+                                            <p id="packagingCharge_text"> Packaging Charges : <span>Free</span></p>
+                                            <p id="cartoonCharge_text"> Cartoon Charges : <span>Free</span></p>
+                                        </span>
+                                        <span class="form-control-plaintext d-none">₹ <span id="additionalCharges" class="">0.00</span></span>
+                                    </div>
+
+
                                     <div class="tax-group form-group">
-                                        <label for="tax">GST @ 18.0%:</label>
+                                        <label for="tax">GST @ 18.0%:</label>₹
                                         <span id="tax" class="form-control-plaintext">0.00</span>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="total">Total ₹:</label>
-                                        <span id="grandTotal" class="form-control-plaintext">0.00</span>
+                                        <label for="total">Total </label>
+                                        <span class="form-control-plaintext">₹ <span id="grandTotal">0.00</span> </span>
                                     </div>
                                 </div>
                                 <hr>
@@ -144,7 +152,7 @@
                                     <div class="col-md-12 form-group ">
                                         <div class="form-group text-left">
                                             <label>Additional Charges</label>
-                                            <div class="form-group row">
+                                            <div class="form-group row d-none">
                                                 <div class="form-group p-2 col-md-3">
                                                     <label for="additionalItem">Additional Item</label>
                                                     <input type="text" id="additionalItem" name="additionalItem" placeholder="Enter Item" class="form-control">
@@ -158,18 +166,47 @@
                                                     <button type="button" class="btn btn-primary btn-block" onclick="addAdditionalCharge()">Add</button>
                                                 </div>
                                             </div>
+
+                                            <div class="form-group row text-center align-items-center">
+                                                <!-- Delevery Charges -->
+                                                <div class="col-md-2 p-0 m-0 col-sm-12 ">
+                                                    <label for="deliveryCharges">Delivery Charges</label>
+                                                </div>
+                                                <div class="col-md-2 p-0 m-0 col-sm-12 mb-3">
+                                                    <input type="number" id="deliveryCharges" name="deliveryCharges" class="form-control" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                                </div>
+                                                <!-- Packaging Charges -->
+                                                <div class="col-md-2 p-0 m-0 col-sm-12">
+                                                    <label for="packagingCharges">Packaging Charges</label>
+                                                </div>
+                                                <div class="col-md-2 p-0 m-0 col-sm-12 mb-3">
+                                                    <input type="number" id="packagingCharges" name="packagingCharges" class="form-control" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                                </div>
+                                                <!-- Cartoon Charges -->
+                                                <div class="col-md-2 p-0 m-0 col-sm-12">
+                                                    <label for="cartoonCharges">Cartoon Charges</label>
+                                                </div>
+                                                <div class="col-md-2 p-0 m-0 col-sm-12 mb-3">
+                                                    <input type="number" id="cartoonCharges" name="cartoonCharges" class="form-control" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <hr>
-                                <div class="form-group text-left">
-                                    <div class="form-group col-md-6">
+                                <div class="form-group text-left p-0 m-0 d-flex col-md-12 col-sm-12">
+                                    <div class="form-group col-md-6 col-sm-12">
                                         <label for="received">Received ₹:</label>
-                                        <!-- allow float -->
                                         <input type="number" id="received" name="received" class="form-control" min="0" value="0" step="0.10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
                                     </div>
 
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6 col-sm-12">
+                                        <label for="discount">Discount %:</label>
+                                        <input type="number" id="discount" name="discount" class="form-control" min="0" max="100" value="0" step="1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
+                                    </div>
+                                </div>
+                                <div class="form-group text-left">
+                                    <div class="form-group text-left  col-md-6 col-sm-12">
                                         <label for="balance">Balance ₹:</label>
                                         <span id="balance" class="form-control-plaintext">0.00</span>
                                     </div>
@@ -245,17 +282,16 @@
                 for (var i = 1; i < invoiceTable.rows.length; i++) {
                     //check with Product Name [modalNumber]
                     var row = invoiceTable.rows[i];
-                    console.log(row.cells);
                     var productString = jQuery('#productSelect').text().trim().toLowerCase();
                     var productID = jQuery('#productSelect').val().toString().trim().toLowerCase();
                     var productName = productString.substring(0, productString.indexOf("[")).trim();
 
-                    console.log(`${productID} == ${invoiceTable.rows[i].cells[7].firstChild.textContent.toString().trim().toLowerCase()}`);
+                    console.log(`${productID} == ${invoiceTable.rows[i].cells[8].firstChild.textContent.toString().trim().toLowerCase()}`);
                     // console.log(`${row.cells[7].firstChild.textContent.trim().toLocaleLowerCase()} [${row.cells[3].firstChild.textContent.trim().toLocaleLowerCase()}] == ${productString}`);
                     // if (row.cells[1].firstChild.textContent.trim().toLocaleLowerCase() == productName.trim().toLocaleLowerCase()) {
-                    if (productID == invoiceTable.rows[i].cells[7].firstChild.textContent.toString().trim().toLowerCase()) {
+                    if (productID == invoiceTable.rows[i].cells[8].firstChild.textContent.toString().trim().toLowerCase()) {
                         //increment quantity
-                        quantityInTable += parseInt(row.cells[4].firstChild.textContent);
+                        quantityInTable += parseInt(row.cells[5].firstChild.textContent);
                     }
                 }
 
@@ -275,34 +311,44 @@
                 var tax = 0;
                 var grandTotal = 0;
                 var addAdditionalCharge = 0;
+
+                var deleveryCharge = parseFloat(jQuery('#deliveryCharges').val()) || 0;
+                var packagingCharge = parseFloat(jQuery('#packagingCharges').val()) || 0;
+                var cartoonCharge = parseFloat(jQuery('#cartoonCharges').val()) || 0;
                 var invoiceTable = document.getElementById('invoiceTable');
+
                 if (invoiceTable.rows.length > 1) {
                     for (var i = 1; i < invoiceTable.rows.length; i++) {
                         var row = invoiceTable.rows[i];
-                        var price = parseFloat(row.cells[5].firstChild.textContent);
-                        var total = parseFloat(row.cells[6].firstChild.textContent);
+                        var price = parseFloat(row.cells[6].firstChild.textContent);
+                        var total = parseFloat(row.cells[7].firstChild.textContent);
 
                         // console.log("row.cells[8].firstChild.textContent", row.cells[8].firstChild.textContent);
-                        if (row.cells[8].firstChild.textContent == "additionalCharges") {
-                            addAdditionalCharge = parseFloat(addAdditionalCharge) + parseFloat(row.cells[6].firstChild.textContent);
+                        if (row.cells[9].firstChild.textContent == "additionalCharges") {
+                            addAdditionalCharge = parseFloat(addAdditionalCharge) + parseFloat(row.cells[7].firstChild.textContent);
                             // console.log("addAdditionalCharge", addAdditionalCharge,  row.cells[6].firstChild.textContent);
                         } else {
                             subTotal = subTotal + total;
                             // console.log("!addAdditionalCharge");
                         }
-
-                        tax = isTaxInvoice() ? parseFloat(subTotal) * 0.18 : 0;
-                        grandTotal = parseFloat(addAdditionalCharge) + parseFloat(subTotal) + parseFloat(tax);
-
-                        jQuery('#subTotal').html(parseFloat(subTotal).toFixed(2).toString());
-                        jQuery('#additionalCharges').html(parseFloat(addAdditionalCharge).toFixed(2).toString());
-                        jQuery('#tax').html(parseFloat(tax).toFixed(2).toString());
-                        jQuery('#grandTotal').html(parseFloat(grandTotal).toFixed(2).toString());
-
-                        var received = jQuery('#received').val();
-                        balance = grandTotal - received;
-                        jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
                     }
+
+                    tax = isTaxInvoice() ? parseFloat(subTotal) * 0.18 : 0;
+                    subTotal = parseFloat(subTotal).toFixed(2);
+                    grandTotal = parseFloat(addAdditionalCharge + deleveryCharge + packagingCharge + cartoonCharge) + parseFloat(subTotal) + parseFloat(tax);
+
+                    jQuery('#subTotal').html(parseFloat(subTotal).toFixed(2).toString());
+                    jQuery('#additionalCharges').html(parseFloat(addAdditionalCharge).toFixed(2).toString());
+                    jQuery('#tax').html(parseFloat(tax).toFixed(2).toString());
+                    jQuery('#grandTotal').html(parseFloat(grandTotal).toFixed(2).toString());
+
+
+                    jQuery('#packagingCharges').val();
+                    jQuery('#cartoonCharges').val();
+
+                    var received = jQuery('#received').val();
+                    balance = grandTotal - received;
+                    jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
                 } else {
                     console.log('empty table');
                     jQuery('#subTotal').html("0.00");
@@ -342,12 +388,13 @@
             for (var i = 0; i < productTable.rows.length; i++) {
                 product[i] = {
                     id: productTable.rows[i].cells[0].firstChild.textContent,
-                    name: productTable.rows[i].cells[1].firstChild.textContent,
-                    hsnCode: productTable?.rows[i]?.cells[2]?.firstChild?.textContent ? productTable.rows[i].cells[2].firstChild.textContent : "" || null,
-                    ModalNumber: productTable.rows[i].cells[3]?.firstChild?.textContent ? productTable.rows[i].cells[3].firstChild.textContent : "",
-                    quantity: productTable.rows[i].cells[4]?.firstChild?.textContent ? productTable.rows[i].cells[4].firstChild.textContent : "",
-                    PricePerUnit: productTable.rows[i].cells[5].firstChild.textContent,
-                    amount: productTable.rows[i].cells[6].firstChild.textContent
+                    brandName: productTable.rows[i].cells[1].firstChild.textContent,
+                    name: productTable.rows[i].cells[2].firstChild.textContent,
+                    hsnCode: productTable.rows[i].cells[3]?.firstChild?.textContent ? productTable.rows[i].cells[3].firstChild.textContent : "",
+                    ModalNumber: productTable.rows[i].cells[4]?.firstChild?.textContent ? productTable.rows[i].cells[4].firstChild.textContent : "",
+                    quantity: productTable.rows[i].cells[5].firstChild.textContent,
+                    PricePerUnit: productTable.rows[i].cells[6].firstChild.textContent,
+                    amount: productTable.rows[i].cells[7].firstChild.textContent
                 }
                 // console.log(product[i]);
             }
@@ -358,14 +405,20 @@
             var received = jQuery('#received').val();
             var balance = jQuery('#balance').text();
             var additionalCharges = jQuery('#additionalCharges').text();
+            var deleveryCharge = jQuery('#deliveryCharges').val();
+            var packagingCharge = jQuery('#packagingCharges').val();
+            var cartoonCharge = jQuery('#cartoonCharges').val();
             var isTaxable = isTaxInvoice();
 
             var invoiceData = {
                 customerID: $customerID,
                 subTotal: subTotal,
-                additionalCharge: additionalCharges,
-                total: total,
                 received: received,
+                additionalCharge: additionalCharges,
+                deleveryCharge: deleveryCharge,
+                packagingCharge: packagingCharge,
+                cartoonCharge: cartoonCharge,
+                total: total,
                 balance: balance,
                 isTaxable: isTaxable,
                 product: product
@@ -410,6 +463,7 @@
             var cell6 = document.createElement('td');
             var cell7 = document.createElement('td');
             var cell8 = document.createElement('td');
+            var cell9 = document.createElement('td');
             var removeButtonTD = document.createElement('td');
             var removeButton = document.createElement('button');
             removeButton.type = 'button';
@@ -436,16 +490,20 @@
             }
 
             cell1.innerText = index;
-            cell2.innerText = additionalItem.val();
-            cell3.innerText = "";
+            cell2.innerText = "";
+            cell3.innerText = additionalItem.val();
             cell4.innerText = "";
             cell5.innerText = "";
-            cell6.innerText = parseFloat(additionalCharge.val()).toFixed(2);
+            cell6.innerText = "";
             cell7.innerText = parseFloat(additionalCharge.val()).toFixed(2);
             cell8.innerText = parseFloat(additionalCharge.val()).toFixed(2);
-            cell8.className = "d-none";
-            cell8.innerText = "additionalCharges";
-            cell8.value = "additionalCharges";
+            cell9.innerText = parseFloat(additionalCharge.val()).toFixed(2);
+            cell9.className = "d-none";
+            cell9.innerText = "additionalCharges";
+            cell9.value = "additionalCharges";
+
+            // Hide row
+            // row.classList.add('d-none');
 
 
 
@@ -456,22 +514,12 @@
             row.appendChild(cell5);
             row.appendChild(cell6);
             row.appendChild(cell7);
-            row.appendChild(removeButtonTD);
             row.appendChild(cell8);
+            row.appendChild(removeButtonTD);
+            row.appendChild(cell9);
 
             document.getElementById('invoiceTableBody').appendChild(row);
             removeButtonTD.appendChild(removeButton);
-
-
-            //Update Sub Total
-            // var subTotal = document.getElementById('subTotal');
-            // subTotal.value = parseFloat(subTotal.value) + parseFloat(additionalCharge.value)
-            // var additionalCharges = document.getElementById('additionalCharges');
-            // additionalCharges.value = parseFloat(additionalCharges.value) + parseFloat(additionalCharge.value)
-            // console.log("additionalCharges.value");
-
-            // var grandTotal = document.getElementById('grandTotal');
-            // grandTotal.value = parseFloat(additionalCharges.value) + parseFloat(subTotal.value) + parseFloat(additionalCharge.value)
 
             updateAllData();
 
@@ -504,17 +552,18 @@
                     var cell6 = document.createElement('td');
                     var cell7 = document.createElement('td');
                     var cell8 = document.createElement('td');
+                    var cell9 = document.createElement('td');
                     var removeButtonTD = document.createElement('td');
                     var removeButton = document.createElement('button');
                     removeButton.type = 'button';
                     removeButton.classList.add('btn', 'btn-danger');
-                    cell8.classList.add('d-none');
+                    cell9.classList.add('d-none');
                     removeButton.innerText = 'X';
                     removeButton.addEventListener('click', function() {
                         row.remove();
                         var index = document.getElementById('invoiceTable').rows.length;
-                        for (var i = 0; i < index; i++) {
-                            document.getElementById('invoiceTable').rows[i].cells[0].innerText = i + 1
+                        for (var i = 1; i < index; i++) {
+                            document.getElementById('invoiceTable').rows[i].cells[0].innerText = i
                         }
                         updateAllData();
                     })
@@ -522,13 +571,14 @@
                     var index = document.getElementById('invoiceTable').rows.length;
 
                     cell1.innerText = index;
-                    cell2.innerText = product.name;
-                    cell3.innerText = product.hsnCode;
-                    cell4.innerText = product.modalNumber;
-                    cell5.innerText = quantity;
-                    cell6.innerText = product.price;
-                    cell7.innerText = (product.price * quantity);
-                    cell8.innerText = product.id;
+                    cell2.innerText = product.brandName;
+                    cell3.innerText = product.name;
+                    cell4.innerText = product.hsnCode;
+                    cell5.innerText = product.modalNumber;
+                    cell6.innerText = quantity;
+                    cell7.innerText = product.price;
+                    cell8.innerText = (product.price * quantity);
+                    cell9.innerText = product.id;
 
 
                     row.appendChild(cell1);
@@ -539,6 +589,7 @@
                     row.appendChild(cell6);
                     row.appendChild(cell7);
                     row.appendChild(cell8);
+                    row.appendChild(cell9);
                     row.appendChild(removeButtonTD);
 
                     document.getElementById('invoiceTableBody').appendChild(row);
@@ -616,12 +667,40 @@
                 updateAllData()
             })
 
-
             jQuery('#received').on('input', function() {
                 var balance = parseFloat(document.getElementById('grandTotal').textContent);
                 var received = jQuery('#received').val();
                 balance = balance - received;
                 jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
+            })
+            jQuery('#deliveryCharges').on('input', function() {
+                var deliveryCharges = jQuery(this).val();
+                if (deliveryCharges > 0) {
+                    jQuery("#delevryCharge_text span").text("₹ " + parseFloat(deliveryCharges).toFixed(2).toString());
+                } else {
+                    jQuery("#delevryCharge_text span").text("Free");
+                }
+                updateAllData();
+            })
+
+            jQuery('#packagingCharges').on('input', function() {
+                var packagingCharges = jQuery(this).val();
+                if (packagingCharges > 0) {
+                    jQuery("#packagingCharge_text span").text("₹ " + parseFloat(packagingCharges).toFixed(2).toString());
+                } else {
+                    jQuery("#packagingCharge_text span").text("Free");
+                }
+                updateAllData();
+            })
+
+            jQuery('#cartoonCharges').on('input', function() {
+                var cartoonCharges = jQuery(this).val();
+                if (cartoonCharges > 0) {
+                    jQuery("#cartoonCharge_text span").text("₹ " + parseFloat(cartoonCharges).toFixed(2).toString());
+                } else {
+                    jQuery("#cartoonCharge_text span").text("Free");
+                }
+                updateAllData();
             })
         });
     </script>

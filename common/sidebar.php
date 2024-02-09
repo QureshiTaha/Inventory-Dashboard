@@ -145,14 +145,14 @@ try {
     </div>
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userManagements" aria-expanded="true" aria-controls="userManagements">
-            <i class="fas fa-fw fa-user"></i>
-            <span>User</span>
+            <i class="fas fa-fw fa-users"></i>
+            <span>Parties</span>
         </a>
         <div id="userManagements" class="collapse" aria-labelledby="headingUserManagements" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">User Managements:</h6>
-                <a class="collapse-item" href="users">All User</a>
-                <a class="collapse-item" href="add-user">Add User</a>
+                <a class="collapse-item" href="users">All Parties</a>
+                <a class="collapse-item" href="add-user">Add Parties</a>
             </div>
         </div>
     </li>
@@ -160,19 +160,19 @@ try {
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#productManagements" aria-expanded="true" aria-controls="productManagements">
             <i class="fas fa-fw fa-table"></i>
 
-            <span>Product</span>
+            <span>Stocks</span>
         </a>
         <div id="productManagements" class="collapse" aria-labelledby="headingproductManagements" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Stock Managements:</h6>
-                <a class="collapse-item" href="products">All products</a>
-                <a class="collapse-item" href="add-product">Add products</a>
+                <a class="collapse-item" href="products">All Items</a>
+                <a class="collapse-item" href="add-product">Add Item</a>
             </div>
         </div>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#accountsManagements" aria-expanded="true" aria-controls="accountsManagements">
-            <i class="fas fa-fw fa-file"></i>
+            <i class="fas fa-fw fa-file-invoice"></i>
 
             <span>Accounts</span>
         </a>
@@ -180,7 +180,7 @@ try {
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Invoices:</h6>
                 <a class="collapse-item" href="invoices">All Invoices</a>
-                <a class="collapse-item" href="create-invoice">Create Invoice</a>
+                <a class="collapse-item" href="create-invoice">Add New Invoice</a>
             </div>
         </div>
     </li>

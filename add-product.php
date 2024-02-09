@@ -62,8 +62,8 @@
                                         <!-- Form Row-->
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-6 mb-3">
-                                                <label class="small mb-1">Stock Quantity</label>
-                                                <input class="form-control" id="stockQuantity" oninput="this.value = this.value.replace(/\D+/g, '');" type="number" name="stockQuantity" placeholder="Enter Stock Quantity" value="">
+                                                <label class="small mb-1">Brand Name</label>
+                                                <input class="form-control" id="brandName" name="brandName" placeholder="Enter Brand Name" value="">
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="small mb-1" for="productName">Product Name</label>
@@ -76,21 +76,29 @@
                                                 <input class="form-control" id="productDescription" type="text" name="productDescription" placeholder="Enter Product Description" value="">
                                             </div>
                                             <div class="col-md-6">
+                                                <label class="small mb-1" for="modalNumber">Modal Number</label>
+                                                <input class="form-control" id="modalNumber" type="text" name="modalNumber" placeholder="Enter Modal Number" value="">
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row gx-3 mb-3">
+                                            <div class="col-md-6">
+                                                <label class="small mb-1">Stock Quantity</label>
+                                                <input class="form-control" id="stockQuantity" oninput="this.value = this.value.replace(/\D+/g, '');" type="number" name="stockQuantity" placeholder="Enter Stock Quantity" value="">
+                                            </div>
+                                            <div class="col-md-6">
                                                 <label class="small mb-1" for="productPrice">Product Price</label>
                                                 <input class="form-control" id="productPrice" type="amount" oninput="this.value = this.value.replace(/\D+/g, '');" name="productPrice" placeholder="Enter Product Price" value="">
                                             </div>
                                         </div>
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="modalNumber">Modal Number</label>
-                                                <input class="form-control" id="modalNumber" type="text" name="modalNumber" placeholder="Enter Modal Number" value="">
-                                            </div>
-                                            <div class="col-md-6">
                                                 <label class="small mb-1" for="hsnCode">HSN Code</label>
                                                 <input class="form-control" id="hsnCode" type="num" oninput="this.value = this.value.replace(/\D+/g, '');" name="hsnCode" placeholder="Enter HSN Code" value="">
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary" type="submit">Add Product</button>
+                                        <button class="btn btn-primary" type="submit">Add Item</button>
 
                                     </form>
                                     <div class="py-3">
@@ -133,9 +141,11 @@
         var quantity = document.getElementById('stockQuantity').value;
         var modalNumber = document.getElementById('modalNumber').value;
         var hsnCode = document.getElementById('hsnCode').value;
+        var brandName = document.getElementById('brandName').value;
 
         var productData = {
             name,
+            brandName,
             modalNumber,
             hsnCode,
             name,

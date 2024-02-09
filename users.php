@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>User Management</title>
+    <title>User Management | All Parties</title>
 
     <!-- Custom fonts for this template-->
     <!-- fontawesomefreeHere -->
@@ -51,7 +51,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid mb-3">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">User Management</h1>
+                        <h1 class="h3 mb-0 text-gray-800">All Parties</h1>
                     </div>
                     <div class="py-3">
                         <div class="alert d-none alert-success alert-dismissible fade show" id="myAlert" role="alert">
@@ -68,8 +68,8 @@
                                     <th>Email</th>
                                     <th>Mobile</th>
                                     <th>address</th>
+                                    <th>State</th>
                                     <th>GST No</th>
-                                    <th>Role</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -138,6 +138,7 @@
         var password = $(`#edit-modal-${ID} #password`).val();
         var role = $(`#edit-modal-${ID} #role`).val();
         var address = $(`#edit-modal-${ID} #address`).val().toString().trim();
+        var state = $(`#edit-modal-${ID} #state`).val().toString().trim();
         var tax = $(`#edit-modal-${ID} #tax`).val();
 
 
@@ -148,6 +149,7 @@
             email: email,
             mobile: mobile,
             address: address,
+            state: state,
             tax: tax,
             password: password,
             role: role,
@@ -200,8 +202,8 @@
                         <td>${users.email}</td>
                         <td>${users.mobile}</td>
                         <td title="${users.address}" class="text-truncate" style="max-width: 200px;">${users.address}</td>
+                        <td>${users.state ? users.state : 'N/A'}</td>
                         <td>${users.tax}</td>
-                        <td>${users.role == '1' ? 'customer' : 'vendor'}</td>
                         <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${users.id}"> <i class="fas fa-edit"></i> </button>
                         <button type="button" class=" btn bg-danger-icon" onclick="deleteUser(${users.id})"> <i class="fas fa-trash"></i> </button></td>
                     `
@@ -245,9 +247,12 @@
                                                                         oninput="this.value = this.value.slice(0, 200)"
                                                                         class="form-control">${users.address}</textarea>
                                                                 </div>
-
-
                                                                 <div class="form-group">
+                                                                    <label class="small mb-1" for="state">State</label>
+                                                                    <input class="form-control" id="state" type="text" name="state" value="${users.state}">
+                                                                </div>
+
+                                                                <div class="form-group d-none">
                                                                     <label for="role">Role</label>
                                                                     <select class="form-control" id="role" name="role">
                                                                         <option value="1" ${users.role == '1' ? 'selected' : ''}>Customer</option>

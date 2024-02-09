@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Product Management</title>
+    <title>Product Management | All Items</title>
 
     <!-- Custom fonts for this template-->
     <!-- fontawesomefreeHere -->
@@ -51,7 +51,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Product Management</h1>
+                        <h1 class="h3 mb-0 text-gray-800">All Items</h1>
                     </div>
                     <div class="py-3">
                         <div class="alert d-none alert-success alert-dismissible fade show" id="myAlert" role="alert">
@@ -65,12 +65,13 @@
                             <thead>
                                 <tr>
                                     <th>Sr.No</th>
-                                    <th>Product Name</th>
-                                    <th>Product Description</th>
-                                    <th>Product Modal Number</th>
-                                    <th>Product price</th>
+                                    <th>Brand Name</th>
+                                    <th>Item Name</th>
+                                    <th>Item Description</th>
+                                    <th>Item Modal Number</th>
+                                    <th>Item price</th>
                                     <th>Stock Quantity</th>
-                                    <th>Product Action</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -133,6 +134,7 @@
         event.preventDefault();
 
         var name = $(`#edit-modal-${ID} #productName`).val();
+        var brandName = $(`#edit-modal-${ID} #brandName`).val();
         var modalNumber = $(`#edit-modal-${ID} #productModalNumber`).val();
         var description = $(`#edit-modal-${ID} #productDescription`).val();
         var price = $(`#edit-modal-${ID} #productPrice`).val();
@@ -142,6 +144,7 @@
 
         var productData = {
             id: ID,
+            brandName,
             name,
             modalNumber,
             name,
@@ -195,6 +198,7 @@
                     const newModal = document.createElement('div');
                     row.innerHTML = `
                         <td>${index+1}</td>
+                        <td>${product.brandName}</td>
                         <td>${product.name}</td>
                         <td>${product.description}</td>
                         <td>${product.modalNumber}</td>
@@ -217,6 +221,10 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             <form id="edit-form-${product.id}">
+                                                                <div class="form-group">
+                                                                    <label for="brandName">Brand Name</label>
+                                                                    <input type="text" class="form-control" id="brandName" value="${product.brandName}">
+                                                                </div>
                                                                 <div class="form-group">
                                                                     <label for="productName">Product Name</label>
                                                                     <input type="text" class="form-control" id="productName" value="${product.name}">

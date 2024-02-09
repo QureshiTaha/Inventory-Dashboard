@@ -149,7 +149,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 			$password = $_POST['password'];
 			$role = $_POST['role'] ? $_POST['role'] : 1;
 			$tax = !empty($_POST['tax']) ? $_POST['tax'] : "";
+			$taxType = !empty($_POST['taxType']) ? $_POST['taxType'] : "";
 			$address = !empty($_POST['address']) ? $_POST['address'] : "";
+			$state = $_POST['state'];
 			$isValid = true;
 		}
 
@@ -157,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 
 
 		if ($isValid) {
-			$sqli = "INSERT INTO `user`(`name`, `email`, `mobile`, `password`, `role`,`tax`,`address`) VALUES ('$name','$email','$mobile','$password','$role','$tax','$address')";
+			$sqli = "INSERT INTO `user`(`name`, `email`, `mobile`, `password`, `role`,`tax`,`taxType`,`address`,`state`) VALUES ('$name','$email','$mobile','$password','$role','$tax','$taxType','$address','$state')";
 
 			try {
 				if ($con->query($sqli)) {
@@ -174,11 +176,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$name = $_POST['name'];
 		$email = $_POST['email'];
 		$mobile = $_POST['mobile'];
-		$password = $_POST['password'];
+		// $password = $_POST['password'];
+		$state = $_POST['state'];
 		$role = $_POST['role'] ? $_POST['role'] : 1;
 		$tax = !empty($_POST['tax']) ? $_POST['tax'] : "";
 		$address = !empty($_POST['address']) ? $_POST['address'] : "";
-		$sqli = "UPDATE `user` SET `name` = '$name', `email` = '$email', `mobile` = '$mobile', `password` = '$password', `role` = '$role', `tax` = '$tax', `address` = '$address' WHERE `user`.`id` = $id";
+		$sqli = "UPDATE `user` SET `name` = '$name', `email` = '$email', `mobile` = '$mobile', `role` = '$role', `tax` = '$tax', `address` = '$address',`state`='$state' WHERE `user`.`id` = $id";
 
 		try {
 			if ($con->query($sqli)) {
@@ -204,6 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	} else if ($action === 'add_product') {
 
 		$name = $_POST['name'];
+		$brandName = $_POST['brandName'];
 		$description = $_POST['description'];
 		$price = $_POST['price'];
 		$quantity = $_POST['quantity'];
@@ -240,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 
 
 
-		$sqli = "INSERT INTO `product`(`name`, `description`, `price`, `quantity`, `modalNumber`,`hsnCode`) VALUES ('$name','$description','$price','$quantity','$modalNumber','$hsnCode')";
+		$sqli = "INSERT INTO `product`(`name`,`brandName`, `description`, `price`, `quantity`, `modalNumber`,`hsnCode`) VALUES ('$name','$brandName','$description','$price','$quantity','$modalNumber','$hsnCode')";
 
 		try {
 			if ($con->query($sqli)) {
@@ -266,13 +270,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	} else if ($action === 'edit_product') {
 		$id = $_POST['id'];
 		$name = $_POST['name'];
+		$brandName = $_POST['brandName'];
 		$description = $_POST['description'];
 		$price = $_POST['price'];
 		$quantity = $_POST['quantity'];
 		$modalNumber = $_POST['modalNumber'];
 		$hsnCode = $_POST['hsnCode'];
 
-		$sqli = "UPDATE `product` SET `name` = '$name', `description` = '$description', `price` = '$price', `quantity` = '$quantity', `modalNumber` = '$modalNumber', `hsnCode` = '$hsnCode' WHERE `product`.`id` = $id";
+		$sqli = "UPDATE `product` SET `name` = '$name',`brandName`= '$brandName', `description` = '$description', `price` = '$price', `quantity` = '$quantity', `modalNumber` = '$modalNumber', `hsnCode` = '$hsnCode' WHERE `product`.`id` = $id";
 
 		try {
 			if ($con->query($sqli)) {
