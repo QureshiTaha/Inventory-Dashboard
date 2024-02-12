@@ -128,16 +128,6 @@
 
 
     <script>
-        // function printData() {
-        //     var divToPrint = document.getElementById("printable-invoice");
-        //     newWin = window.open("");
-        //     newWin.document.write(divToPrint.outerHTML);
-        //     // Add html footer to every page
-
-        //     newWin.print();
-        //     newWin.close();
-        // }
-
         function toInvoiceNumber(nr, n = 3, str) {
             return Array(n - String(nr).length + 1).join(str || '0') + nr;
         }
@@ -299,6 +289,73 @@
             return convertAmountToWords(amount);
         }
 
+        function formatDate(d) {
+            date = new Date(d)
+            var day, month, year;
+
+            year = date.getFullYear();
+            month = date.getMonth() + 1;
+            day = date.getDate();
+
+            if (month < 10) {
+                month = '0' + month;
+            }
+
+            if (day < 10) {
+                day = '0' + day;
+            }
+            // 2013-01-08
+
+            return year + '-' + month + '-' + day
+        }
+
+        function updateInvoice(id) {
+            var InvoiceID = jQuery(`#invoiveID-${toInvoiceNumber(id)}`).val();
+            var InvoiceDate = jQuery(`#invoiveDate-${toInvoiceNumber(id)}`).val();
+            console.log(id, InvoiceID, InvoiceDate);
+            // Ajax post on action edit_invoice
+
+            var InvoiceData = {
+                id,
+                InvoiceID,
+                InvoiceDate
+            }
+
+            fetch('<?= $apiURL; ?>/common/function.php?action=edit_invoice', {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                    },
+                    body: Object.entries(InvoiceData).map(([k, v]) => {
+                        return k + '=' + v
+                    }).join('&'),
+                }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    alert(data.message)
+                    if (data.success) {
+                        // myAlert.classList.remove('d-none');
+                        // myAlert.classList.remove('alert-danger');
+                        // myAlert.classList.add('alert-success');
+                        // document.getElementById('alertName').innerText = name;
+                        // document.getElementById('AlertMessage').innerText = " updated successfully!";
+                        // $(`#edit-modal-${ID}`).modal('hide');
+                        // setTimeout(() => {
+                            window.location.reload();
+                        // }, 2000);
+
+                        // alert('User added successfully');
+                    } else {
+                        // myAlert.classList.remove('d-none');
+                        // myAlert.classList.remove('alert-success');
+                        // myAlert.classList.add('alert-danger');
+                        // document.getElementById('alertName').innerText = "Error";
+                        // document.getElementById('AlertMessage').innerText = data.message;
+                    }
+                })
+
+        }
+
         fetch('<?= $apiURL; ?>/common/function.php?action=get_all_invoice')
             .then(response => response.json())
             .then(data => {
@@ -315,6 +372,35 @@
                         const newModal = document.createElement('div');
                         console.log(productData.map((item) => item.quantity).reduce((a, b) => parseFloat(a) ? a : 0 + parseFloat(b) ? b : 0));
                         newModal.innerHTML = `
+                        <div class="modal fade " id="edit-modal-${toInvoiceNumber(Invoices.id)}" tabindex="-2" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-md" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Invoice #${toInvoiceNumber(Invoices.id)}</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="padding: 0;">
+                                        <form onSumbit="return false">
+                                            <div id="edit-invoice-${toInvoiceNumber(Invoices.id)}" class="edit-invoice card-body">
+                                                <div class="form-group">
+                                                    <label for="invoiveID-${toInvoiceNumber(Invoices.id)}">Invoice Number </label>
+                                                    <input type="number" value="${toInvoiceNumber(Invoices.id)}" id="invoiveID-${toInvoiceNumber(Invoices.id)}" name="invoiveID-${toInvoiceNumber(Invoices.id)}" class="form-control" min="0">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="invoiveDate-${toInvoiceNumber(Invoices.id)}">Invoice Date </label>
+                                                    <input type="date" value="${formatDate(Invoices.date_created)}" id="invoiveDate-${toInvoiceNumber(Invoices.id)}" name="invoiveDate-${toInvoiceNumber(Invoices.id)}" class="form-control" min="0">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <input class="btn btn-primary" onClick="updateInvoice(${toInvoiceNumber(Invoices.id)})" type="submit" value="update">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="modal fade bd-example-modal-lg" id="modal-${toInvoiceNumber(Invoices.id)}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
@@ -385,10 +471,13 @@
                                                     <!-- <p style="color: #000000; margin: 0; padding: 0;">Invoice</p> -->
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
                                                             <li style="color: #000000;">
-                                                                <span >Invoice No: ${toInvoiceNumber(Invoices.id)}</span>
+                                                                <span >Invoice No:<b> ${toInvoiceNumber(Invoices.id)} </b></span>
+                                                            </li>
+                                                            <li style="color: #000000;">
+                                                                <span >Invoice Date:<b> ${formatDate(Invoices.date_created)} </b></span>
                                                             </li>
                                                             <!-- <li style="color: #000000;">
-                                                                <span >Creation Date: ${new Date(Invoices.date_updated).toISOString().slice(0, 10)}</span>
+                                                                <span >Creation Date:  ${new Date(Invoices.date_created).toISOString().slice(0, 10)}</span>
                                                             </li> -->
                                                         </ul>
                                                     </div>
@@ -474,6 +563,10 @@
                                                     <div style="width: 34%;">
                                                         <ul style="list-style-type: none; padding: 0; margin: 0;">
                                                             <li style="color: #000000; "><span style="text-align:left">  SubTotal :         </span><span style="float: right;">₹ ${InvoiceData.InvoiceData.subTotal}</span></li>
+                                                            ${ InvoiceData?.InvoiceData?.discount > 0 ?
+                                                                    `
+                                                                    <li style="color: #000000; "><span style="text-align:left">  Discount (${InvoiceData?.InvoiceData?.discount}%):         </span><span style="float: right;">- ₹ ${(InvoiceData?.InvoiceData?.discount * InvoiceData.InvoiceData.subTotal) / 100}</span></li>
+                                                                    `: ``}
                                                             <li style="color: #000000; "><span style="text-align:left">  Delevery Charge :  </span><span style="float: right;">₹ ${InvoiceData.InvoiceData?.deleveryCharge > 0 ? InvoiceData.InvoiceData?.deleveryCharge : "FREE"}</span></li>
                                                             <li style="color: #000000; "><span style="text-align:left">  Packaging Charge : </span><span style="float: right;">₹ ${InvoiceData.InvoiceData?.packagingCharge > 0 ? InvoiceData.InvoiceData?.packagingCharge : "FREE"}</span></li>
                                                             <li style="color: #000000; "><span style="text-align:left">  Cartoon Charge :   </span><span style="float: right;">₹ ${InvoiceData.InvoiceData?.cartoonCharge > 0 ? InvoiceData.InvoiceData?.cartoonCharge : "FREE"}</span></li>
@@ -483,10 +576,10 @@
                                                             <li style="color: #000000;"><span style="text-align:left"> GSTIN (18%) </span><span style="float: right;">₹ ${(InvoiceData.InvoiceData.subTotal * 0.18).toFixed(2)}</span></li>
                                                             ` : `` }
                                                             
-                                                            <li style="color: #000000; "><span style="text-align:left">Received : </span><span style="float: right;">₹ ${InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0}</span></li>
+                                                            <li style="color: #000000; "><span style="text-align:left">Received : </span><span style="float: right;">- ₹ ${InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0}</span></li>
                                                             <br>
                                                             <li style="color: #000000; display:flex;justify-content:space-between;width:100%"><span>Total Amount</span><span style="font-size: 20px;"><strong>₹ ${InvoiceData.InvoiceData.total}</strong></span></li>
-                                                            <li style="color: #000000; display:flex;justify-content:space-between;width:100%"><span>Balance</span><span style="font-size: 20px;"><strong>₹ ${parseFloat(InvoiceData.InvoiceData.total- (InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0)).toFixed(2)}</strong></span></li>
+                                                            <li style="color: #000000; display:flex;justify-content:space-between;width:100%"><span>Balance</span><span style="font-size: 20px;"><strong>₹ ${parseFloat((InvoiceData.InvoiceData.total- (InvoiceData.InvoiceData.received ? InvoiceData?.InvoiceData?.received:0) - ((InvoiceData?.InvoiceData?.discount ? InvoiceData?.InvoiceData?.discount : 0)  * InvoiceData.InvoiceData.subTotal) / 100)).toFixed(2)}</strong></span></li>
 
                                                         </ul>
                                                     </div>
@@ -529,12 +622,13 @@
                         row.appendChild(cell4);
 
                         const cell5 = document.createElement('td');
-                        cell5.innerHTML = Invoices.date_updated;
+                        cell5.innerHTML = formatDate(Invoices.date_created);
                         row.appendChild(cell5);
 
                         const cell6 = document.createElement('td');
                         cell6.innerHTML = `
                         <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#modal-${toInvoiceNumber(Invoices.id)}"> <i class="fas fa-eye"></i> </button>
+                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${toInvoiceNumber(Invoices.id)}"> <i class="fas fa-edit"></i> </button>
                     `;
                         row.appendChild(cell6);
 
@@ -542,7 +636,29 @@
 
                         jQuery("#my-modals").append(newModal);
                     }
+                    jQuery(function() {
+                        var regExp = /[0-9\.\,]/;
+                        jQuery('input[type="number"]').on('keydown keyup', function(e) {
+                            var value = String.fromCharCode(e.which) || e.key;
+                            if (!regExp.test(value) &&
+                                e.which != 188 // ,
+                                &&
+                                e.which != 190 // .
+                                &&
+                                e.which != 8 // backspace
+                                &&
+                                e.which != 46 // delete
+                                &&
+                                (e.which < 37 // arrow keys
+                                    ||
+                                    e.which > 40)) {
+                                e.preventDefault();
+                                return false;
+                            }
+                        });
+                    });
                     $('#data-tables-invoices').DataTable();
+
                 }
             });
     </script>

@@ -347,7 +347,12 @@
                     jQuery('#cartoonCharges').val();
 
                     var received = jQuery('#received').val();
-                    balance = grandTotal - received;
+                    var discount = jQuery('#discount').val();
+                    if (discount > 0) {
+                        balance = grandTotal - ((subTotal * discount) / 100) - received;
+                    } else {
+                        balance = grandTotal - received;
+                    }
                     jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
                 } else {
                     console.log('empty table');
@@ -402,7 +407,8 @@
             // subTotal
             var subTotal = jQuery('#subTotal').text();
             var total = jQuery('#grandTotal').text();
-            var received = jQuery('#received').val();
+            var received = jQuery('#received').val() || 0;
+            var discount = jQuery('#discount').val() || 0;
             var balance = jQuery('#balance').text();
             var additionalCharges = jQuery('#additionalCharges').text();
             var deleveryCharge = jQuery('#deliveryCharges').val();
@@ -414,6 +420,7 @@
                 customerID: $customerID,
                 subTotal: subTotal,
                 received: received,
+                discount: discount,
                 additionalCharge: additionalCharges,
                 deleveryCharge: deleveryCharge,
                 packagingCharge: packagingCharge,
@@ -669,10 +676,32 @@
 
             jQuery('#received').on('input', function() {
                 var balance = parseFloat(document.getElementById('grandTotal').textContent);
+                var subTotal = parseFloat(document.getElementById('subTotal').textContent);
                 var received = jQuery('#received').val();
-                balance = balance - received;
+                var discount = jQuery('#discount').val();
+                if (discount > 0) {
+                    console.log("balance", balance);
+                    balance = balance - ((subTotal * discount) / 100) - received;
+                } else {
+                    console.log("balance2", balance);
+                    balance = balance - received
+                }
                 jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
             })
+
+            jQuery('#discount').on('input', function() {
+                var balance = parseFloat(document.getElementById('grandTotal').textContent);
+                var subTotal = parseFloat(document.getElementById('subTotal').textContent);
+                var discount = jQuery('#discount').val();
+                var received = jQuery('#received').val();
+                if (discount > 0) {
+                    balance = balance - ((subTotal * discount) / 100) - received;
+                } else {
+                    balance = balance - received
+                }
+                jQuery('#balance').html(parseFloat(balance).toFixed(2).toString());
+            })
+
             jQuery('#deliveryCharges').on('input', function() {
                 var deliveryCharges = jQuery(this).val();
                 if (deliveryCharges > 0) {
@@ -702,6 +731,9 @@
                 }
                 updateAllData();
             })
+            $("#invoiceForm").submit(function(e) {
+                e.preventDefault();
+            });
         });
     </script>
 

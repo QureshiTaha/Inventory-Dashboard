@@ -325,6 +325,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		} else {
 			sendResponse([], false, 'Something went wrong while saving invoice');
 		}
+	} else if ($action === 'edit_invoice') {
+		$id = $_POST['id'];
+		$date = $_POST['InvoiceDate'];
+		$newInvoiceID = $_POST['InvoiceID'];
+
+		// check If Id already exist
+		$checkSql = "SELECT * from `invoices` where `id` = '$newInvoiceID' ";
+
+		// if exist throw error
+		$result = $con->query($checkSql);
+		if ($result->num_rows > 0 && ($newInvoiceID != $id)) {
+			sendResponse([], false, "Invoice already exist with this number");
+		} else {
+			$sqli = "UPDATE `invoices` set `id`='$newInvoiceID',`date_created`='$date' where `id` = $id";
+
+			try {
+				if ($con->query($sqli)) {
+					sendResponse($_POST, true, 'Invoice updated successfully');
+				} else {
+					sendResponse([], false, 'Something went wrong while updating Invoice');
+				}
+			} catch (Error $th) {
+				var_dump($th);
+				sendResponse([], false, $th->getMessage());
+			}
+		}
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}
@@ -369,4 +395,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 } else {
 	sendResponse([], false, 'Invalid action');
 }
-
