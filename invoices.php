@@ -341,7 +341,7 @@
                         // document.getElementById('AlertMessage').innerText = " updated successfully!";
                         // $(`#edit-modal-${ID}`).modal('hide');
                         // setTimeout(() => {
-                            window.location.reload();
+                        window.location.reload();
                         // }, 2000);
 
                         // alert('User added successfully');
@@ -355,8 +355,45 @@
                 })
 
         }
+        <?php
+        $filter = $_GET['filter'] ? $_GET['filter'] : "hello";
 
-        fetch('<?= $apiURL; ?>/common/function.php?action=get_all_invoice')
+        $filterQuery;
+
+        switch ($filter) {
+            case 'daily':
+                // Filter for the current day
+                $filterQuery = "WHERE DATE(date_created) = CURRENT_DATE()";
+                break;
+            case 'month':
+                // Filter for the current month
+                $filterQuery = "WHERE MONTH(date_created) = MONTH(CURRENT_DATE()) AND YEAR(date_created) = YEAR(CURRENT_DATE())";
+                break;
+            case 'weekly':
+                // Filter for the current week
+                $filterQuery = "WHERE YEARWEEK(date_created) = YEARWEEK(CURRENT_DATE())";
+                break;
+            case 'yearly':
+                // Filter for the current year
+                $filterQuery = "WHERE YEAR(date_created) = YEAR(CURRENT_DATE())";
+                break;
+            case 'isTaxable':
+                // Filter for invoices with isTaxable = true in InvoiceData JSON
+                $filterQuery = "WHERE JSON_EXTRACT(invoice_data, \'$.InvoiceData.isTaxable\') = \'true\'";
+                break;
+            case 'isNotTaxable':
+                // Filter for invoices with isTaxable = false in InvoiceData JSON
+                $filterQuery = "WHERE JSON_EXTRACT (invoice_data, \'$.InvoiceData.isTaxable\') = \'false\'";
+                break;
+            default:
+                $filterQuery = "";
+                break;
+        }
+
+
+        ?>
+
+        fetch('<?= $apiURL; ?>/common/function.php?action=get_all_invoice&&filterQuery=<?= $filterQuery; ?>')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {

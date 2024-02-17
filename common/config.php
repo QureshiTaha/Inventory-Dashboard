@@ -1,7 +1,7 @@
  <?php
 
+  ini_set('display_errors', 'off');
   $configPath = __DIR__ . '/config.json';
-
   if (!file_exists($configPath)) {
     //redirect to Home
     header('Location: index.php');
@@ -118,6 +118,16 @@
   function getAllInvoice($con)
   {
     $sql = "SELECT * FROM invoices";
+    $result = mysqli_query($con, $sql);
+    $invoice = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+      $invoice[] = $row;
+    }
+    return $invoice;
+  }
+  function getAllInvoiceWithFilter($con, $filterBy = "")
+  {
+    $sql = "SELECT * FROM invoices $filterBy";
     $result = mysqli_query($con, $sql);
     $invoice = array();
     while ($row = mysqli_fetch_assoc($result)) {

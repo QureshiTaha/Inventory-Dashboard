@@ -5,7 +5,6 @@
 // 	header("location: qt-admin");
 // 	exit;
 // }
-ini_set('display_errors', 'off');
 include("config.php");
 
 function gcip()
@@ -100,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
 	// Handle API requests
 	$action = $_GET['action'];
+	$filterQuery = $_GET['filterQuery'];
 	header('Content-Type: application/json');
 
 	if ($action === 'get_all_products') {
@@ -115,7 +115,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$user = getUserByID($con);
 		sendResponse($user, true, 'User retrieved successfully');
 	} else if ($action === 'get_all_invoice') {
-		$invoice = getAllInvoice($con);
+		if ($filterQuery) {
+			$invoice = getAllInvoiceWithFilter($con, $filterQuery);
+		} else {
+			$invoice = getAllInvoice($con);
+		}
 		sendResponse($invoice, true, 'Invoice retrieved successfully');
 	} else if ($action === "dashboard_stats") {
 		$stats = getDashboardStats($con);
