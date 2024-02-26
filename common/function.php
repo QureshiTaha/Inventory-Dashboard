@@ -124,6 +124,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	} else if ($action === "dashboard_stats") {
 		$stats = getDashboardStats($con);
 		sendResponse($stats, true, 'Dashboard stats retrieved successfully');
+	} else if ($action === "filtered_stats") {
+		$stats = getFilteredStats($con, $filterQuery);
+		// sendResponse([], true, 'filtered_stats stats retrieved successfully');
+		// var_dump($stats);
+		sendResponse($stats, true, 'filtered_stats stats retrieved successfully');
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}

@@ -144,9 +144,11 @@
     (SELECT SUM(quantity * price) FROM product) as stockValue,
     (SELECT COUNT(id) FROM user) as totalUsers,
     (SELECT COUNT(id) FROM invoices) as totalSales,
-	  (SELECT COUNT(id) FROM invoices WHERE MONTH(date_updated) = MONTH(NOW())) as totalSalesMonthly,
+	  (SELECT COUNT(id) FROM invoices WHERE MONTH(date_created) = MONTH(NOW())) as totalSalesMonthly,
+	  (SELECT COUNT(id) FROM invoices WHERE YEAR(date_created) = YEAR(NOW())) as totalSalesYearly,
     (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices) as totalSalesValue,
-    (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices WHERE MONTH(date_updated) = MONTH(NOW())) as totalSalesValueMonthly";
+    (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices WHERE MONTH(date_created) = MONTH(NOW())) as totalSalesValueMonthly,
+    (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices WHERE YEAR(date_created) = YEAR(NOW())) as totalSalesValueYearly";
 
     $result = mysqli_query($con, $sqli);
     $row = mysqli_fetch_assoc($result);
@@ -155,6 +157,49 @@
     return $row;
   }
 
+  function getFilteredStats($con, $filterBy = "")
+  {
+    //Fetch Total Products count ,Total stock value,Sales filter by weekly,monthly yearly
+    $filterCondition = "";
+    switch ($filterBy) {
+      case "daily":
+        $filterCondition = "WHERE DATE(date_created) = DATE(NOW())";
+        break;
+      case "weekly":
+        $filterCondition = "WHERE WEEK(date_created) = WEEK(NOW())";
+        break;
+      case "monthly":
+        $filterCondition = "WHERE MONTH(date_created) = MONTH(NOW())";
+        break;
+      case "yearly":
+        $filterCondition = "WHERE YEAR(date_created) = YEAR(NOW())";
+        break;
+      case "isTaxable":
+        $filterCondition = "WHERE JSON_EXTRACT(invoice_data, '$.InvoiceData.isTaxable') = 'true'";
+        break;
+      case "isNotTaxable":
+        $filterCondition = "WHERE JSON_EXTRACT(invoice_data, '$.InvoiceData.isTaxable') = 'false'";
+        break;
+      default:
+        break;
+    }
+
+    $sqli = "SELECT
+    (SELECT COUNT(id) FROM product) as totalProducts,
+    (SELECT SUM(quantity) FROM product) as totalStock,
+    (SELECT SUM(quantity * price) FROM product) as stockValue,
+    (SELECT COUNT(id) FROM user) as totalUsers,
+    (SELECT COUNT(id) FROM invoices) as totalSales,
+    (SELECT COUNT(id) FROM invoices $filterCondition) as totalSalesFiltered,
+    (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices) as totalSalesValue,
+    (SELECT COALESCE(SUM(JSON_EXTRACT(invoice_data, '$.InvoiceData.total')), 0) FROM invoices $filterCondition) as totalSalesValueFiltered";
+
+    $result = mysqli_query($con, $sqli);
+    $row = mysqli_fetch_assoc($result);
+    // Return the result directly
+    return $row;
+    // echo $sqli;
+  }
   // Common Functions End
 
   ?> 
