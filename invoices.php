@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php $filter = isset($_GET['filter']) ? $_GET['filter'] : ""; ?>
 
 <head>
 
@@ -19,8 +20,13 @@
 
     <!-- Custom styles for this template-->
     <!-- <link rel="stylesheet" media="all" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
     <link media="all" href="css/sb-admin-2.min.css" rel="stylesheet">
-
+<style>
+    .table td, .table th{
+        text-align: left;
+    }
+</style>
 
 
 </head>
@@ -75,20 +81,25 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">All Invoices</h1>
-                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
                     </div>
-
-                    <!-- Content Row -->
-
-
                     <div class="py-3">
                         <div class="alert d-none alert-success alert-dismissible fade show" id="myAlert" role="alert">
                             <strong id="alertName">xxx</strong> <span id="AlertMessage">xxxxxxxx</span>
                             <button type="button" class="btn-close" onclick="myAlert.classList.add('d-none')" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
-                    <div class="">
-
+                    <div class="makends-custom-select py-2">
+                        <select class="form-select" onchange="location = '?filter=' + this.value;">
+                            <option value="">All</option>
+                            <option <?= $filter == "daily" ? "selected" : "" ?> value="daily">Daily</option>
+                            <option <?= $filter == "monthly" ? "selected" : "" ?> value="monthly">Monthly</option>
+                            <option <?= $filter == "yearly" ? "selected" : "" ?> value="yearly">Yearly</option>
+                            <option <?= $filter == "weekly" ? "selected" : "" ?> value="weekly">Weekly</option>
+                            <option <?= $filter == "isTaxable" ? "selected" : "" ?> value="isTaxable">isTaxable</option>
+                            <option <?= $filter == "isNotTaxable" ? "selected" : "" ?> value="isNotTaxable">isNotTaxable</option>
+                        </select>
+                    </div>
+                    <div class="table-responsive">
                         <table id="data-tables-invoices" class="table  table-striped" style="width:100%">
                             <thead>
                                 <tr>
@@ -103,7 +114,6 @@
                             <tbody>
                             </tbody>
                         </table>
-
                     </div>
                     <!-- Content Row -->
 
@@ -334,29 +344,13 @@
                     console.log(data);
                     alert(data.message)
                     if (data.success) {
-                        // myAlert.classList.remove('d-none');
-                        // myAlert.classList.remove('alert-danger');
-                        // myAlert.classList.add('alert-success');
-                        // document.getElementById('alertName').innerText = name;
-                        // document.getElementById('AlertMessage').innerText = " updated successfully!";
-                        // $(`#edit-modal-${ID}`).modal('hide');
-                        // setTimeout(() => {
                         window.location.reload();
-                        // }, 2000);
-
-                        // alert('User added successfully');
-                    } else {
-                        // myAlert.classList.remove('d-none');
-                        // myAlert.classList.remove('alert-success');
-                        // myAlert.classList.add('alert-danger');
-                        // document.getElementById('alertName').innerText = "Error";
-                        // document.getElementById('AlertMessage').innerText = data.message;
                     }
                 })
 
         }
         <?php
-        $filter = $_GET['filter'] ? $_GET['filter'] : "hello";
+        // $filter = $_GET['filter'] ? $_GET['filter'] : "";
 
         $filterQuery;
 
