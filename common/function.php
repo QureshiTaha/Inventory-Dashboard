@@ -6,7 +6,6 @@
 // 	exit;
 // }
 include("config.php");
-
 function gcip()
 {
 	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -73,8 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	}
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['loggedin']) && $_GET['loggedin'] == 'false') {
 	session_start();
-
-	include('config.php');
 	$username = $_SESSION['username'];
 
 
@@ -89,13 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 
 	$_SESSION = array();
 	session_destroy();
-	header("location: " . $apiURL . "login");
-	exit;
+	$redirect = $apiURL . "index";
+	header("Location: $redirect");
 
-	$id = $_GET['delc'];
-	mysqli_query($con, "DELETE FROM category WHERE id=$id");
-	$msg = "category Deleted!";
-	header('location: category?pop=del&msg=' . $msg);
+	exit;
+	return true;
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
 	// Handle API requests
 	$action = $_GET['action'];
