@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- bootstrao -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <title>Your Application</title>
 </head>
 
@@ -191,6 +191,7 @@ function  checkAndCreateTables()
             `name` varchar(255) NOT NULL,
             `email` varchar(70) NOT NULL,
             `password` varchar(255) NOT NULL,
+            `admin_meta` varchar(255) NOT NULL,
             `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             PRIMARY KEY (`id`),
             UNIQUE KEY `name` (`name`),
