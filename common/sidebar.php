@@ -26,11 +26,12 @@ try {
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo $_SESSION['api-url']; ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
+        <div class="sidebar-brand-icon">
             <!-- <i class="fas fa-laugh-wink"></i> -->
-            <i class="fas fa-book"></i>
+            <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+
         </div>
-        <div class="sidebar-brand-text mx-3">INVENTORY</div>
+        <div class="sidebar-brand-text mx-3">Decor</div>
     </a>
 
     <!-- Divider -->
@@ -143,7 +144,7 @@ try {
     <div class="sidebar-heading">
         Managements
     </div>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#userManagements" aria-expanded="true" aria-controls="userManagements">
             <i class="fas fa-fw fa-user"></i>
             <span>User</span>
@@ -155,7 +156,7 @@ try {
                 <a class="collapse-item" href="add-user">Add User</a>
             </div>
         </div>
-    </li>
+    </li> -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#productManagements" aria-expanded="true" aria-controls="productManagements">
             <i class="fas fa-fw fa-table"></i>
@@ -164,13 +165,13 @@ try {
         </a>
         <div id="productManagements" class="collapse" aria-labelledby="headingproductManagements" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Stock Managements:</h6>
+                <h6 class="collapse-header">Product Managements:</h6>
                 <a class="collapse-item" href="products">All products</a>
                 <a class="collapse-item" href="add-product">Add products</a>
             </div>
         </div>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#accountsManagements" aria-expanded="true" aria-controls="accountsManagements">
             <i class="fas fa-fw fa-file"></i>
 
@@ -183,7 +184,7 @@ try {
                 <a class="collapse-item" href="create-invoice">Create Invoice</a>
             </div>
         </div>
-    </li>
+    </li> -->
 
 
 

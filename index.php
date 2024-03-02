@@ -213,6 +213,7 @@ function  checkAndCreateTables()
             `description` text DEFAULT NULL,
             `price` decimal(10,2) NOT NULL,
             `quantity` int(11) NOT NULL,
+            `product_meta` longtext DEFAULT NULL,
             `date_added` timestamp NOT NULL DEFAULT current_timestamp(),
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
