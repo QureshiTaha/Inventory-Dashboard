@@ -125,6 +125,59 @@
     }
     return $invoice;
   }
+
+  function getAllFields($con)
+  {
+    $sql = "SELECT * FROM fields";
+    $result = mysqli_query($con, $sql);
+    $fields = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+      $fields[] = $row;
+    }
+
+    return $fields;
+  }
+
+  function getAllCustomFields($con)
+  {
+    $sql = "SELECT * FROM custom_fields";
+    $result = mysqli_query($con, $sql);
+    $fields = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+      $fields[] = $row;
+    }
+
+    return $fields;
+  }
+
+
+  function getAllCustomFieldsByEntityType($con, $entity_type)
+  {
+    $sql = "SELECT * FROM custom_fields WHERE entity_type = '$entity_type' order by `priority` asc";
+    $result = mysqli_query($con, $sql);
+    $fields = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+      $fields[] = $row;
+    }
+
+    return $fields;
+  }
+
+  function deleteCustomField($con, $id){
+    $sql = "DELETE FROM fields WHERE id = '$id'";
+    mysqli_query($con, $sql);
+    
+    return true;
+  }
+
+  function deleteCustomFieldType($con, $id){
+    $sql = "DELETE FROM custom_fields WHERE entity_id = '$id'";
+    mysqli_query($con, $sql);
+
+    return true;
+  }
+
+
   function getDashboardStats($con)
   {
     //Fetch Total Products count ,Total stock value,Sales this month and Total Users

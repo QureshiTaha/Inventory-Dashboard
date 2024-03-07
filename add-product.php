@@ -63,21 +63,21 @@
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-6 mb-3">
                                                 <label class="small mb-1">Stock Quantity</label>
-                                                <input class="form-control" id="stockQuantity" oninput="this.value = this.value.replace(/\D+/g, '');" type="number" name="stockQuantity" placeholder="Enter Stock Quantity" value="">
+                                                <input class="form-control" id="quantity" oninput="this.value = this.value.replace(/\D+/g, '');" type="number" name="quantity" placeholder="Enter Stock Quantity" value="">
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="productName">Product Name</label>
-                                                <input class="form-control" id="productName" type="text" name="productName" placeholder="Enter Product Name" value="">
+                                                <label class="small mb-1" for="name">Product Name</label>
+                                                <input class="form-control" id="name" type="text" name="name" placeholder="Enter Product Name" value="">
                                             </div>
                                         </div>
                                         <div class="row gx-3 mb-3">
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="productDescription">Product Description</label>
-                                                <input class="form-control" id="productDescription" type="text" name="productDescription" placeholder="Enter Product Description" value="">
+                                                <label class="small mb-1" for="description">Product Description</label>
+                                                <input class="form-control" id="description" type="text" name="description" placeholder="Enter Product Description" value="">
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="small mb-1" for="productPrice">Product Price</label>
-                                                <input class="form-control" id="productPrice" type="amount" oninput="this.value = this.value.replace(/\D+/g, '');" name="productPrice" placeholder="Enter Product Price" value="">
+                                                <label class="small mb-1" for="price">Product Price</label>
+                                                <input class="form-control" id="price" type="amount" oninput="this.value = this.value.replace(/\D+/g, '');" name="price" placeholder="Enter Product Price" value="">
                                             </div>
                                         </div>
                                         <div class="row gx-3 mb-3">
@@ -124,34 +124,21 @@
 <script>
     var myAlert = document.getElementById('myAlert');
 
-    function addProduct(event) {
-        event.preventDefault(); // Prevent default form submission
-        // modalNumber 	name 	description 	price 	quantity
-        var name = document.getElementById('productName').value;
-        var description = document.getElementById('productDescription').value;
-        var price = document.getElementById('productPrice').value;
-        var quantity = document.getElementById('stockQuantity').value;
-        var modalNumber = document.getElementById('modalNumber').value;
-        var hsnCode = document.getElementById('hsnCode').value;
+    function addProduct(e) {
+        e.preventDefault();
+        var form = new FormData(e.target);
+        form = Object.fromEntries(form);
 
-        var productData = {
-            name,
-            modalNumber,
-            hsnCode,
-            name,
-            description,
-            price,
-            quantity
-        }
         fetch('<?= $apiURL; ?>/common/function.php?action=add_product', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
                 },
-                body: Object.entries(productData).map(([k, v]) => {
+                body: Object.entries(form).map(([k, v]) => {
                     return k + '=' + v
                 }).join('&'),
-            }).then(response => response.json())
+            })
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     console.log('Product added:', data.data);
@@ -171,7 +158,8 @@
                     document.getElementById('AlertMessage').innerText = data.message;
                 }
             })
-    }
+
+    };
 </script>
 
 </html>

@@ -123,6 +123,106 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['fields'])  && isset($_GET['action'])) {
+	$action = $_GET['action'];
+	$entityType = $_GET['entityType'] ? $_GET['entityType'] : null;
+	if ($action == 'add_new_field') {
+		$isValid = false;
+		if (empty($_POST['fieldLabel'])) {
+			sendResponse([], false, 'field Label is required');
+		} else if (empty($_POST['fieldName'])) {
+			sendResponse([], false, 'field Name is required');
+		} else {
+			$isValid = true;
+			$fieldLabel = $_POST['fieldLabel'];
+			$fieldName = $_POST['fieldName'];
+		}
+		if ($isValid) {
+			$sql = "INSERT INTO `fields`(`label`, `name`) VALUES ('$fieldLabel','$fieldName')";
+			$result = mysqli_query($con, $sql);
+			try {
+				if ($result) {
+					sendResponse([], true, 'Field added successfully');
+				} else {
+					sendResponse([], false, 'Failed to add field');
+				}
+			} catch (Exception $e) {
+				sendResponse([], false, 'Failed to add field');
+			}
+		}
+	} else if ($action == 'get_all_field') {
+		$allField = getAllFields($con, $entityType);
+		sendResponse($allField, true, 'Field retrieved successfully');
+	} else if ($action == 'update_field') {
+	} else if ($action == 'add_new_custom_field') {
+		$isValid = false;
+		if (empty($_POST['field_id'])) {
+			sendResponse([], false, 'field id is required');
+		} else if (empty($_POST['entity_type'])) {
+			sendResponse([], false, 'entity type is required');
+		} else if (empty($_POST['entity_id'])) {
+			sendResponse([], false, 'entity id is required');
+		} else if (empty($_POST['label'])) {
+			sendResponse([], false, 'label is required');
+		} else if (empty($_POST['name'])) {
+			sendResponse([], false, 'name is required');
+		} else if (empty($_POST['type'])) {
+			sendResponse([], false, 'type is required');
+		} else {
+			$isValid = true;
+		}
+
+		if ($isValid) {
+			$id = $_POST['id'] ? $_POST['id'] : null;
+			$priority = $_POST['priority'] ? $_POST['priority'] : null;
+			$field_id = $_POST['field_id'];
+			$entity_type = $_POST['entity_type'];
+			$entity_id = $_POST['entity_id'];
+			$label = $_POST['label'];
+			$name = $_POST['name'];
+			$type = $_POST['type'];
+			$options = $_POST['options'] ? $_POST['options'] : null;
+
+			// Insert if new, update if exists
+			$sql = "INSERT INTO `custom_fields`(`id`,`priority`,`field_id`, `entity_type`, `entity_id`, `label`, `name`, `type`,`options`) 
+				VALUES ('$id','$priority','$field_id','$entity_type','$entity_id','$label','$name','$type','$options')
+				ON DUPLICATE KEY UPDATE
+				`id`=VALUES(`id`),
+				`priority`=VALUES(`priority`),
+				`entity_type`=VALUES(`entity_type`),
+				`label`=VALUES(`label`),
+				`name`=VALUES(`name`),
+				`type`=VALUES(`type`),
+				`options`=VALUES(`options`)
+				";
+
+
+			// $result = mysqli_query($con, $sql);
+			// var_dump($result);
+			// echo $sql;
+
+
+			try {
+				$result = mysqli_query($con, $sql);
+				if ($result) {
+					sendResponse([], true, 'Field Inserted successfully');
+				} else {
+					sendResponse([], false, 'Failed to Insert field ');
+				}
+			} catch (Error $th) {
+				sendResponse([], false, $th->getMessage());
+			}
+		}
+	} else if ($action == 'get_all_custom_field_entity_type') {
+		if ($entityType == null) {
+			sendResponse([], false, 'entity type is required');
+		} else {
+			$allField = getAllCustomFieldsByEntityType($con, $entityType);
+			sendResponse($allField, true, 'Custom Field retrieved successfully');
+		}
+	} else {
+		sendResponse([], false, 'Invalid action for Fields');
+	}
 } else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action'])) {
 
 	$action = $_GET['action'];
@@ -361,7 +461,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	} else {
 		sendResponse([], false, 'Invalid action or missing query parameter');
 	}
+} else if ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['field']) && isset($_GET['id'])) {
+	$field = $_GET['field'];
+	$id = $_GET['id'];
+	$isValid = false;
+
+	if (empty($field)) {
+		sendResponse([], false, 'Field cannot be empty');
+	} else if (empty($id)) {
+		sendResponse([], false, 'ID cannot be empty');
+	} else {
+		$isValid = true;
+	}
+	if ($isValid) {
+		if ($field === 'fields') {
+			deleteCustomField($con, $id);
+			sendResponse([], true, 'Field deleted successfully with ID'.$id);
+		} else if ($field === 'custom_fields') {
+			deleteCustomFieldType($con, $id);
+			sendResponse([], true, 'Field deleted successfully');
+		} else {
+		// 	sendResponse([], false, 'Invalid action');
+		}
+	}
 } else {
 	sendResponse([], false, 'Invalid action');
 }
-
