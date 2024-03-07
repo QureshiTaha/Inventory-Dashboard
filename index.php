@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- bootstrao -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
     <title>Your Application</title>
 </head>
 
@@ -185,17 +185,18 @@ function  checkAndCreateTables()
             `activity` varchar(55) NOT NULL,
             `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        ) ENGINE=InnoDB AUTO_INCREMENT=57;",
         "admin" => "CREATE TABLE IF NOT EXISTS `admin` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL,
             `email` varchar(70) NOT NULL,
             `password` varchar(255) NOT NULL,
+            `admin_meta` varchar(255) NOT NULL,
             `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             PRIMARY KEY (`id`),
             UNIQUE KEY `name` (`name`),
             UNIQUE KEY `email` (`email`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        ) ENGINE=InnoDB AUTO_INCREMENT=0;",
         "invoices" => "CREATE TABLE IF NOT EXISTS `invoices` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `invoice_id` int(11) NOT NULL,
@@ -210,11 +211,30 @@ function  checkAndCreateTables()
             `hsnCode` int(50) DEFAULT NULL,
             `name` varchar(255) NOT NULL,
             `description` text DEFAULT NULL,
+            `product_meta` longtext DEFAULT NULL,
             `price` decimal(10,2) NOT NULL,
             `quantity` int(11) NOT NULL,
             `date_added` timestamp NOT NULL DEFAULT current_timestamp(),
             PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        ) ENGINE=InnoDB AUTO_INCREMENT=0;",
+        "fields" => "CREATE TABLE IF NOT EXISTS fields (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            label VARCHAR(255) NOT NULL
+        ) ENGINE=InnoDB AUTO_INCREMENT=0;",
+        "custom_fields" => "CREATE TABLE IF NOT EXISTS custom_fields (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            field_id INT NOT NULL,
+            priority int(11) DEFAULT NULL,
+            entity_type VARCHAR(255) NOT NULL,
+            entity_id INT NOT NULL,
+            label VARCHAR(255) NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            type VARCHAR(255) NOT NULL,
+            options TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (field_id) REFERENCES fields(id)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0;",
         "user" => "CREATE TABLE IF NOT EXISTS `user` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL,
@@ -226,7 +246,7 @@ function  checkAndCreateTables()
             `tax` varchar(100) NOT NULL,
             `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        ) ENGINE=InnoDB AUTO_INCREMENT=23;",
         "insertAdmin" => "INSERT INTO `admin` (`name`, `email`, `password`) VALUES ('admin', 'admin@admin.com', 'admin@123') ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password` = VALUES(`password`);"
     ];
 
