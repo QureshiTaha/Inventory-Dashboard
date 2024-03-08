@@ -63,17 +63,12 @@
                     <div class="table-responsive">
                         <table id="data-tables-product" class="table table-striped" style="width:100%">
                             <thead>
-                                <tr>
-                                    <th>Sr.No</th>
-                                    <th>Product Name</th>
-                                    <th>Product Description</th>
-                                    <th>Product Modal Number</th>
-                                    <th>Product price</th>
-                                    <th>Stock Quantity</th>
-                                    <th>Product Action</th>
+                                <tr id="tableHead">
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr id="tableBody">
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -183,80 +178,53 @@
                 }
             })
     }
-    fetch('<?= $apiURL; ?>/common/function.php?action=get_all_products')
+    fetch('<?= $apiURL; ?>common/function.php?data_action=get_deta_meta', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+            },
+            body: `meta_key=product`,
+        })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 // Add the retrieved Products to the table
-                const tableBody = document.querySelector('#data-tables-product tbody');
-                for (let index = 0; index < data.data.length; index++) {
-                    const product = data.data[index];
-                    const row = document.createElement('tr');
-                    const newModal = document.createElement('div');
-                    row.innerHTML = `
-                        <td>${index+1}</td>
-                        <td>${product.name}</td>
-                        <td>${product.description}</td>
-                        <td>${product.modalNumber}</td>
-                        <td>${product.price}</td>
-                        <td>${product.quantity}</td>
-                        <td><button type="button" class="btn bg-success-icon" data-toggle="modal" data-target="#edit-modal-${product.id}"> <i class="fas fa-edit"></i> </button>
-                        <button type="button" class=" btn bg-danger-icon" onclick="deleteProduct(${product.id})"> <i class="fas fa-trash"></i> </button></td>
-                    `
-                    tableBody.appendChild(row);
+                const tableHead = document.getElementById('tableHead');
+                const tableBody = document.getElementById('tableBody');
+                var headData = data.data[0];
+                var tableData = data.data[1];
+                // console.log(tableData);
+                //tableData = [
+                //     {
+                //         "id": "1",
+                //         "field_ID": "",
+                //         "meta_key": "product",
+                //         "meta_value": "{\"product_title\":\"Classic Sheers\",\"serial_number\":\"28\",\"sheer\":\"SRD 750 51P\",\"shade\":\"66582\",\"wash_care-bucket\":\"bucket\",\"wash_care-iron\":\"iron\",\"wash_care-p\":\"p\",\"end_use\":\"End USE ICON\",\"weight\":\"73\",\"composition\":\"100% Polyster\",\"quantity\":\"100\",\"message\":\"Alos available in Flame Retardent (NFPA 710)\",\"qr_code\":\"www.makends.com\",\"show_logo\":\"true\"}"
+                //     }
+                // ]
 
-                    newModal.innerHTML = `<div class="modal fade" id="edit-modal-${product.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                // set table head as key
+                var checkboxs = [];
 
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">EditPproduct</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form id="edit-form-${product.id}">
-                                                                <div class="form-group">
-                                                                    <label for="productName">Product Name</label>
-                                                                    <input type="text" class="form-control" id="productName" value="${product.name}">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="productDescription">Product Description</label>
-                                                                    <input type="text" class="form-control" id="productDescription" value="${product.description}">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="productModalNumber">Product Modal Number</label>
-                                                                    <input type="text" class="form-control" id="productModalNumber" value="${product.modalNumber}">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="productPrice">Product Price</label>
-                                                                    <input type="number" class="form-control" id="productPrice" value="${product.price}">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="productQuantity">Product Quantity</label>
-                                                                    <input type="number" class="form-control" id="productQuantity" value="${product.quantity}">
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="hsnCode">HSN Code </label>
-                                                                    <input type="text" class="form-control" id="hsnCode" value="${product.hsnCode ? product.hsnCode : ''}">
-                                                                </div>
+                if (headData.length > 0) {
+                    headData.forEach(data => {
+                        data.type == 'checkbox' ? markers.push(data) : '';
+                        tableHead.innerHTML += `<th>${data.label}</th>`;
+                    })
 
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary" onclick="editProduct(${product.id})">Save changes</button>
-                                                        </div>
-                                                    </div>
-                                                </div>`
-
-                    jQuery("#my-modals").append(newModal);
-
-
+                    // populate table with meta tableData
+                    tableData.forEach(data => {
+                        product = JSON.parse(data.meta_value);
+                        var tableKeys = Object.values(JSON.parse(data.meta_value));
+                        tableKeys.forEach(key => {
+                            if (key) {
+                                tableBody.innerHTML += `<td>${key}</td>`;
+                            }
+                        })
+                    })
                 }
 
-                $('#data-tables-product').DataTable();
+                // $('#data-tables-product').DataTable();
 
             } else {
                 console.error('Failed to fetch products:', data.message);

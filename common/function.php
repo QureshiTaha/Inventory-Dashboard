@@ -476,13 +476,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	if ($isValid) {
 		if ($field === 'fields') {
 			deleteCustomField($con, $id);
-			sendResponse([], true, 'Field deleted successfully with ID'.$id);
+			sendResponse([], true, 'Field deleted successfully with ID' . $id);
 		} else if ($field === 'custom_fields') {
 			deleteCustomFieldType($con, $id);
 			sendResponse([], true, 'Field deleted successfully');
 		} else {
-		// 	sendResponse([], false, 'Invalid action');
+			// 	sendResponse([], false, 'Invalid action');
 		}
+	}
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['data_action'])) {
+	$action = $_GET['data_action'];
+
+	if ($action === 'add_deta_meta') {
+		$metaKey = $_POST['meta_key'];
+		$metaValue = $_POST['meta_value'];
+		AddDataMeta($con, $metaKey, $metaValue);
+		sendResponse([$metaKey, $metaValue], true, `success`);
+	} else if ($action === 'get_deta_meta') {
+		$metaKey = $_POST['meta_key'] ? $_POST['meta_key'] : '';
+		$dataMeta = getDataMetaByKey($con, $metaKey);
+		$allField = getAllCustomFieldsByEntityType($con, $metaKey);
+		sendResponse([$allField, $dataMeta], true, `success`);
+	} else {
+		sendResponse([], false, 'Invalid action');
 	}
 } else {
 	sendResponse([], false, 'Invalid action');

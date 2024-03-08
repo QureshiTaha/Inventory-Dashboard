@@ -60,36 +60,10 @@
                                 <div class="card-body">
                                     <form id="addProduct" onsubmit="addProduct(event)">
                                         <!-- Form Row-->
-                                        <div class="row gx-3 mb-3">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="small mb-1">Stock Quantity</label>
-                                                <input class="form-control" id="quantity" oninput="this.value = this.value.replace(/\D+/g, '');" type="number" name="quantity" placeholder="Enter Stock Quantity" value="">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="small mb-1" for="name">Product Name</label>
-                                                <input class="form-control" id="name" type="text" name="name" placeholder="Enter Product Name" value="">
-                                            </div>
+
+                                        <div id="formData" class="row gx-3 mb-3">
                                         </div>
-                                        <div class="row gx-3 mb-3">
-                                            <div class="col-md-6">
-                                                <label class="small mb-1" for="description">Product Description</label>
-                                                <input class="form-control" id="description" type="text" name="description" placeholder="Enter Product Description" value="">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="small mb-1" for="price">Product Price</label>
-                                                <input class="form-control" id="price" type="amount" oninput="this.value = this.value.replace(/\D+/g, '');" name="price" placeholder="Enter Product Price" value="">
-                                            </div>
-                                        </div>
-                                        <div class="row gx-3 mb-3">
-                                            <div class="col-md-6">
-                                                <label class="small mb-1" for="modalNumber">Modal Number</label>
-                                                <input class="form-control" id="modalNumber" type="text" name="modalNumber" placeholder="Enter Modal Number" value="">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="small mb-1" for="hsnCode">HSN Code</label>
-                                                <input class="form-control" id="hsnCode" type="num" oninput="this.value = this.value.replace(/\D+/g, '');" name="hsnCode" placeholder="Enter HSN Code" value="">
-                                            </div>
-                                        </div>
+
                                         <button class="btn btn-primary" type="submit">Add Product</button>
 
                                     </form>
@@ -124,17 +98,111 @@
 <script>
     var myAlert = document.getElementById('myAlert');
 
+    jQuery(document).ready(function() {
+        // get_all_custom_field_entity_type
+        fetch('<?= $apiURL; ?>/common/function.php?fields=&&action=get_all_custom_field_entity_type&&entityType=product', {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Custom Fields:', data.data);
+                    // [{
+                    //         "id": "45",
+                    //         "field_id": "9",
+                    //         "priority": "0",
+                    //         "entity_type": "product",
+                    //         "entity_id": "field_1709805559634",
+                    //         "label": "SR. No",
+                    //         "name": "serial_number",
+                    //         "type": "number",
+                    //         "options": "",
+                    //         "created_at": "2024-03-07 15:30:27"
+                    //     },
+                    //     ...
+                    // ]
+                    // append to form
+                    // var addToform = data.data;
+                    if (typeof(data.data) == 'object') {
+                        data.data.forEach(addToform => {
+                            var payload = '';
+                            if (addToform.type == 'radio') {
+                                options = addToform.options.split('\n');
+                                payload += `
+                                    <div class="col-md-6 mb-3">
+                                        <label class="small mb-1">${addToform.label}</label>                 
+                                        <div class=" d-flex flex-row ">`
+                                options.forEach(option => {
+                                    optionSplit = option.split(':');
+                                    payload += `
+                                    <div class="form-check col-md-3">
+                                            <input class="form-check-input" id="${addToform.name}" type="${addToform.type}" name="${addToform.name}" value="${optionSplit[0]}">
+                                            <label class="form-check-label" for="${addToform.name}">${optionSplit[1]}</label></div>`
+                                });
+                                payload += `</div></div>`
+                            } else if (addToform.type == 'checkbox') {
+                                options = addToform.options.split('\n');
+                                payload += `
+                                    <div class="col-md-6 mb-3">
+                                        <label class="small mb-1">${addToform.label}</label>
+                                        <div class=" d-flex flex-row ">`
+                                options.forEach(option => {
+                                    optionSplit = option.split(':');
+                                    payload += `
+                                    <div class="form-check col-md-3">
+                                            <input class="form-check-input" id="${addToform.name}" type="${addToform.type}" name="${addToform.name+"-"+optionSplit[0]}" value="${optionSplit[0]}">
+                                            <label class="form-check-label" for="${addToform.name}">${optionSplit[1]}</label></div>`
+                                });
+                                payload += `</div></div>`;
+                            } else {
+                                payload += `<div class="col-md-6 mb-3">
+                                <label class="small mb-1">${addToform.label}</label>
+                                <input class="form-control ${addToform.id}" id="${addToform.name}" type="${addToform.type}" name="${addToform.name}" placeholder="${addToform.label}" value="">
+                                </div>`;
+                            }
+                            document.getElementById('formData').innerHTML += payload;
+                        })
+                    }
+
+                } else {
+                    console.log('Error:', data.message);
+                }
+            })
+    })
+
     function addProduct(e) {
         e.preventDefault();
         var form = new FormData(e.target);
+        // set checkbox value to string name:value
+        // let checkbox = '';
+        // let checkboxName = '';
+        // form.forEach((value, name) => {
+        //     if (name.includes('[]')) {
+        //         console.log(name, value);
+        //         checkbox += `${name.replace('[]', '')}:${value},`;
+        //         checkboxName = name;
+        //         index = index + 1;
+        //     }
+        // })
+        // form.delete(checkboxName);
+        // form.set(`${checkboxName.replace('[]', '')}`, checkbox);
+
         form = Object.fromEntries(form);
 
-        fetch('<?= $apiURL; ?>/common/function.php?action=add_product', {
+        var submitForm = {
+            meta_key: 'product',
+            meta_value: JSON.stringify(form)
+        }
+
+        fetch('<?= $apiURL; ?>/common/function.php?data_action=add_deta_meta', {
                 method: 'POST',
                 headers: {
                     "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
                 },
-                body: Object.entries(form).map(([k, v]) => {
+                body: Object.entries(submitForm).map(([k, v]) => {
                     return k + '=' + v
                 }).join('&'),
             })

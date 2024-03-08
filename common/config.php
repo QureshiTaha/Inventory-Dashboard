@@ -163,18 +163,38 @@
     return $fields;
   }
 
-  function deleteCustomField($con, $id){
+  function deleteCustomField($con, $id)
+  {
     $sql = "DELETE FROM fields WHERE id = '$id'";
     mysqli_query($con, $sql);
-    
+
     return true;
   }
 
-  function deleteCustomFieldType($con, $id){
+  function deleteCustomFieldType($con, $id)
+  {
     $sql = "DELETE FROM custom_fields WHERE entity_id = '$id'";
     mysqli_query($con, $sql);
 
     return true;
+  }
+
+  function AddDataMeta($con, $metaKey, $metaValue)
+  {
+    $sql = "INSERT INTO data_meta (`meta_key`,`meta_value`) VALUES ('" . $metaKey . "','" . $metaValue . "')";
+    mysqli_query($con, $sql);
+    return true;
+  }
+
+  function getDataMetaByKey($con, $metaKey){
+    $sql = "SELECT * FROM data_meta WHERE meta_key = '$metaKey'";
+    $result = mysqli_query($con, $sql);
+    $data = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+      $data[] = $row;
+    }
+
+    return $data;
   }
 
 
