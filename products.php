@@ -208,7 +208,7 @@
 
                 if (headData.length > 0) {
                     headData.forEach(data => {
-                        data.type == 'checkbox' ? markers.push(data) : '';
+                        if (data.type == 'checkbox') checkboxs.push(data);
                         tableHead.innerHTML += `<th>${data.label}</th>`;
                     })
 
