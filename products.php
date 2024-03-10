@@ -18,10 +18,12 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet" media='all'>
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css" media='all'>
+    <link rel="stylesheet" href="css/style.css" media='all'>
+
+
 
 </head>
 
@@ -66,11 +68,87 @@
                                 <tr id="tableHead">
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr id="tableBody">
-                                </tr>
+                            <tbody id="tableBody">
+
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div id="printElement" class="d-flex justify-content-center align-items-center">
+                    <div class="border border-dark bg-transparent container w-75 m-5 p-3">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column w-100">
+                                <div class="col-12 py-3 mx-2">
+                                    <h3 id="product_title">Clasic Sheers</h3>
+                                    <h6>Sr No : <span id="serial_number">123</span></h6>
+                                    <h6>Price Code : <span id="price_code">B</span></h6>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="row border-bottom border-dark mx-2 pb-3">
+                                        <div class=" col-4 border-end border-dark">
+                                            <h6><strong>Quality</strong></h6>
+                                            <h6 id="quality">Sheer SRD 7505IP</h6>
+                                        </div>
+                                        <div class=" col-4 border-end border-dark">
+                                            <h6><strong>Shade</strong></h6>
+                                            <h6 id="shade">66582</h6>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6><strong>Composition</strong></h6>
+                                            <h6 id="composition">100% Polyester</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row mx-2 pt-3">
+                                        <div class="col-3 border-end border-dark">
+                                            <h6><strong>Weight (6SM)</strong></h6>
+                                            <h6 id="weight">73</h6>
+                                        </div>
+                                        <div class="col-3 border-end border-dark">
+                                            <h6><strong>Width (CM)</strong></h6>
+                                            <h6 id="width">140</h6>
+                                        </div>
+                                        <div class="col-3 border-end border-dark">
+                                            <h6><strong>Wash care</strong></h6>
+                                            <h6 id="wash_care">
+                                                <img src="img\svg_icons\fd4f95c5-7310-48b7-bbe0-dfe5270542d9.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\e3dc3ac0-9ea8-4ffa-aac3-cf1b47397aa9.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\199200b9-c34c-426f-a47c-510876190e1c.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\680da7a2-b3f4-4be9-93d4-b0d0abcc6840.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\c7c2c3c8-bf59-40c9-91ff-59e736435a2a.svg" height="20" alt="Decore" srcset="">
+                                            </h6>
+                                        </div>
+                                        <div class="col-3">
+                                            <h6><strong>End use</strong></h6>
+                                            <h6 id="end_use">
+                                                <img src="img\svg_icons\fd4f95c5-7310-48b7-bbe0-dfe5270542d9.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\e3dc3ac0-9ea8-4ffa-aac3-cf1b47397aa9.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\199200b9-c34c-426f-a47c-510876190e1c.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\680da7a2-b3f4-4be9-93d4-b0d0abcc6840.svg" height="20" alt="Decore" srcset="">
+                                                <img src="img\svg_icons\c7c2c3c8-bf59-40c9-91ff-59e736435a2a.svg" height="20" alt="Decore" srcset="">
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="row mx-2 pt-3">
+                                        <div class="col-12">
+                                            <p><strong id="message">Alos available in Flame Retardent (NFPA 710)</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ms-3 col-2 d-flex flex-column ">
+                                <div class="col-3 py-3 my-3 " style="height: 8rem ; width: auto">
+                                    <!-- <img src="https://via.placeholder.com/600" height="120" alt="Decore" srcset=""> -->
+                                    <img src="img\logo.png" width="120" alt="Decore" srcset="">
+                                </div>
+                                <div class="col-3 py-3 my-3">
+                                    <div class="qr-code">
+                                        <!-- <img src="https://via.placeholder.com/600" height="120" alt="QR code" srcset=""> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -78,6 +156,9 @@
 
             </div>
             <!-- End of Main Content -->
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 
             <!-- Footer -->
             <span id="my-modals"></span>
@@ -95,6 +176,27 @@
     <!-- End of Page Wrapper -->
 </body>
 <script>
+    generate("https://makends.com");
+
+    function generate(user_input) {
+
+        document.querySelector(".qr-code").style = "";
+        //remove original
+        document.querySelector(".qr-code").innerHTML = "";
+        var qrcode = new QRCode(document.querySelector(".qr-code"), {
+            text: `${user_input}`,
+            width: 120, //128
+            height: 120,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        console.log(qrcode);
+    }
+
+
+
     var myAlert = document.getElementById('myAlert');
 
     function deleteProduct(ID) {
@@ -178,6 +280,16 @@
                 }
             })
     }
+
+    function editDataMeta(ID) {
+        event.preventDefault();
+        confirm('Are you sure you want to edit this product?')
+    }
+
+    function deleteDetaMeta(ID) {
+        event.preventDefault();
+        confirm('Are you sure you want to Delete this product?')
+    }
     fetch('<?= $apiURL; ?>common/function.php?data_action=get_deta_meta', {
             method: 'POST',
             headers: {
@@ -208,29 +320,118 @@
 
                 if (headData.length > 0) {
                     headData.forEach(data => {
-                        if (data.type == 'checkbox') checkboxs.push(data);
+                        if (data.type == 'checkbox') checkboxs.push(data.name);
                         tableHead.innerHTML += `<th>${data.label}</th>`;
                     })
+                    tableHead.innerHTML += `<th>Action</th>`;
+
+
 
                     // populate table with meta tableData
                     tableData.forEach(data => {
                         product = JSON.parse(data.meta_value);
-                        var tableKeys = Object.values(JSON.parse(data.meta_value));
-                        tableKeys.forEach(key => {
-                            if (key) {
-                                tableBody.innerHTML += `<td>${key}</td>`;
+                        let row = Array.from({
+                            length: headData.length
+                        }, () => ''); // Create an array with empty strings for each column
+                        let checkboxValues = {};
+
+                        checkboxs.forEach(checkbox => {
+                            checkboxValues[checkbox] = '';
+                        });
+
+                        for (const key in product) {
+                            if (Object.hasOwnProperty.call(product, key)) {
+                                const value = product[key];
+                                if (checkboxs.some(checkbox => key.includes(checkbox))) {
+                                    let keyArray = key.split('-');
+                                    checkboxValues[keyArray[0]] = `${checkboxValues[keyArray[0]] ? checkboxValues[keyArray[0]] + ', ' : ''}${value}`;
+                                } else {
+                                    const index = headData.findIndex(header => header.name === key);
+                                    if (index !== -1) {
+                                        row[index] = `<td id="${key}">${value}</td>`;
+                                    }
+                                }
                             }
-                        })
-                    })
+                        }
+                        checkboxs.forEach(checkbox => {
+                            const index = headData.findIndex(header => header.name === checkbox);
+                            if (index !== -1) {
+                                row[index] += `<td id="${checkbox}">${checkboxValues[checkbox]}</td>`;
+                            }
+                        });
+
+                        row[row.length] = `
+                        <td ><div class="d-flex flex-row"><button class="btn btn-primary btn-sm me-1" onclick="printData('${data.id}')">
+                        <i class="fas fa-print"> </i></button><button class="btn btn-success btn-sm me-1" onclick="editDataMeta('${data.id}')">
+                        <i class="fas fa-edit"></i></button>` + `<button class="btn btn-danger btn-sm me-1" onclick="deleteDetaMeta('${data.id}')"><i class="fas fa-trash"></i></button></div></td>`;
+
+                        tableBody.innerHTML += `<tr id="${data.id}">${row.join('')}</tr>`;
+
+                        // Insert checkbox values at their respective positions
+                    });
                 }
 
-                // $('#data-tables-product').DataTable();
+                $('#data-tables-product').DataTable();
 
             } else {
                 console.error('Failed to fetch products:', data.message);
             }
         })
         .catch(error => console.error('Error:', error));
+
+
+
+    function printData(id) {
+        console.log(id);
+        var divToPrint = document.getElementById('printElement');
+        var parent = document.getElementById(id);
+        // Ittrate all elements in parent and append value to printable
+        var data = [];
+        for (var i = 0; i < parent.children.length; i++) {
+            if (parent.children[i].id) {
+                let ammend = {
+                    name: parent.children[i].id,
+                    value: parent.children[i].innerHTML
+                };
+                data.push(ammend);
+            }
+        }
+
+        console.log(data);
+
+        data.forEach(data => {
+            var ammendID = `#printElement #${data.name}`;
+            console.log(ammendID, data.value);
+            jQuery(ammendID).html(data.value);
+            if (data.name == 'qr_code') {
+                generate(data.value);
+            } else if (data.name == 'show_logo') {
+                jQuery(ammendID).html(data.value == 'true' ? '<img src="./img/makends-dark.png" alt="Company Logo" style="float: right; max-width: 100px; height: auto; margin-right: 10px;">' : '');
+            }
+
+        });
+
+        var footerContent = `
+        <div style="position: fixed; bottom: 0; width: 100%; text-align: center; padding-top: 1rem;">
+            <a href="https://makends.com" target="_blank" style="text-decoration: none;">
+                <span style="color: #5d9fc5; font-weight: bold; float: left; margin-right: 10px; display: inline-block; vertical-align: middle;">makends.com</span>
+            </a>
+            <a href="https://makends.com" target="_blank" style="text-decoration: none;">
+                <img src="./img/makends-dark.png" alt="Company Logo" style="float: right; max-width: 100px; height: auto; margin-right: 10px;">
+            </a>
+        </div>
+    `;
+
+        var newWin = window.open('');
+        newWin.document.write(`<html><head><title>PRINT</title><link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" media='print' rel="stylesheet">
+    <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css" media='all'>
+    <link rel="stylesheet" href="css/style.css" media='all'></head><body>`);
+        newWin.document.title = 'new';
+        newWin.document.write(divToPrint.outerHTML + footerContent);
+        newWin.document.write('</body></html>');
+        newWin.print();
+        newWin.close();
+    }
 </script>
 
 </html>

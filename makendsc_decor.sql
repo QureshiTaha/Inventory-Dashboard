@@ -76,12 +76,12 @@ CREATE TABLE `custom_fields` (
   `id` int(11) NOT NULL,
   `field_id` int(11) NOT NULL,
   `priority` int(11) DEFAULT NULL,
-  `entity_type` varchar(255) NOT NULL,
-  `entity_id` varchar(25) NOT NULL,
-  `label` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `options` text DEFAULT NULL,
+  `entity_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `entity_id` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `options` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -91,18 +91,19 @@ CREATE TABLE `custom_fields` (
 
 INSERT INTO `custom_fields` (`id`, `field_id`, `priority`, `entity_type`, `entity_id`, `label`, `name`, `type`, `options`, `created_at`) VALUES
 (40, 7, 0, 'theam', 'field_1709800426752', 'Product', 'product', 'sidebarListParent', '', '2024-03-07 08:34:53'),
-(43, 9, 11, 'product', 'field_1709805318124', 'Show Logo', 'show_logo', 'radio', 'true:Show\nfalse:Hide', '2024-03-07 09:56:12'),
+(43, 9, 12, 'product', 'field_1709805318124', 'Show Logo', 'show_logo', 'radio', 'true:Show\nfalse:Hide', '2024-03-07 09:56:12'),
 (44, 9, 0, 'product', 'field_1709805541790', 'Product Title', 'product_title', 'text', '', '2024-03-07 09:59:11'),
 (45, 9, 1, 'product', 'field_1709805559634', 'SR. No', 'serial_number', 'number', '', '2024-03-07 10:00:27'),
-(46, 9, 2, 'product', 'field_1709805685141', 'Sheer', 'sheer', 'text', '', '2024-03-07 10:07:23'),
-(47, 9, 3, 'product', 'field_1709805699193', 'Shade', 'shade', 'text', '', '2024-03-07 10:07:23'),
-(48, 9, 4, 'product', 'field_1709805783727', 'Wash care Icons', 'wash_care', 'checkbox', 'bucket:Bucket\niron:Iron\np:P', '2024-03-07 10:07:23'),
-(49, 9, 5, 'product', 'field_1709805786993', 'End use', 'end_use', 'text', '', '2024-03-07 10:07:23'),
-(50, 9, 6, 'product', 'field_1709805749247', 'Weight (GSM)', 'weight', 'text', '', '2024-03-07 10:07:23'),
-(51, 9, 7, 'product', 'field_1709805710907', 'Composition', 'composition', 'text', '', '2024-03-07 10:07:23'),
-(52, 9, 8, 'product', 'field_1709805677564', 'Quantity', 'quantity', 'number', '', '2024-03-07 10:07:23'),
-(53, 9, 9, 'product', 'field_1709805787643', 'message', 'message', 'text', '', '2024-03-07 10:07:23'),
-(54, 9, 10, 'product', 'field_1709806024842', 'Qr Code url', 'qr_code', 'text', '', '2024-03-07 10:07:23');
+(47, 9, 4, 'product', 'field_1709805699193', 'Shade', 'shade', 'text', '', '2024-03-07 10:07:23'),
+(48, 9, 8, 'product', 'field_1709805783727', 'Wash care Icons', 'wash_care', 'checkbox', 'bucket:Bucket\niron:Iron\np:P', '2024-03-07 10:07:23'),
+(49, 9, 9, 'product', 'field_1709805786993', 'End use', 'end_use', 'text', '', '2024-03-07 10:07:23'),
+(50, 9, 6, 'product', 'field_1709805749247', 'Weight (GSM)', 'weight', 'number', '', '2024-03-07 10:07:23'),
+(51, 9, 5, 'product', 'field_1709805710907', 'Composition', 'composition', 'text', '', '2024-03-07 10:07:23'),
+(52, 9, 3, 'product', 'field_1709805677564', 'Quality', 'quality', 'text', '', '2024-03-07 10:07:23'),
+(53, 9, 10, 'product', 'field_1709805787643', 'message', 'message', 'text', '', '2024-03-07 10:07:23'),
+(54, 9, 11, 'product', 'field_1709806024842', 'Qr Code url', 'qr_code', 'text', '', '2024-03-07 10:07:23'),
+(57, 9, 2, 'product', 'field_1710094455810', 'Price Code', 'price_code', 'text', '', '2024-03-10 18:14:32'),
+(58, 9, 7, 'product', 'field_1710095064526', 'width (CM)', 'width', 'number', '', '2024-03-10 18:25:23');
 
 -- --------------------------------------------------------
 
@@ -112,8 +113,8 @@ INSERT INTO `custom_fields` (`id`, `field_id`, `priority`, `entity_type`, `entit
 
 CREATE TABLE `data_meta` (
   `id` int(11) NOT NULL,
-  `field_ID` varchar(11) NOT NULL,
-  `meta_key` varchar(25) NOT NULL,
+  `field_ID` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `meta_key` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`meta_value`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -122,7 +123,8 @@ CREATE TABLE `data_meta` (
 --
 
 INSERT INTO `data_meta` (`id`, `field_ID`, `meta_key`, `meta_value`) VALUES
-(1, '', 'product', '{\"product_title\":\"Classic Sheers\",\"serial_number\":\"28\",\"sheer\":\"SRD 750 51P\",\"shade\":\"66582\",\"wash_care-bucket\":\"bucket\",\"wash_care-iron\":\"iron\",\"wash_care-p\":\"p\",\"end_use\":\"End USE ICON\",\"weight\":\"73\",\"composition\":\"100% Polyster\",\"quantity\":\"100\",\"message\":\"Alos available in Flame Retardent (NFPA 710)\",\"qr_code\":\"www.makends.com\",\"show_logo\":\"true\"}');
+(1, '', 'product', '{\"product_title\":\"Classic Sheers\",\"serial_number\":\"28\",\"price_code\":\"B\",\"quality\":\"Sheer SRD 75051P\",\"shade\":\"66582\",\"composition\":\"100% Polyester\",\"weight\":\"73\",\"width\":\"140\",\"wash_care-bucket\":\"bucket\",\"wash_care-iron\":\"iron\",\"end_use\":\"ICON\",\"message\":\"Alos available in Flame Retardent (NFPA 710)\",\"qr_code\":\"https://makends.com\",\"show_logo\":\"true\"}'),
+(2, '', 'product', '{\"product_title\":\"Test product\",\"serial_number\":\"2\",\"price_code\":\"C\",\"quality\":\"Classic bloom 902G41\",\"shade\":\"pink\",\"composition\":\"80% polyster, 20%cotton\",\"weight\":\"30\",\"width\":\"79\",\"wash_care-bucket\":\"bucket\",\"wash_care-iron\":\"iron\",\"end_use\":\"ICON NONE\",\"message\":\"Not available in Flame Retardent (GC308 710)\",\"qr_code\":\"www.google.com\",\"show_logo\":\"false\"}');
 
 -- --------------------------------------------------------
 
@@ -132,8 +134,8 @@ INSERT INTO `data_meta` (`id`, `field_ID`, `meta_key`, `meta_value`) VALUES
 
 CREATE TABLE `fields` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `label` varchar(255) NOT NULL
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -153,7 +155,7 @@ INSERT INTO `fields` (`id`, `name`, `label`) VALUES
 CREATE TABLE `invoices` (
   `id` int(11) NOT NULL,
   `invoice_id` int(11) NOT NULL,
-  `invoice_data` text NOT NULL,
+  `invoice_data` text COLLATE utf8_unicode_ci NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -174,14 +176,14 @@ CREATE TABLE `product` (
   `price` decimal(10,2) NOT NULL,
   `quantity` int(11) NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product`
 --
 
 INSERT INTO `product` (`id`, `modalNumber`, `hsnCode`, `name`, `description`, `product_meta`, `price`, `quantity`, `date_added`) VALUES
-(2, '23', 233, 'name', 'Desc', NULL, 30.00, 20, '2024-03-04 07:39:06');
+(2, '23', 233, 'name', 'Desc', NULL, '30.00', 20, '2024-03-04 07:39:06');
 
 -- --------------------------------------------------------
 
@@ -199,7 +201,7 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `tax` varchar(100) NOT NULL,
   `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -271,25 +273,25 @@ ALTER TABLE `activity`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `custom_fields`
 --
 ALTER TABLE `custom_fields`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `data_meta`
 --
 ALTER TABLE `data_meta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `fields`
 --
 ALTER TABLE `fields`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `invoices`
