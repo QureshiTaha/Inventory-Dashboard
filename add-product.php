@@ -134,7 +134,7 @@
                                 payload += `
                                     <div class="col-md-6 mb-3">
                                         <label class="small mb-1">${addToform.label}</label>                 
-                                        <div class=" d-flex flex-row ">`
+                                        <div class="">`
                                 options.forEach(option => {
                                     optionSplit = option.split(':');
                                     payload += `
@@ -148,7 +148,7 @@
                                 payload += `
                                     <div class="col-md-6 mb-3">
                                         <label class="small mb-1">${addToform.label}</label>
-                                        <div class=" d-flex flex-row ">`
+                                        <div class="">`
                                 options.forEach(option => {
                                     optionSplit = option.split(':');
                                     payload += `

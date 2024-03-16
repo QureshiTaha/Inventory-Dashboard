@@ -497,6 +497,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$dataMeta = getDataMetaByKey($con, $metaKey);
 		$allField = getAllCustomFieldsByEntityType($con, $metaKey);
 		sendResponse([$allField, $dataMeta], true, `success`);
+	} else if ($action === 'update_deta_meta') {
+		$metaValue = $_POST['meta_value'];
+		$id = json_decode($metaValue)->id;
+		updateDataMeta($con, $metaValue, $id);
+		sendResponse([$metaValue, $id], true, `success`);
+	} else if ($action === 'delete_deta_meta') {
+		$id = $_POST['id'];
+		deleteDataMeta($con, $id);
+		sendResponse([], true, `success`);
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}

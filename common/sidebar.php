@@ -31,7 +31,7 @@ try {
             <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
 
         </div>
-        <div class="sidebar-brand-text mx-3">Decor</div>
+        <div class="sidebar-brand-text mx-3">Drapes and Tassels</div>
     </a>
 
     <!-- Divider -->

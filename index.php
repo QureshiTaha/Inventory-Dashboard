@@ -185,7 +185,7 @@ function  checkAndCreateTables()
             `activity` varchar(55) NOT NULL,
             `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=57;",
+        ) ENGINE=InnoDB AUTO_INCREMENT=0;",
         "admin" => "CREATE TABLE IF NOT EXISTS `admin` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL,
@@ -235,6 +235,13 @@ function  checkAndCreateTables()
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (field_id) REFERENCES fields(id)
         ) ENGINE=InnoDB AUTO_INCREMENT=0;",
+        "data_meta" => "CREATE TABLE IF NOT EXISTS data_meta (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `field_ID` varchar(11) NOT NULL,
+            `meta_key` varchar(25) NOT NULL,
+            `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`meta_value`)),
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0",
         "user" => "CREATE TABLE IF NOT EXISTS `user` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL,
@@ -246,7 +253,7 @@ function  checkAndCreateTables()
             `tax` varchar(100) NOT NULL,
             `date_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=23;",
+        ) ENGINE=InnoDB AUTO_INCREMENT=0;",
         "insertAdmin" => "INSERT INTO `admin` (`name`, `email`, `password`) VALUES ('admin', 'admin@admin.com', 'admin@123') ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password` = VALUES(`password`);"
     ];
 

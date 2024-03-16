@@ -186,7 +186,8 @@
     return true;
   }
 
-  function getDataMetaByKey($con, $metaKey){
+  function getDataMetaByKey($con, $metaKey)
+  {
     $sql = "SELECT * FROM data_meta WHERE meta_key = '$metaKey'";
     $result = mysqli_query($con, $sql);
     $data = array();
@@ -195,6 +196,21 @@
     }
 
     return $data;
+  }
+
+  function updateDataMeta($con, $metaValue, $id)
+  {
+    $sql = "UPDATE data_meta SET meta_value = '$metaValue' WHERE id = '$id'";
+    mysqli_query($con, $sql);
+    return true;
+  }
+
+  function deleteDataMeta($con, $id)
+  {
+    $sql = "DELETE FROM data_meta WHERE id = '$id'";
+    mysqli_query($con, $sql);
+
+    return true;
   }
 
 
