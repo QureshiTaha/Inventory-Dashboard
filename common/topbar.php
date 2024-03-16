@@ -74,7 +74,7 @@ if (session_status() === PHP_SESSION_NONE) {
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="<?php echo $_SESSION['base-slug']; ?>settings">
+                <a class="dropdown-item settings" href="<?php echo $_SESSION['base-slug']; ?>settings">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                     Settings
                 </a>

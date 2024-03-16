@@ -61,7 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 	$count = mysqli_num_rows($result);
 
 	if ($count == 1) {
-		session_start();
+		if (session_status() === PHP_SESSION_NONE) {
+			session_start();
+		}
 		$_SESSION["loggedin"] = true;
 		$_SESSION["id"] = $row['id'];
 		$_SESSION["username"] = $username;
@@ -73,9 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		echo json_encode($response);
 	}
 } else if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['loggedin']) && $_GET['loggedin'] == 'false') {
-	session_start();
-
-	include('config.php');
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}
 	$username = $_SESSION['username'];
 
 
@@ -506,6 +508,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['email']) && !empty($
 		$id = $_POST['id'];
 		deleteDataMeta($con, $id);
 		sendResponse([], true, `success`);
+	} else if ($action === 'get_deta_meta_by_id') {
+		$id = $_POST['id'];
+		$metaKey = $_POST['meta_key'] ? $_POST['meta_key'] : '';
+		$data = getDataMetaByID($con, $id);
+		$dataMeta = getAllCustomFieldsByEntityType($con, $metaKey);
+		sendResponse([$dataMeta, $data], true, `success`);
 	} else {
 		sendResponse([], false, 'Invalid action');
 	}

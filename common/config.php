@@ -212,7 +212,17 @@
 
     return true;
   }
+  function getDataMetaByID($con, $id)
+  {
+    $sql = "SELECT * FROM data_meta WHERE id = '$id'";
+    $result = mysqli_query($con, $sql);
+    $data = array();
+    while ($row = mysqli_fetch_assoc($result)) {
+      $data[] = $row;
+    }
 
+    return $data;
+  }
 
   function getDashboardStats($con)
   {

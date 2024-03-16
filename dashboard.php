@@ -1,3 +1,5 @@
+
+<?php header('Location: products'); ?>
 <!DOCTYPE html>
 <html lang="en">
 

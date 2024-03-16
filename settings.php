@@ -147,17 +147,17 @@
 
                                 <div id="exTab2" class=" ">
                                     <ul class="nav nav-tabs">
-                                        <li>
+                                        <li class="active">
                                             <a href="#1" data-toggle="tab">Profile</a>
                                         </li>
-                                        <li class="active"><a href="#2" data-toggle="tab">Advance</a>
+                                        <li><a href="#2" data-toggle="tab">Advance</a>
                                         </li>
                                         <li><a href="#3" data-toggle="tab">credits</a>
                                         </li>
                                     </ul>
 
                                     <div class="tab-content  p-2 bg-f2">
-                                        <div class="tab-pane" id="1">
+                                        <div class="tab-pane active" id="1">
                                             <div class="container">
                                                 <h3>Profile Settings</h3>
                                                 <?php
@@ -248,7 +248,7 @@
 
 
 
-                                        <div class="tab-pane active" id="2">
+                                        <div class="tab-pane" id="2">
                                             <!-- Advance Settings -->
                                             <div class="container">
                                                 <h3>Advance Settings</h3>

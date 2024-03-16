@@ -27,6 +27,8 @@
 
 </head>
 
+
+
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -72,10 +74,11 @@
 
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 
-                <div class="d-nones">
+                <div class="d-none">
                     <div id="printElement" class="d-flex justify-content-center align-items-center">
                         <div class=" bg-transparent container  p-3">
                             <div class="d-flex flex-row">
@@ -201,12 +204,12 @@
     <!-- End of Page Wrapper -->
 </body>
 <script>
-    // generate("https://makends.com");
     var InputTypes;
     var allData = [];
 
-    function generate(user_input) {
-
+    function generate(id) {
+        var user_input = `<?= $apiURL; ?>qr-decode?id=${id}`;
+        console.log("user_input", user_input);
         document.querySelector(".qr-code").style = "";
         //remove original
         document.querySelector(".qr-code").innerHTML = "";
@@ -417,33 +420,42 @@
         var parent = document.getElementById(id);
         // Ittrate all elements in parent and append value to printable
         var data = [];
-        for (var i = 0; i < parent.children.length; i++) {
-            if (parent.children[i].id) {
-                let ammend = {
-                    name: parent.children[i].id,
-                    value: parent.children[i].innerHTML
-                };
-                data.push(ammend);
+        // for (var i = 0; i < parent.children.length; i++) {
+        //     if (parent.children[i].id) {
+        //         let ammend = {
+        //             name: parent.children[i].id,
+        //             value: parent.children[i].innerHTML
+        //         };
+        //         data.push(ammend);
+        //     }
+        // }
+        var newData = allData.find(o => o.id === ID);
+        for (key in newData) {
+            if (newData.hasOwnProperty(key)) {
+                data.push({
+                    name: key,
+                    value: newData[key]
+                });
             }
         }
 
         data.forEach(data => {
             var ammendID = `#printElement #${data.name}`;
-            if (data.name == 'qr_code') {
+            if (data.name == 'id') {
                 generate(data.value);
-                // } else if (data.name == 'logo') {
-                // jQuery(ammendID).html("");
-                // jQuery(ammendID).append(`<img src="img/${data.value}" width="120" alt="${data.name}" srcset="">`);
-                // } else if (data.name == 'wash_care') {
-                //     jQuery(ammendID).html("");
-                //     data.value.split(',').forEach(element => {
-                //         jQuery(ammendID).append(`<img src="img/svg_icons/${element.trim()}" height="23" alt="${element.trim().replace('.svg', '').replace('.png', '')}" srcset="">&nbsp;`);
-                //     });
-                // } else if (data.name == 'end_use') {
-                //     jQuery(ammendID).html("");
-                //     data.value.split(',').forEach(element => {
-                //         jQuery(ammendID).append(`<img src="img/svg_icons/${element.trim()}" height="23" alt="${element.trim().replace('.svg', '').replace('.png', '')}" srcset="">&nbsp;`);
-                //     });
+            } else if (data.name == 'logo') {
+                jQuery(ammendID).html("");
+                jQuery(ammendID).append(`<img src="img/${data.value}" width="120" alt="${data.name}" srcset="">`);
+            } else if (data.name == 'wash_care') {
+                jQuery(ammendID).html("");
+                data.value.split(',').forEach(element => {
+                    jQuery(ammendID).append(`<img src="img/svg_icons/${element.trim()}" height="23" alt="${element.trim().replace('.svg', '').replace('.png', '')}" srcset="">&nbsp;`);
+                });
+            } else if (data.name == 'end_use') {
+                jQuery(ammendID).html("");
+                data.value.split(',').forEach(element => {
+                    jQuery(ammendID).append(`<img src="img/svg_icons/${element.trim()}" height="23" alt="${element.trim().replace('.svg', '').replace('.png', '')}" srcset="">&nbsp;`);
+                });
 
             } else {
                 jQuery(ammendID).html(data.value);
